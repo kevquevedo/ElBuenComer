@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ElBuenComer</string>
+    <string name="title_activity_main">ElBuenComer</string>
+    <string name="package_name">elbuencomer.app</string>
+    <string name="custom_url_scheme">elbuencomer.app</string>
+</resources>
