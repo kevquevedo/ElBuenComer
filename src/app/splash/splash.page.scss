@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Mooli&display=swap');
+@keyframes slide-in-blurred-top{0%{transform:translateY(-1000px) scaleY(2.5) scaleX(.2);transform-origin:50% 0;filter:blur(40px);opacity:0}100%{transform:translateY(0) scaleY(1) scaleX(1);transform-origin:50% 50%;filter:blur(0);opacity:1}}
+@keyframes swirl-in-bck{0%{transform:rotate(540deg) scale(5);opacity:0}100%{transform:rotate(0) scale(1);opacity:1}}
+@keyframes roll-in-left{0%{transform:translateX(-800px) rotate(-540deg);opacity:0}100%{transform:translateX(0) rotate(0deg);opacity:1}}
+@keyframes slide-out-fwd-center{0%{transform:translateZ(1);opacity:1}100%{transform:translateZ(600px);opacity:0}}
+@keyframes text-focus-in{0%{filter:blur(12px);opacity:0}100%{filter:blur(0);opacity:1}}
+@keyframes text-flicker-in-glow{0%{opacity:0}10%{opacity:0;text-shadow:none}10.1%{opacity:1;text-shadow:none}10.2%{opacity:0;text-shadow:none}20%{opacity:0;text-shadow:none}20.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.25)}20.6%{opacity:0;text-shadow:none}30%{opacity:0;text-shadow:none}30.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.45),0 0 60px rgba(255,255,255,.25)}30.5%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.45),0 0 60px rgba(255,255,255,.25)}30.6%{opacity:0;text-shadow:none}45%{opacity:0;text-shadow:none}45.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.45),0 0 60px rgba(255,255,255,.25)}50%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.45),0 0 60px rgba(255,255,255,.25)}55%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.45),0 0 60px rgba(255,255,255,.25)}55.1%{opacity:0;text-shadow:none}57%{opacity:0;text-shadow:none}57.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.55),0 0 60px rgba(255,255,255,.35)}60%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.55),0 0 60px rgba(255,255,255,.35)}60.1%{opacity:0;text-shadow:none}65%{opacity:0;text-shadow:none}65.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.55),0 0 60px rgba(255,255,255,.35),0 0 100px rgba(255,255,255,.1)}75%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.55),0 0 60px rgba(255,255,255,.35),0 0 100px rgba(255,255,255,.1)}75.1%{opacity:0;text-shadow:none}77%{opacity:0;text-shadow:none}77.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.55),0 0 60px rgba(255,255,255,.4),0 0 110px rgba(255,255,255,.2),0 0 100px rgba(255,255,255,.1)}85%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.55),0 0 60px rgba(255,255,255,.4),0 0 110px rgba(255,255,255,.2),0 0 100px rgba(255,255,255,.1)}85.1%{opacity:0;text-shadow:none}86%{opacity:0;text-shadow:none}86.1%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.6),0 0 60px rgba(255,255,255,.45),0 0 110px rgba(255,255,255,.25),0 0 100px rgba(255,255,255,.1)}100%{opacity:1;text-shadow:0 0 30px rgba(255,255,255,.6),0 0 60px rgba(255,255,255,.45),0 0 110px rgba(255,255,255,.25),0 0 100px rgba(255,255,255,.1)}}
+
+.fondo{
+  background-color: #002366;
+  height: 100vh;
+}
+
+.contenedor{
+  background-color: #002366;
+  height: 100vh;
+  animation:slide-out-fwd-center .7s cubic-bezier(.55,.085,.68,.53) 6s both;
+}
+
+.logo{
+  background-image: url(../../assets/splash.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 50vh;
+  animation:slide-in-blurred-top .6s cubic-bezier(.23,1.000,.32,1.000) 0.5s both;
+}
+
+.texto{
+  font-family: 'Mooli', sans-serif;
+  font-size: 20pt;
+  font-weight: bold;
+  color: white;
+}
+
+.dev1{
+  margin-top: 0%;
+  animation:text-flicker-in-glow 2s linear 1s both;
+}
+
+.dev2{
+  margin-top: 5%;
+  animation:text-flicker-in-glow 2s linear 1s both;
+}
+
+.dev3{
+  margin-top: 5%;
+  animation:text-flicker-in-glow 2s linear 1s both;
+}
+
+.curso{
+  margin-top: 5%;
+  animation:text-flicker-in-glow 2s linear 3s both;
+}
+
+.desarrolladores{
+  height: 50vh;
+  background-image: url(../../assets/barras.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
