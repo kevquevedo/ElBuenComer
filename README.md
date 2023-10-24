@@ -1,9 +1,9 @@
-![restaurant](https://github.com/kevquevedo/ElBuenComer/assets/60716668/5c9ab485-86a5-4cdd-a910-fb1d1552f0b0)
+![restaurant](https://github.com/kevquevedo/ElBuenComer/assets/60716668/06b27028-13db-4e7f-b425-9573e9ccc910)
 
 ## Descripción del Proyecto
 
 <div align="center">
-  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/60ce1d46-c9d9-402d-8802-effe42942c61" width=150> <br> <br>
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/a3dfca39-1cc4-4020-8e2b-81006b58a137" width=150> <br> <br>
   <p> <b>"El Buen Comer App"</b> es una app móvil que está diseñada para hacer que la administración de un restaurante sea más sencilla y efectiva, brindando una experiencia excepcional a clientes y hacer crecer el negocio.</p> <br> 
   <p> Con <b>"El Buen Comer App"</b> se puede gestionar un pedido tanto desde el lado del empleado como del lado del cliente.</p> <br> 
   <p>¡La revolución en la gestión de restaurantes llegó con <b>"El Buen Comer App"</b>!</p> <br> 
