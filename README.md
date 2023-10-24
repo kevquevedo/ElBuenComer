@@ -14,11 +14,12 @@
 🚧 Proyecto en Construcción 🚧
 
 <div align="center">  
-  
+
+
 | # | Avances | Desarrollador | Estado|
 | ------ | ------ | ------ | ------ |
  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/8876c003-f5e9-43db-a094-97f7bffbf9bf" width=20> | Primer Sprint Fecha: 21/10/2023 al 28/10/2023  |  |  |
-| <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/3c723c0b-8288-4c63-80e0-6af1b3cb730f" width=20>  | <p align="center">Icono + Splash + Spinner</p> | <p align="center">Kevin Quevedo</p> | <div align="center"><img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/dbf9b22a-2a9d-4399-b83a-fe6e388d5156" width=30></div> |
+| <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/3c723c0b-8288-4c63-80e0-6af1b3cb730f" width=20>  | <p align="center">Icono + Splash + Spinner</p> | <p align="center">Kevin Quevedo</p> | <div align="center"><img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/da62360a-bd32-4d4f-ba91-0367c693398d" width=30></div> |
 | <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/3c723c0b-8288-4c63-80e0-6af1b3cb730f" width=20>  | <p align="center">Alta de Dueños</p>  | <p align="center">Kevin Quevedo</p> | <div align="center"><img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/dbf9b22a-2a9d-4399-b83a-fe6e388d5156" width=30></div> |
 | <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/3c723c0b-8288-4c63-80e0-6af1b3cb730f" width=20>  | <p align="center">Alta de Supervisores</p> | <p align="center">Kevin Quevedo</p> | <div align="center"><img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/dbf9b22a-2a9d-4399-b83a-fe6e388d5156" width=30></div> |
 | <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/3c723c0b-8288-4c63-80e0-6af1b3cb730f" width=20>  | <p align="center">Alta de Empleados</p> | <p align="center">Macarena Ferrero</p> | <div align="center"><img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/dbf9b22a-2a9d-4399-b83a-fe6e388d5156" width=30></div> |
