@@ -13,6 +13,13 @@
   line-height: 26px;
 }
 
+.custom-margin {
+  margin-left: 20px; /* Ajusta el margen izquierdo según tus preferencias */
+  margin-right: 20px; /* Ajusta el margen derecho según tus preferencias */
+  align-items: center;
+  justify-content: center;
+}
+
 #container p {
   font-size: 16px;
   line-height: 22px;
@@ -25,3 +32,91 @@
 #container a {
   text-decoration: none;
 }
+
+ion-button {
+  --background: #ece8ed;
+  --background-hover: #BB32D2;
+  --background-activated: #BB32D2;
+  --background-focused: #BB32D2;
+  --color: rgb(1, 1, 10);
+  --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+  --ripple-color: deeppink;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  height: 10vh;
+  margin-top: 20px;
+
+
+}
+
+.custom-center {
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  justify-content: center;
+  height: 50vh; /* Opcional para centrar verticalmente */
+}
+
+.custom-button{
+  margin-left: 105px;
+  background-color: transparent;
+}
+
+
+#imgBotonesLog{
+  height: 58px;
+  width: 58px;
+  display:block;
+  margin:auto;
+  border-radius: 2rem;
+  background-color: rgb(255, 255, 255);
+
+  /*background-image: url('../../../assets/ahorcado/ahorcado.jpg');*/
+}
+
+#btnLogs{
+  height: 70px;
+  width: 70px;
+  padding-top:5px;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  border-color: black;
+  border-radius: 50%;
+
+}
+
+.button-scale {
+  transition: transform 0.2s ease-in-out;
+}
+
+.button-scale:hover {
+  transform: scale(1.1);
+}
+
+
+ion-row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10%;
+  height: 25vh;
+}
+
+ion-card-title{
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+}
+
+ion-input{
+  height: 5vh;
+}
+
+ion-card{
+  background-color: #002366;
+  height: 97vh;
+
+}
+
