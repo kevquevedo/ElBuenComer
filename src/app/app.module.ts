@@ -11,15 +11,20 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
+import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta-dueno-supervisor.component';
+
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AltaDuenoSupervisorComponent,
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    IonicModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule,
     ToastrModule.forRoot(),

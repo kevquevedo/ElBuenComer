@@ -2,6 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
 export const environment = {
   firebase: {
     projectId: 'elbuencomerapp',
@@ -12,6 +13,8 @@ export const environment = {
     messagingSenderId: '776359826524',
   },
   production: false
+
+
 };
 
 /*

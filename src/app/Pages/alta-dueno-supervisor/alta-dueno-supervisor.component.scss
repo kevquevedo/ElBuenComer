@@ -1,0 +1,70 @@
+.scanner-buttons{
+  margin: 0px;
+  position: absolute;
+  bottom: 100px;
+  width: 100px;
+  height: 50px;
+  z-index: 11;
+}
+
+.scan-box{
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,0.5);
+  content: 'hola';
+  display: block;
+  left: 50%;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50% , -50%);
+  width: 300px;
+}
+
+ion-item{
+  padding:5px;
+}
+
+.spin-logo{
+  width: 80px;
+  border-radius: 50%;
+}
+
+.div-spin-logo{
+  background-color: #002366;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.header{
+  background-color: #002366;
+}
+
+.linea-nomape,
+.linea-dnicuil{
+  display: flex;
+  flex-direction: row;
+}
+
+.form{
+  background-color: #002366;
+  height: 100vh;
+}
+
+ion-item{
+  --border-radius: 30px;
+}
+
+.img{
+  display: flex;
+  justify-content: center;
+}
+
+ion-radio-group,ion-item,ion-list{
+  background-color: #002366;
+}
+
+.icon-img{
+  margin-left: 10px;
+}
