@@ -1,0 +1,164 @@
+<ion-header [hidden]="scanActive">
+  <ion-header>
+    <ion-toolbar color="warning">
+      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+      <ion-title style="text-align: center;" *ngIf="!anonimo">Registro Cliente</ion-title>
+      <ion-title style="text-align: center;" *ngIf="anonimo">Registro Anónimo</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+</ion-header>
+<ion-item class="toggle" [hidden]="scanActive">
+  <ion-toggle [(ngModel)]="anonimo"></ion-toggle>
+  <ion-label>Anónimo</ion-label>
+</ion-item>
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" size="large" (click)="startScan()">
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div [hidden]="scanActive" *ngIf="!anonimo" >
+    <div style="  display: flex;
+    justify-content: center;">
+      <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
+    </div>
+
+
+    <br>
+    <form [formGroup]="altaForm">
+      <ion-item>
+        <ion-label  position="fixed">Correo </ion-label>
+        <ion-input type="text" [(ngModel)]='email' formControlName="email">
+        </ion-input>
+      </ion-item>
+      <small
+        *ngIf="altaForm.get('email')?.hasError('required') && altaForm.get('email')?.hasError('email') && (altaForm.get('email')?.dirty || altaForm.get('email')?.touched)"
+        style="color: var(--ion-color-danger)">Por favor, ingrese el correo electronico.</small>
+        <small  style="color: var(--ion-color-danger)"
+        *ngIf="altaForm.get('email')?.hasError('pattern') && altaForm.get('email')?.touched">El Correo no tiene el
+        formato correcto</small>
+      <br>
+      <br>
+      <ion-item>
+        <ion-label  position="fixed">Clave</ion-label>
+        <ion-input type="password" [(ngModel)]='clave' formControlName="clave">
+        </ion-input>
+      </ion-item>
+      <small
+        *ngIf="altaForm.get('clave')?.hasError('required') && (altaForm.get('clave')?.dirty || altaForm.get('clave')?.touched)"
+        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small>
+
+      <br>
+      <br>
+      <ion-item>
+        <ion-label position="fixed">Confirmar Clave</ion-label>
+        <ion-input type="password" [(ngModel)]='clave2' formControlName="clave2">
+        </ion-input>
+      </ion-item>
+      <small
+        *ngIf="altaForm.get('clave2')?.hasError('required') && (altaForm.get('clave2')?.dirty || altaForm.get('clave2')?.touched)"
+        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small>
+      <small *ngIf="clave2 != clave"  style="color: var(--ion-color-danger)">Las claves no coinciden.</small>
+      <br>
+      <br>
+
+      <ion-item>
+        <ion-label position="fixed">Nombre</ion-label>
+        <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
+        </ion-input>
+      </ion-item>
+      <small
+        *ngIf="altaForm.get('nombre')?.hasError('required') && (altaForm.get('nombre')?.dirty || altaForm.get('nombre')?.touched)"
+        style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
+
+      <br>
+      <br>
+      <ion-item>
+        <ion-label position="fixed">Apellido </ion-label>
+        <ion-input type="text" [(ngModel)]='apellido' formControlName="apellido">
+        </ion-input>
+      </ion-item>
+      <small
+        *ngIf="altaForm.get('apellido')?.hasError('required') && (altaForm.get('apellido')?.dirty || altaForm.get('apellido')?.touched)"
+        style="color: var(--ion-color-danger)"
+        [ngClass]="altaForm.get('apellido')?.hasError('required') && altaForm.get('apellido')?.touched ? 'visible' : 'hidden'">Por
+        favor, ingrese un apellido.</small>
+
+      <br>
+      <br>
+      <ion-item>
+        <ion-label position="fixed">DNI</ion-label>
+        <ion-input type="number" [(ngModel)]='dni' formControlName="dni">
+        </ion-input>
+      </ion-item>
+      <small
+        *ngIf="altaForm.get('dni')?.hasError('required') && (altaForm.get('dni')?.dirty || altaForm.get('dni')?.touched)"
+        style="color: var(--ion-color-danger)"
+        [ngClass]="altaForm.get('dni')?.hasError('required') && altaForm.get('dni')?.touched ? 'visible' : 'hidden'">Por
+        favor, ingrese el dni.</small>
+
+      <small *ngIf="altaForm.get('dni')?.hasError('max') && (altaForm.get('dni')?.dirty || altaForm.get('dni')?.touched)"
+        [ngClass]="altaForm.get('dni')?.hasError('max') && altaForm.get('dni')?.touched ? 'visible' : 'hidden'"
+        style="color: var(--ion-color-danger)">El dni no debe contener mas de 8 caracteres.</small>
+      <small *ngIf="altaForm.get('dni')?.hasError('min') && (altaForm.get('dni')?.dirty || altaForm.get('dni')?.touched)"
+        style="color: var(--ion-color-danger)">El dni debe contener al menos 8 caracteres.</small>
+      <br><br><br>
+
+      <ion-button expand="full" color="success" [disabled]="!altaForm.valid || !fotoHabilitar " type="submit"
+        (click)='aceptar()'>
+        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+        Aceptar
+      </ion-button>
+    </form>
+  </div>
+
+  <form [formGroup]="altaFormAnonimo" [hidden]="scanActive" *ngIf="anonimo">
+    <ion-item>
+      <ion-label position="fixed">Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
+      </ion-input>
+    </ion-item>
+    <small
+      *ngIf="altaForm.get('nombre')?.hasError('required') && (altaForm.get('nombre')?.dirty || altaForm.get('nombre')?.touched)"
+      style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
+
+    <br>
+    <br>
+    <ion-item>
+      <!-- <ion-label>Foto</ion-label>
+        <ion-button type="button" class="ingreso" fill="solid" expand="block" color="escanear"
+          style="width: 80px; height: 45px" (click)="SacarFoto()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-button>
+        <ion-img class="foto" [src]='this.dataUrl' id="foto"></ion-img> -->
+      <div style="  display: flex; justify-content: center;">
+        <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
+      </div>
+
+
+    </ion-item>
+
+    <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid || !fotoHabilitar " type="submit"
+      (click)='aceptar()'>
+      <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+      Aceptar
+    </ion-button>
+  </form>
+
+
+  <div *ngIf="!anonimo">
+    <ion-row class="scanner-buttons" [hidden]="!scanActive">
+      <ion-col>
+        <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
+      </ion-col>
+    </ion-row>
+
+    <div class="scan-box" [hidden]="!scanActive">
+    </div>
+  </div>
+</ion-content>
+<!-- <ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>">
+  <p>Cargando...</p>
+</ngx-spinner> -->

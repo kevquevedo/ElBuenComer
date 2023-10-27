@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
@@ -7,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistroComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+
+  altaClientes(){
+    this.router.navigate(['home/alta-clientes']);
+  }
 
 }

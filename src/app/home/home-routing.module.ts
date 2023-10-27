@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
+import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,9 @@ const routes: Routes = [
   {
     path: 'principal',
     component: PrincipalComponent,
-  }
+  },
+  { path: 'alta-clientes',
+    component: AltaClientesComponent },
 ];
 
 @NgModule({
