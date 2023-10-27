@@ -12,7 +12,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
 import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta-dueno-supervisor.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideStorage,getStorage } from '@angular/fire/storage';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
+import * as fire from 'firebase/app';
+fire.initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [
@@ -29,6 +35,10 @@ import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta
     RouterModule,
     ToastrModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideStorage(() => getStorage()),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

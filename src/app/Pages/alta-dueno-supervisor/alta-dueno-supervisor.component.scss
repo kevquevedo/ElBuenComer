@@ -46,10 +46,18 @@ ion-item{
   display: flex;
   flex-direction: row;
 }
+.correo,
+.pass,
+.linea-nomape,
+.linea-dnicuil{
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
 
 .form{
   background-color: #002366;
-  height: 100vh;
+  height: 90vh;
 }
 
 ion-item{
@@ -67,4 +75,9 @@ ion-radio-group,ion-item,ion-list{
 
 .icon-img{
   margin-left: 10px;
+}
+
+.fondo-transparente{
+  height: 100vh;
+  background-color: transparent;
 }

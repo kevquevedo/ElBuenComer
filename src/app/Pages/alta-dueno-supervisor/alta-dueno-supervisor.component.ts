@@ -6,6 +6,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { ToastController } from '@ionic/angular';
 import { Photo } from '@capacitor/camera';
+import { Usuario } from 'src/app/clases/usuario';
 
 @Component({
   selector: 'app-alta-dueno-supervisor',
@@ -131,9 +132,40 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
   // FUNCIONES DE CAMARA
 
   tomarFoto() {
-    this.addPhotoToGallery();
+    this.imagenServ.agregarFoto()
+    .then(() => {
+      this.presentToast('top', 'Se procesó OK la imagen. ')
+    }
+    ).catch((err:any) => {
+      this.presentToast('top', 'Error al subir imagen: ' + err)
+    })
+    // this.sacarFoto();
   }
 
+  // async sacarFoto() {
+
+
+  // }
+
+  //private async uploadPhoto(cameraPhoto: Photo) {
+
+  //  const response = await fetch(cameraPhoto.webPath!);
+  //  const blob = await response.blob();
+  //  const filePath = this.getFilePath();
+
+  //  const uploadTask = this.imagenServ.saveFile(blob, filePath);
+
+    // uploadTask.then(async (res:any) => {
+      //   const downloadURL = await res.ref.getDownloadURL();
+      //   if (downloadURL.length > 0) {
+        //     console.log("URL  CORRECTO- i_IMG++");
+        //     this.usuario.foto = downloadURL;
+        //   }
+        // })
+        // .catch((err:any) => {
+          //   this.presentToast('top', 'Error al subir la imagen: ' + err)
+          // });
+  //}
   aceptar() {
     //this.spinner.show();
     //this.altaForm.get('perfil').value == 'dueño' ? this.usuario.tipo = eUsuario.dueño : this.usuario.tipo = eUsuario.supervisor;
@@ -177,41 +209,12 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
 
   }
 
-  async addPhotoToGallery() {
-    const photo = await this.imagenServ.addNewToGallery();
-    this.uploadPhoto(photo).then(() => {
-
-    }
-    ).catch((err:any) => {
-      this.presentToast('top', 'Error al subir imagen: ' + err)
-    })
-  }
-
-  private async uploadPhoto(cameraPhoto: Photo) {
-    const response = await fetch(cameraPhoto.webPath!);
-    const blob = await response.blob();
-    const filePath = this.getFilePath();
-
-    const uploadTask = this.imagenServ.saveFile(blob, filePath);
-
-    uploadTask.then(async (res:any) => {
-      const downloadURL = await res.ref.getDownloadURL();
-      if (downloadURL.length > 0) {
-        console.log("URL  CORRECTO- i_IMG++");
-        this.usuario.foto = downloadURL;
-      }
-    })
-    .catch((err:any) => {
-      this.presentToast('top', 'Error al subir la imagen: ' + err)
-    });
-  }
-
   getFilePath() {
     return new Date().getTime() + '-test';
   }
 
   // ngAfterViewInit(): void {
-  //   BarcodeScanner.prepare();
+    //   BarcodeScanner.prepare();
   // }
 
   evaluarErrorLogin(error : string){
@@ -248,37 +251,4 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
     await toast.present();
   }
 
-}
-
-
-
-export class Usuario {
-  email: string;
-  nombre: string;
-  apellido: string;
-  dni: number;
-  cuil: number;
-  foto: string;
-  uid: string;
-  tipo: string;
-  tipoEmpleado: string;
-  enListaDeEspera: boolean;
-  mesa: string;
-  clienteValidado: string;
-  token:string;
-  constructor(){
-    this.email= '';
-    this.nombre= '';
-    this.apellido= '';
-    this.dni= 0;
-    this.cuil= 0;
-    this.foto= '';
-    this.uid= '';
-    this.enListaDeEspera = false;
-    this.mesa = '';
-    this.clienteValidado = '';
-    this.token='';
-    this.tipo='';
-    this.tipoEmpleado='';
-  }
 }

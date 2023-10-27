@@ -1,4 +1,4 @@
-<ion-header [hidden]="scanActive" >
+<ion-header [hidden]="scanActive">
   <ion-toolbar >
     <ion-back-button defaultHref="home" slot="start" ></ion-back-button>
     <ion-title>Alta Dueño/Supervisor
@@ -15,7 +15,8 @@
 
 <ion-content *ngIf="!spin" >
 
-  <div [hidden]="scanActive">
+
+  <div *ngIf="!scanActive">
 
     <form [formGroup]="form" class="form">
       <br>
@@ -56,7 +57,7 @@
       </div>
 
       <!-- CORREO ELECTRONICO -->
-      <ion-item class="ion-padding-horizontal" lines="none" color="fav" fill="solid">
+      <ion-item class="ion-padding-horizontal correo" lines="none" color="fav" fill="solid">
         <ion-label position="floating">
           <ion-text>Correo electrónico</ion-text>
         </ion-label>
@@ -64,7 +65,7 @@
       </ion-item>
 
       <!-- CONTRASEÑA -->
-      <ion-item class="ion-padding-horizontal" lines="none" color="fav" fill="solid">
+      <ion-item class="ion-padding-horizontal pass" lines="none" color="fav" fill="solid">
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" class="formControl" formControlName="pass" required></ion-input>
       </ion-item>
@@ -72,7 +73,7 @@
 
       <!-- TIPO EMPLEADO -->
       <div class="ion-padding-horizontal">
-        <ion-label color="light">Tipo de empleado</ion-label>
+        <ion-label color="light" class="ion-padding-horizontal">Tipo de empleado</ion-label>
         <ion-radio-group formControlName="perfil" value="dueño">
           <ion-item class="ion-padding-horizontal" fill="solid">
             <ion-label>Dueño</ion-label>
@@ -112,7 +113,9 @@
       <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
     </ion-col>
   </ion-row>
-  <div class="scan-box" [hidden]="!scanActive"></div>
+  <div class="fondo-transparente" >
+    <div class="scan-box" [hidden]="!scanActive"></div>
+  </div>
 </div>
 
 <!-- SPINNER -->
