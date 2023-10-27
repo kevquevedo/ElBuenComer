@@ -9,24 +9,45 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
+<<<<<<< HEAD
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
+=======
+import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta-dueno-supervisor.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideStorage,getStorage } from '@angular/fire/storage';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+
+import * as fire from 'firebase/app';
+fire.initializeApp(environment.firebase);
+>>>>>>> origin/main
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AltaDuenoSupervisorComponent,
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    IonicModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule,
     ToastrModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
+<<<<<<< HEAD
     AngularFireStorageModule,
     AngularFirestoreModule
+=======
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideStorage(() => getStorage()),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+>>>>>>> origin/main
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
