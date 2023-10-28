@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { Photo } from '@capacitor/camera';
 import { Usuario } from 'src/app/clases/usuario';
+<<<<<<< HEAD
 import { ToastController } from '@ionic/angular';
+=======
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { UsuariosService } from 'src/app/services/usuarios.service';
+>>>>>>> main
 
 @Component({
   selector: 'app-alta-dueno-supervisor',
@@ -20,47 +24,41 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
   usuario:Usuario;
   scanActive!: boolean;
   dniData:any;
-
-
-  path:string='';
-  scannnedResult: any;
+  fotoUrl!:string;
+  spinner!:boolean;
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
-    private authS: AngularFireAuth,
     private imagenServ: ImagenesService,
     private toastController: ToastController,
-    //private firestore:FirestoreService,
-    //private utilidadesSrv:UtilidadesService,
-    //private imagenSrv:ImagenesService,
-    //private auth:AuthService,
-    //private spinner:NgxSpinnerService,
-    //private utilSrv:UtilidadesService
+    private auth: Auth,
+    private usuarioServ: UsuariosService
   ){
     this.usuario = new Usuario();
     this.spin = true;
     this.scanActive = false;
+    this.fotoUrl = '';
+    this.spinner = false;
   }
 
   ngOnInit() {
     this.form = new FormGroup({
       email: new FormControl('', Validators.email),
       pass: new FormControl('', Validators.minLength(6)),
-      nombre: new FormControl('', Validators.required),
-      apellido: new FormControl('', Validators.required),
-      dni: new FormControl('', [ Validators.required, Validators.min(1000000), Validators.max(99999999) ]),
-      cuil: new FormControl('', [ Validators.required, Validators.min(10000000000), Validators.max(99999999999) ]),
+      nombre: new FormControl('', [ Validators.required, Validators.pattern('^[a-zA-Z]+$') ]),
+      apellido: new FormControl('', [ Validators.required, Validators.pattern('^[a-zA-Z]+$') ]),
+      dni: new FormControl('', [ Validators.required, Validators.min(1000000), Validators.max(99999999),Validators.pattern('^[0-9]{8}$') ]),
+      cuil: new FormControl('', [ Validators.required, Validators.min(10000000000), Validators.max(99999999999),Validators.pattern('^[0-9]{11}$') ]),
       perfil: new FormControl('', Validators.required),
     });
-    setTimeout( ()=>{ this.spin = false; },2500)
+    setTimeout( ()=>{ this.spin = false; }, 2500)
   }
 
   get email(){
     return this.form.get('email');
   }
   get pass(){
-    return this.form.get('clave');
+    return this.form.get('pass');
   }
   get nombre(){
     return this.form.get('nombre');
@@ -98,7 +96,7 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       this.scanActive = true;
       BarcodeScanner.hideBackground();
       const result = await BarcodeScanner.startScan();
-      BarcodeScanner.showBackground(); //VEEEEEEEEEEEER
+      BarcodeScanner.showBackground();
       if (result.hasContent) {
 
         this.dniData = result.content.split('@');
@@ -130,123 +128,78 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
   }
 
   // FUNCIONES DE CAMARA
-
   tomarFoto() {
     this.imagenServ.agregarFoto()
-    .then(() => {
-      this.presentToast('top', 'Se procesó OK la imagen. ')
-    }
-    ).catch((err:any) => {
-      this.presentToast('top', 'Error al subir imagen: ' + err)
+    .then((url :any)=> {
+      this.usuario.foto = url;
+      this.fotoUrl = url;
+      this.presentToast('top', 'Se procesó OK la imagen.', 'success')
+    }).catch((err:any) => {
+      this.presentToast('top', 'Error al subir imagen: ' + err, 'danger')
     })
-    // this.sacarFoto();
   }
 
-  // async sacarFoto() {
-
-
-  // }
-
-  //private async uploadPhoto(cameraPhoto: Photo) {
-
-  //  const response = await fetch(cameraPhoto.webPath!);
-  //  const blob = await response.blob();
-  //  const filePath = this.getFilePath();
-
-  //  const uploadTask = this.imagenServ.saveFile(blob, filePath);
-
-    // uploadTask.then(async (res:any) => {
-      //   const downloadURL = await res.ref.getDownloadURL();
-      //   if (downloadURL.length > 0) {
-        //     console.log("URL  CORRECTO- i_IMG++");
-        //     this.usuario.foto = downloadURL;
-        //   }
-        // })
-        // .catch((err:any) => {
-          //   this.presentToast('top', 'Error al subir la imagen: ' + err)
-          // });
-  //}
   aceptar() {
-    //this.spinner.show();
-    //this.altaForm.get('perfil').value == 'dueño' ? this.usuario.tipo = eUsuario.dueño : this.usuario.tipo = eUsuario.supervisor;
 
-  /*  this.auth.signIn(this.usuario.email, this.clave).then((userCredential)=>{
-      this.firestore.crearUsuario(this.usuario).then((ok)=>{
-          this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
-          this.navigateTo('home');
-      }).catch((err)=>{
-        this.utilidadesSrv.errorToast(err);
+    if(this.evaluarErrores()){
+      this.spinner = true;
+      this.usuario.email = this.email?.value;
+      this.usuario.tipoEmpleado = this.perfil?.value;
+      createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
+        this.usuarioServ.crearUsuario(this.usuario);
+        this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
+        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false;}, 2000)
       })
-    }).catch((err)=>{
-
-      this.Errores(err);
-    });*/
-
-
-
-    // this.auth.register(this.usuario.email, this.clave).then((credential:any)=>{
-    //   console.log(credential.user.uid);
-    //   this.usuario.uid = credential.user.uid;
-    //   this.firestore.setItemWithId(this.usuario, credential.user.uid).then((usuario:any)=>{
-    //     console.log(usuario);
-
-    //     setTimeout(() => {
-    //       //this.spinner.hide();
-    //       //this.utilSrv.successToast('Registro exitoso');
-    //       this.router.navigateByUrl('login')
-    //     }, 3000);
-    //   }).catch((err:any)=>{
-    //     this.Errores(err);
-    //     //this.utilSrv.vibracionError();
-    //     console.log(err);
-    //   });
-    // }).catch((err:any)=>{
-    //   this.Errores(err);
-    //   //this.utilSrv.vibracionError();
-    //   console.log(err);
-    // });
-
-
-  }
-
-  getFilePath() {
-    return new Date().getTime() + '-test';
-  }
-
-  // ngAfterViewInit(): void {
-    //   BarcodeScanner.prepare();
-  // }
-
-  evaluarErrorLogin(error : string){
-    console.log(error)
-    switch(error){
-      case 'auth/user-not-found':
-        this.presentToast('top', 'El email no se encuentra registrado.')
-      break;
-      case 'auth/invalid-email':
-        this.presentToast('top', 'El email ingresado es incorrecto.')
-      break;
-      case 'auth/wrong-password':
-        this.presentToast('top', 'La contraseña es incorrecta.')
-      break;
-      case 'auth/missing-password':
-        this.presentToast('top', 'Debe ingresar una contraseña.')
-      break;
-      case 'auth/invalid-login-credentials':
-        this.presentToast('top', 'Los datos ingresados son incorrectos.')
-      break;
-      default:
-        this.presentToast('top', 'Ocurrió un error inesperado.')
-      break;
+      .catch( error => {
+        this.spinner = false;
+        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger')
+      })
     }
   }
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string) {
+  evaluarErrores() : boolean{
+    let retorno = true;
+    if(!this.perfil?.valid){
+      this.presentToast('middle', 'Debe seleccionar un perfil de usuario.', 'danger')
+      retorno = false;
+    }
+    if(this.nombre?.value == ''){
+      this.presentToast('middle', 'Debe indicar un nombre.', 'danger')
+      retorno = false;
+    }
+    if(this.apellido?.value == ''){
+      this.presentToast('middle', 'Debe indicar un apellido.', 'danger')
+      retorno = false;
+    }
+    if(!this.dni?.valid){
+      this.presentToast('middle', 'Debe indicar un DNI válido.', 'danger')
+      retorno = false;
+    }
+    if(!this.cuil?.valid){
+      this.presentToast('middle', 'Debe indicar un cuil válido.', 'danger')
+      retorno = false;
+    }
+    if(!this.email?.valid){
+      this.presentToast('middle', 'Debe indicar un email válido.', 'danger')
+      retorno = false;
+    }
+    if(!this.pass?.valid){
+      this.presentToast('middle', 'Debe indicar una contraseña válida.', 'danger')
+      retorno = false;
+    }
+    if(this.fotoUrl == ''){
+      this.presentToast('middle', 'Debe subir una foto de perfil.', 'danger')
+      retorno = false;
+    }
+    return retorno;
+  }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
     const toast = await this.toastController.create({
       message: mensaje,
       duration: 1500,
       position: position,
-      color: 'danger'
+      color: color
     });
     await toast.present();
   }

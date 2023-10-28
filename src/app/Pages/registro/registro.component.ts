@@ -18,6 +18,9 @@ export class RegistroComponent  implements OnInit {
   altaProductos(){
     this.router.navigate(['home/alta-productos']);
   }
-  
+
+  irAltaDuenoSupervisor(){
+    this.router.navigateByUrl('alta-dueno-supervisor')
+  }
 
 }
