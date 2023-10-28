@@ -17,5 +17,7 @@ export class RegistroComponent  implements OnInit {
   irAltaDuenoSupervisor(){
     this.router.navigateByUrl('alta-dueno-supervisor')
   }
-
+  irAltaEmpleado(){
+    this.router.navigateByUrl('alta-empleado')
+  }
 }

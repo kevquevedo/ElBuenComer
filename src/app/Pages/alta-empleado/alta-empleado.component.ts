@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { ToastController } from '@ionic/angular';
-import { Photo } from '@capacitor/camera';
 import { Usuario } from 'src/app/clases/usuario';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
-  selector: 'app-alta-dueno-supervisor',
-  templateUrl: './alta-dueno-supervisor.component.html',
-  styleUrls: ['./alta-dueno-supervisor.component.scss'],
+  selector: 'app-alta-empleado',
+  templateUrl: './alta-empleado.component.html',
+  styleUrls: ['./alta-empleado.component.scss'],
 })
-export class AltaDuenoSupervisorComponent  implements OnInit {
+export class AltaEmpleadoComponent  implements OnInit {
 
   form!: FormGroup;
   spin!: boolean;
@@ -142,12 +141,11 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       this.spinner = true;
       this.usuario.email = this.email?.value;
       this.usuario.tipoEmpleado = this.perfil?.value;
-      this.usuario.tipo = 'admin';
-      this.usuario.clienteValidado = true;
+      this.usuario.dni = this.dni?.value;
       this.usuario.nombre = this.nombre?.value;
       this.usuario.apellido = this.apellido?.value;
-      this.usuario.dni = this.dni?.value;
       this.usuario.cuil = this.cuil?.value;
+      this.usuario.tipo = 'empleado';
       createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
         this.usuarioServ.crearUsuario(this.usuario);
@@ -168,11 +166,11 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       retorno = false;
     }
     if(this.nombre?.value == ''){
-      this.presentToast('middle', 'Debe indicar un nombre.', 'danger')
+      this.presentToast('middle', 'El nombre es requerido.', 'danger')
       retorno = false;
     }
     if(this.apellido?.value == ''){
-      this.presentToast('middle', 'Debe indicar un apellido.', 'danger')
+      this.presentToast('middle', 'El apellido es requerido.', 'danger')
       retorno = false;
     }
     if(!this.dni?.valid){
@@ -192,7 +190,7 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       retorno = false;
     }
     if(this.fotoUrl == ''){
-      this.presentToast('middle', 'Debe subir una foto de perfil.', 'danger')
+      this.presentToast('middle', 'La foto de perfil es requerida.', 'danger')
       retorno = false;
     }
     return retorno;
@@ -207,5 +205,4 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
     });
     await toast.present();
   }
-
 }
