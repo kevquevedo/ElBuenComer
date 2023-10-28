@@ -162,36 +162,36 @@ export class AltaEmpleadoComponent  implements OnInit {
 
   evaluarErrores() : boolean{
     let retorno = true;
+    if(this.fotoUrl == ''){
+      this.presentToast('middle', 'La foto de perfil es requerida.', 'danger')
+      retorno = false;
+    }
     if(!this.perfil?.valid){
       this.presentToast('middle', 'Debe seleccionar un perfil de usuario.', 'danger')
-      retorno = false;
-    }
-    if(this.nombre?.value == ''){
-      this.presentToast('middle', 'El nombre es requerido.', 'danger')
-      retorno = false;
-    }
-    if(this.apellido?.value == ''){
-      this.presentToast('middle', 'El apellido es requerido.', 'danger')
-      retorno = false;
-    }
-    if(!this.dni?.valid){
-      this.presentToast('middle', 'Debe indicar un DNI válido.', 'danger')
-      retorno = false;
-    }
-    if(!this.cuil?.valid){
-      this.presentToast('middle', 'Debe indicar un cuil válido.', 'danger')
-      retorno = false;
-    }
-    if(!this.email?.valid){
-      this.presentToast('middle', 'Debe indicar un email válido.', 'danger')
       retorno = false;
     }
     if(!this.pass?.valid){
       this.presentToast('middle', 'Debe indicar una contraseña válida.', 'danger')
       retorno = false;
     }
-    if(this.fotoUrl == ''){
-      this.presentToast('middle', 'La foto de perfil es requerida.', 'danger')
+    if(!this.email?.valid){
+      this.presentToast('middle', 'Debe indicar un email válido.', 'danger')
+      retorno = false;
+    }
+    if(!this.cuil?.valid){
+      this.presentToast('middle', 'Debe indicar un cuil válido.', 'danger')
+      retorno = false;
+    }
+    if(!this.dni?.valid){
+      this.presentToast('middle', 'Debe indicar un DNI válido.', 'danger')
+      retorno = false;
+    }
+    if(this.apellido?.value == ''){
+      this.presentToast('middle', 'El apellido es requerido.', 'danger')
+      retorno = false;
+    }
+    if(this.nombre?.value == ''){
+      this.presentToast('middle', 'El nombre es requerido.', 'danger')
       retorno = false;
     }
     return retorno;
