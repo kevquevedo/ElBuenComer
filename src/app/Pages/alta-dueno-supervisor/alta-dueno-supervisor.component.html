@@ -90,16 +90,21 @@
       <!-- IMAGEN -->
       <br>
       <div class="img">
-        <ion-button class="ion-padding-horizontal">
-          <ion-text>Subir imagen </ion-text>
-          <ion-icon name="image-outline" (click)="tomarFoto()" size="large" class="icon-img"></ion-icon>
+        <ion-button class="ion-padding-horizontal" (click)="tomarFoto()">
+          <ion-text>Subir Foto de Perfil</ion-text>
+          <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
         </ion-button>
       </div>
       <br>
 
       <ion-button expand="full" color="success" type="submit" (click)='aceptar()'>
-        Aceptar
-        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+        <div class="spin" *ngIf="spinner">
+          <ion-spinner name="crescent"></ion-spinner>
+        </div>
+        <div *ngIf="!spinner">
+          Aceptar
+          <ion-icon name="arrow-forward-circle-outline" ></ion-icon>
+        </div>
       </ion-button>
     </form>
   </div>
