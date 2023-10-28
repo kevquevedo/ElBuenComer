@@ -4,20 +4,9 @@ import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-<<<<<<< HEAD
-  { path:'home',
-  loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'splash',
-    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  },
-  
-=======
   { path:'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule) },
   { path: 'splash', loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)},
   { path: 'alta-dueno-supervisor', component: AltaDuenoSupervisorComponent}
->>>>>>> origin/main
 ];
 
 @NgModule({

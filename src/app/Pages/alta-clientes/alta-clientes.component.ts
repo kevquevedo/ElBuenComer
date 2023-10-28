@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Photo } from '@capacitor/camera';
-import { ImagesService } from 'src/app/services/images.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { UsersService } from 'src/app/services/users.service';
+import { ImagenesService } from 'src/app/services/imagenes.service';
+import { ToastController } from '@ionic/angular';
+import { Usuario, eUsuario } from 'src/app/clases/usuario';
 
 
 @Component({
@@ -35,19 +35,19 @@ export class AltaClientesComponent  implements OnInit {
   nombre='';
   apellido='';
   dni='';
-  fotoUrl='./../../assets/sacarfoto.png';
+  fotoUrl='../../assets/sacarfoto.png';
   usuarios:any;
   constructor(
     //private spinner: NgxSpinnerService,
     private fromBuilder: FormBuilder,
     private router: Router ,
-    private imagesSrv:ImagesService,
+    private imagesSrv:ImagenesService,
    // private utilidadesSrv:UtilidadesService,
-    private usersSvc: UsersService,
+   // private usersSvc: UsersService,
     //private authSvc: AuthService,
     //private mail:MailService,
     //private pushSrv:NotificationService
-    private toastr: ToastrService,
+    private toastr: ToastController,
     private authSvc: AuthService
   ) {
     this.email = '';
@@ -103,20 +103,20 @@ export class AltaClientesComponent  implements OnInit {
       this.authSvc.Register(this.usuario.email, this.clave).then((credential:any)=>{
         console.log(credential.user.uid);
         this.usuario.uid = credential.user.uid;
-        this.usersSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario:any)=>{
-          console.log(usuario);
-          //this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta ha sido registrada exitosamente, aguarde a que sea validada por nuestro personal.")
-          //this.notificar();
-          setTimeout(() => {
-            //this.spinner.hide();
-            this.toastr.success('Registro exitoso');
-            this.router.navigateByUrl('login')
-          }, 3000); 
-        }).catch((err:any)=>{
-          this.Errores(err);
-          //this.utilidadesSrv.vibracionError();
-          console.log(err);
-        });
+        // this.usersSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario:any)=>{
+        //   console.log(usuario);
+        //   //this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta ha sido registrada exitosamente, aguarde a que sea validada por nuestro personal.")
+        //   //this.notificar();
+        //   setTimeout(() => {
+        //     //this.spinner.hide();
+        //     this.presentToast('middle', 'Registro exitoso', "Success", 1500);
+        //     this.router.navigateByUrl('login')
+        //   }, 3000); 
+        // }).catch((err:any)=>{
+        //   this.Errores(err);
+        //   //this.utilidadesSrv.vibracionError();
+        //   console.log(err);
+        // });
       }).catch((err:any)=>{
         this.Errores(err);
         //this.utilidadesSrv.vibracionError();
@@ -134,7 +134,7 @@ export class AltaClientesComponent  implements OnInit {
 
       setTimeout(() => {
         //this.utilidadesSrv.successToast("Ingreso exitoso.");
-        this.navigateTo('qr-ingreso-local');
+        this.navigateTo('');
       }, 5000);
 
     }
@@ -181,47 +181,17 @@ export class AltaClientesComponent  implements OnInit {
 
 
   tomarFoto() {
-    this.addPhotoToGallery();
-  }
-
-  async addPhotoToGallery() {
-    const photo = await this.imagesSrv.addNewToGallery();
-    //this.spinner.show();
-    this.uploadPhoto(photo).then(() => {
-       
-      setTimeout(() => {
-        this.fotoHabilitar = true; 
-        //this.spinner.hide();
-      }, 5000);
-
+    this.imagesSrv.agregarFoto()
+    .then(() => {
+      this.presentToast('middle', 'Se procesó OK la imagen', "Success", 1500);
     }
-    ).catch((err) => { 
-
-      console.log("Error addPhotoToGallery", err);
+    ).catch((err:any) => {
+      this.presentToast('middle', 'Error al subir imagen: '  + err, "danger", 1500);
     })
+    // this.sacarFoto();
   }
 
-  private async uploadPhoto(cameraPhoto: Photo) {
-    const response = await fetch(cameraPhoto.webPath!);
-    const blob = await response.blob();
-    const filePath = this.getFilePath();
 
-    const uploadTask = this.imagesSrv.saveFile(blob, filePath);
-    
-    uploadTask.then(async (res:any) => {
-      const downloadURL = await res.ref.getDownloadURL();
-      if (downloadURL.length > 0) {
-        console.log("URL  CORRECTO- i_IMG++");
-        this.fotoUrl= downloadURL;
-        console.log("IMAGEN CARGADA CORRECTAMENTE");
-        return this.usuario.foto = downloadURL;
-        
-      }
-    })
-      .catch((err) => {
-        console.log("Error al subbir la imagen: ", err);
-      });
-  }
 
   getFilePath() {
     return new Date().getTime() + '-test';
@@ -229,100 +199,137 @@ export class AltaClientesComponent  implements OnInit {
 
 
 
-  async checkPermission() {
-    try {
+   // FUNCIONES DE ESCANER
+   async checkPermission() {
+    return new Promise(async (resolve, reject) => {
       const status = await BarcodeScanner.checkPermission({ force: true });
       if (status.granted) {
-        return true;
+        resolve(true);
+      } else if (status.denied) {
+        BarcodeScanner.openAppSettings();
+        resolve(false);
       }
-      return false;
-    } catch (error) {
-      //this.utilidadesSrv.vibracionError();
-      this.toastr.error('No tiene permisos.',"Error", {timeOut: 1000});
-      console.log(error);
-      return false;
-    }
+    });
   }
 
   async startScan() {
 
-    try {
-      const bodyElement1 = document.querySelector('body');
-      if (bodyElement1) {
-        bodyElement1.classList.remove('scanner-active');
-      } else {
-        console.error('No se encontró el elemento body');
-      }
-      const permission = await this.checkPermission();
-      if (!permission) {
-        return;
-      }
+    const permiso = await this.checkPermission();
+    if (permiso) {
       this.scanActive = true;
-      await BarcodeScanner.hideBackground();
-      const bodyElement2 = document.querySelector('body');
-      if (bodyElement2) {
-        bodyElement2.classList.remove('scanner-active');
-      } else {
-        console.error('No se encontró el elemento body');
-      }
-      this.content_visibility = 'hidden';
-      this.scan_visibility = '';
+      BarcodeScanner.hideBackground();
       const result = await BarcodeScanner.startScan();
+      BarcodeScanner.showBackground(); //VEEEEEEEEEEEER
+      if (result.hasContent) {
 
-      this.content_visibility = '';
-      this.scan_visibility = 'hidden';
-      BarcodeScanner.showBackground();
-      const bodyElement = document.querySelector('body');
-      if (bodyElement) {
-        bodyElement.classList.remove('scanner-active');
-      } else {
-        console.error('No se encontró el elemento body');
-      }
+        this.dniData = result.content.split('@');
+        this.nombre= this.dniData[2].trim();;
+        this.apellido= this.dniData[1].trim();;
+        // this.dni= this.dniData[4].trim();;
+        // this.usuario.dni = this.dniData[4].trim();
+        // this.usuario.nombre = this.dniData[2].trim();
+        // this.usuario.apellido = this.dniData[1].trim();
+        // this.form.controls['dni'].setValue(this.usuario.dni);
+        // this.form.controls['nombre'].setValue(this.usuario.nombre);
+        // this.form.controls['apellido'].setValue(this.usuario.apellido);
+        // this.form.controls['cuil'].setValue(this.usuario.cuil);
 
-      if (result?.hasContent) { 
-        this.dniData = result.content.split('@'); 
-        this.nombre= this.dniData[2];
-        this.apellido= this.dniData[1];
-        this.dni= this.dniData[4];
-        const bodyElement = document.querySelector('body');
-        if (bodyElement) {
-          bodyElement.classList.remove('scanner-active');
-        } else {
-          console.error('No se encontró el elemento body');
-        }
-        this.scanActive = false; 
-      }
-    } catch (error) {
-      console.log(error);
-      //this.utilidadesSrv.vibracionError();
-      this.toastr.error('Error al escanear el documento.',"Error", {timeOut: 1000});
-      const bodyElement = document.querySelector('body');
-      if (bodyElement) {
-        bodyElement.classList.remove('scanner-active');
+        this.scanActive = false;
       } else {
-        console.error('No se encontró el elemento body');
+        this.stopScan();
       }
+    } else {
       this.stopScan();
-    } 
+    }
+
   }
+
+  stopScan() {
+    BarcodeScanner.showBackground();
+    BarcodeScanner.stopScan();
+    this.scanActive  = false;
+  }
+
+
+  // async startScan() {
+
+  //   try {
+  //     const bodyElement1 = document.querySelector('body');
+  //     if (bodyElement1) {
+  //       bodyElement1.classList.remove('scanner-active');
+  //     } else {
+  //       console.error('No se encontró el elemento body');
+  //     }
+  //     const permission = await this.checkPermission();
+  //     if (!permission) {
+  //       return;
+  //     }
+  //     this.scanActive = true;
+  //     await BarcodeScanner.hideBackground();
+  //     const bodyElement2 = document.querySelector('body');
+  //     if (bodyElement2) {
+  //       bodyElement2.classList.remove('scanner-active');
+  //     } else {
+  //       console.error('No se encontró el elemento body');
+  //     }
+  //     this.content_visibility = 'hidden';
+  //     this.scan_visibility = '';
+  //     const result = await BarcodeScanner.startScan();
+
+  //     this.content_visibility = '';
+  //     this.scan_visibility = 'hidden';
+  //     BarcodeScanner.showBackground();
+  //     const bodyElement = document.querySelector('body');
+  //     if (bodyElement) {
+  //       bodyElement.classList.remove('scanner-active');
+  //     } else {
+  //       console.error('No se encontró el elemento body');
+  //     }
+
+  //     if (result?.hasContent) { 
+  //       this.dniData = result.content.split('@'); 
+  //       this.nombre= this.dniData[2];
+  //       this.apellido= this.dniData[1];
+  //       this.dni= this.dniData[4];
+  //       const bodyElement = document.querySelector('body');
+  //       if (bodyElement) {
+  //         bodyElement.classList.remove('scanner-active');
+  //       } else {
+  //         console.error('No se encontró el elemento body');
+  //       }
+  //       this.scanActive = false; 
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     //this.utilidadesSrv.vibracionError();
+  //     this.presentToast('middle', 'Error al escanear el documento.', "danger", 1500);
+  //     const bodyElement = document.querySelector('body');
+  //     if (bodyElement) {
+  //       bodyElement.classList.remove('scanner-active');
+  //     } else {
+  //       console.error('No se encontró el elemento body');
+  //     }
+  //     this.stopScan();
+  //   } 
+  // }
 
  
 
-  stopScan() {
-    setTimeout(() => { 
-    }, 3000);
-    this.content_visibility = '';
-    this.scan_visibility = 'hidden';
-    this.scanActive = false;
-    BarcodeScanner.showBackground();
-    BarcodeScanner.stopScan();
-    const bodyElement = document.querySelector('body');
-    if (bodyElement) {
-      bodyElement.classList.remove('scanner-active');
-    } else {
-      console.error('No se encontró el elemento body');
-    }
-  }
+  // stopScan() {
+  //   setTimeout(() => { 
+  //   }, 3000);
+  //   this.content_visibility = '';
+  //   this.scan_visibility = 'hidden';
+  //   this.scanActive = false;
+  //   BarcodeScanner.showBackground();
+  //   BarcodeScanner.stopScan();
+  //   const bodyElement = document.querySelector('body');
+  //   if (bodyElement) {
+  //     bodyElement.classList.remove('scanner-active');
+  //   } else {
+  //     console.error('No se encontró el elemento body');
+  //   }
+  // }
 
   ngAfterViewInit(): void {
     BarcodeScanner.prepare();
@@ -332,62 +339,31 @@ export class AltaClientesComponent  implements OnInit {
   {
     if(error.code == 'auth/email-already-in-use')
       {
-        this.toastr.error('El correo ya está en uso.',"Error", {timeOut: 1000});
+        this.presentToast('middle', 'El correo ya está en uso.', "danger", 1500);
       }
       else if(error.code == 'auth/missing-email' || error.code == 'auth/internal-error')
       {
-        this.toastr.error('No pueden quedar campos vacíos.',"Error", {timeOut: 1000});
+        this.presentToast('middle', 'No pueden quedar campos vacíos.', "danger", 1500);
       }
       else if(error.code == 'auth/weak-password')
       {
-        this.toastr.error('La contraseña debe tener al menos 8 caracteres.',"Error", {timeOut: 1000});
+        this.presentToast('middle', 'La contraseña debe tener al menos 8 caracteres.', "danger", 1500);
       }
       else
       {
-        this.toastr.error('Correo o contraseña inválidos.',"Error", {timeOut: 1000});
+        this.presentToast('middle', 'Correo o contraseña inválidos.', "danger", 1500);
       }
   }
 
-}
-
-export class Usuario {
-  email!: string;
-  nombre: string;
-  apellido: string;
-  dni: number;
-  cuil: number;
-  foto: string;
-  uid: string;
-  tipo!: eUsuario;
-  tipoEmpleado!: eEmpleado;
-  enListaDeEspera: boolean;
-  mesa: string;
-  clienteValidado: string;
-  token:string;
-  constructor(){
-      this.nombre= '';
-      this.apellido= '';
-      this.dni= 0;
-      this.cuil= 0;
-      this.foto= '';
-      this.uid= '';
-      this.enListaDeEspera = false;
-      this.mesa = '';
-      this.clienteValidado = '';
-      this.token='';
+  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color:string, duration: number) {
+    const toast = await this.toastr.create({
+      message: mensaje,
+      duration: duration,
+      position: position,
+      color: color
+    });
+    await toast.present();
   }
+
 }
 
-export enum eUsuario{
-dueño='dueño',
-supervisor='supervisor',
-empleado='empleado',
-cliente='cliente',
-}
-
-export enum eEmpleado{
-metre='metre',
-mozo='mozo',
-cocinero='cocinero',
-bartender='bartender'
-}

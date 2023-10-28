@@ -4,6 +4,7 @@ import { HomePage } from './home.page';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
+import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,11 @@ const routes: Routes = [
     component: PrincipalComponent,
   },
   { path: 'alta-clientes',
-    component: AltaClientesComponent },
+    component: AltaClientesComponent 
+  },
+  { path: 'alta-productos',
+    component: AltaProductosComponent 
+  },
 ];
 
 @NgModule({

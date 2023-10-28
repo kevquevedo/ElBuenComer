@@ -28,3 +28,17 @@ export class Usuario {
     this.tipoEmpleado='';
   }
 }
+
+export enum eUsuario{
+  dueño='dueño',
+  supervisor='supervisor',
+  empleado='empleado',
+  cliente='cliente',
+  }
+  
+  export enum eEmpleado{
+  metre='metre',
+  mozo='mozo',
+  cocinero='cocinero',
+  bartender='bartender'
+  }

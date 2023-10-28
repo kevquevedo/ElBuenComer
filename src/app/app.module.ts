@@ -1,19 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
-<<<<<<< HEAD
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
-=======
 import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta-dueno-supervisor.component';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideStorage,getStorage } from '@angular/fire/storage';
@@ -21,8 +14,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 import * as fire from 'firebase/app';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 fire.initializeApp(environment.firebase);
->>>>>>> origin/main
 
 @NgModule({
   declarations: [
@@ -37,17 +30,12 @@ fire.initializeApp(environment.firebase);
     IonicModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule,
-    ToastrModule.forRoot(),
+   //ToastrModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
-<<<<<<< HEAD
-    AngularFireStorageModule,
-    AngularFirestoreModule
-=======
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideStorage(() => getStorage()),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
->>>>>>> origin/main
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

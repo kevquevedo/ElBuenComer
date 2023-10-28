@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
@@ -13,7 +12,8 @@ export class HomePage {
 
   loginUsuario:FormGroup;
   constructor(private afAuth:AngularFireAuth,private fb:FormBuilder,
-     private toastr: ToastrService, private router: Router) {
+    //  private toastr: ToastrService,
+      private router: Router) {
     this.loginUsuario = this.fb.group({
       email: ['',[Validators.required, Validators.email]],
       pass: ['',[Validators.required, Validators.minLength(6)]],
@@ -25,14 +25,14 @@ export class HomePage {
     const pass = this.loginUsuario.value.pass;
     this.afAuth.signInWithEmailAndPassword(email, pass)
     .then((user) => {
-      this.toastr.success("Ingreso satisfactorio", "Sesión iniciada", {timeOut: 1000});
+      // this.toastr.success("Ingreso satisfactorio", "Sesión iniciada", {timeOut: 1000});
       this.afAuth.currentUser.then(user=>{
         const usuario = user?.email
         console.log(usuario);
       })
       this.router.navigate(['/home/principal']);
     }).catch((error) => {
-      this.toastr.error("Usuario o contraseña incorrectos","Error", {timeOut: 1000});
+      // this.toastr.error("Usuario o contraseña incorrectos","Error", {timeOut: 1000});
     })
   }
   accesoRegistro(){

@@ -1,48 +1,48 @@
 <ion-header>
   <ion-toolbar >
     <ion-back-button defaultHref="home-empleado" slot="start"></ion-back-button>
-    <ion-title>Alta de productos</ion-title>
+    <ion-title class="ion-text-center">Alta de productos</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form  [formGroup]="formProducto">
+  <form  [formGroup]="formProducto" class="form">
     <!-- Nombre -->
     <ion-item lines="full" class="input-wrapper">
       <ion-label position="fixed">Nombre</ion-label><br />
       <ion-input type="text" #nombre formControlName="nombre">
       </ion-input>
     </ion-item>
-    <small class="invalid" *ngIf="formProducto.controls.nombre.errors?.required && formProducto.controls.nombre.touched ">El nombre es requerido</small> 
+    <small class="invalid" *ngIf="formProducto.controls['nombre'].errors?.['required'] && formProducto.controls['nombre'].touched" style="color: var(--ion-color-danger)">El nombre es requerido.</small>
     <!-- descripcion -->
     <ion-item lines="full" class="input-wrapper">
       <ion-label position="fixed">Descripcion</ion-label><br />
       <ion-input type="text" #descripcion  formControlName="descripcion"> 
       </ion-input>
     </ion-item>
-    <small class="invalid" *ngIf="formProducto.controls.descripcion.errors?.required && formProducto.controls.descripcion.touched ">La descripcion es requerida</small> 
+    <small class="invalid" *ngIf="formProducto.controls['descripcion'].errors?.['required'] && formProducto.controls['descripcion'].touched" style="color: var(--ion-color-danger)">El deescripción es requerida.</small>
     <!-- tiempo -->
     <ion-item lines="full" class="input-wrapper">
       <ion-label position="fixed">Tiempo</ion-label><br />
       <ion-input type="number" #tiempo formControlName="tiempo">
       </ion-input>
     </ion-item>
-     <small class="invalid" *ngIf="formProducto.controls.tiempo.errors?.required && formProducto.controls.tiempo.touched ">El tiempo es requerido</small> 
+    <small class="invalid" *ngIf="formProducto.controls['tiempo'].errors?.['required'] && formProducto.controls['tiempo'].touched" style="color: var(--ion-color-danger)">El tiempo es requerido.</small>
      <!-- precio -->
      <ion-item lines="full" class="input-wrapper">
       <ion-label position="fixed">Precio</ion-label><br />
       <ion-input type="number" #precio formControlName="precio" >
       </ion-input>
     </ion-item>
-    <small class="invalid" *ngIf="formProducto.controls.precio.errors?.required && formProducto.controls.precio.touched ">El precio es requerido</small> 
- 
+    <small class="invalid" *ngIf="formProducto.controls['precio'].errors?.['required'] && formProducto.controls['precio'].touched" style="color: var(--ion-color-danger)">El precio es requerido.</small>
+
     <!-- imagen -->
     <ion-item class="image-item input-wrapper" *ngIf="i_NroImagen<3"> 
       <ion-col size="6">
-        <ion-label>Fotos del producto (3)</ion-label>
+        <ion-label style="color: white;">Fotos del producto (3)</ion-label>
       </ion-col>
       <ion-col size="6">
         <div class="mx-auto d-block circular--portrait image-default" (click)="tomarFotoProducto()"  #imagen>
-          <img src="./../../../assets/plato.png" >
+          <img src="../../../assets/sacarfoto.html" style="height: 100px; width: 100px;">
         </div>  
       </ion-col>  
     </ion-item> <br>
@@ -53,11 +53,12 @@
     </ion-row>
     <!-- SUBMIT --> 
       <ion-button  type="submit"   size="medium"  expand="full" color="success" (click)="GuardarNuevoProducto()"
-      [disabled]="(!formProducto.valid || i_NroImagen<3)">Guardar </ion-button>
+      [disabled]="(!formProducto.valid || i_NroImagen<3)"><strong>Guardar</strong> </ion-button>
     
   </form>
 </ion-content>
 
-<!-- <ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
-  <p>Cargando...</p>
-</ngx-spinner> -->
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

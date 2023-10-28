@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
+import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.component';
 
 
 @NgModule({
@@ -21,6 +22,6 @@ import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.comp
     RouterModule,
     
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, AltaClientesComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, AltaClientesComponent, AltaProductosComponent]
 })
 export class HomePageModule {}

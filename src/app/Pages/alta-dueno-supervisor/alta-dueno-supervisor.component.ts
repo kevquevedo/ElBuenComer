@@ -4,9 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
-import { ToastController } from '@ionic/angular';
 import { Photo } from '@capacitor/camera';
 import { Usuario } from 'src/app/clases/usuario';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-alta-dueno-supervisor',

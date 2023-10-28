@@ -14,6 +14,6 @@ export class AppComponent {
   }
 
   inicializarApp(){
-    this.router.navigateByUrl('alta-dueno-supervisor');
+    this.router.navigateByUrl('splash');
   }
 }
