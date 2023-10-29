@@ -26,7 +26,6 @@ export class HomePage {
     const email = this.loginUsuario.value.email;
     const pass = this.loginUsuario.value.pass;
     this.usuarioService.getListadoUsuarios().then(resp => {
-      debugger;
       if (resp.size > 0) {
         let userFound = false;
         resp.forEach((usuario: any) => {
@@ -37,7 +36,6 @@ export class HomePage {
                 .then((user) => {
                   this.afAuth.currentUser.then(user => {
                     const usuario = user?.email;
-                    console.log(usuario);
                   });
                   this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
                   this.router.navigate(['/home/principal']);
@@ -66,26 +64,26 @@ export class HomePage {
     this.router.navigate(['/home/registro']);
   }
 
-  accesoRapidoAdmin() {
+  accesoRapidoUsuario() {
     this.loginUsuario.setValue({
-      email: "admin@admin.com",
-      pass: "111111"
+      email: "macabf@hotmail.com",
+      pass: "123456"
     });
     this.login();
   }
 
-  accesoRapidoUsuario() {
+  accesoRapidoAdmin() {
     this.loginUsuario.setValue({
-      email: "usuario@usuario.com",
-      pass: "333333"
+      email: "macarenaferrero@hotmail.com",
+      pass: "123456"
     });
     this.login();
   }
 
   accesoRapidoInvitado() {
     this.loginUsuario.setValue({
-      email: "invitado@invitado.com",
-      pass: "222222"
+      email: "macarenabetsabeferrero@gmail.com",
+      pass: "123456"
     });
     this.login();
   }

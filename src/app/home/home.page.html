@@ -27,22 +27,22 @@
           <ion-label color="danger" *ngIf="loginUsuario.get('pass')?.hasError('minLength') && loginUsuario.get('pass')?.touched"  class="text-danger form-floating"><p>La contraseña debe tener mínimo 6 carácteres</p></ion-label>
         </ion-item>
         <ion-button expand="full" (click)="login()" [disabled]="loginUsuario.invalid">Aceptar</ion-button>
-        <button class="custom-button" (click)="accesoRegistro()" id="registro">Nuevo Registro</button>
+        <button class="custom-button" (click)="accesoRegistro()" id="registro">Nuevo Cliente</button>
       </form>
       <ion-row class="custom-margin">
        <ion-col class="form-group">
            <button type="button" class="btn button-scale" id="btnLogs" (click)="accesoRapidoUsuario()">
-             <img id="imgBotonesLog" src="../../assets/icon/favicon.png">
+             <img id="imgBotonesLog" src="../../assets/images_general/mozo.jpg">
            </button>
        </ion-col>
        <ion-col class="form-group">
            <button type="button" class="btn button-scale" id="btnLogs" (click)="accesoRapidoInvitado()">
-             <img id="imgBotonesLog" src="../../assets/icon/favicon.png">
+             <img id="imgBotonesLog" src="../../assets/images_general/cocinera.png">
            </button>
        </ion-col>
        <ion-col class="form-group">
            <button type="button" class="btn button-scale" id="btnLogs" (click)="accesoRapidoAdmin()">
-             <img id="imgBotonesLog" src="../../assets/icon/favicon.png">
+             <img id="imgBotonesLog" src="../../assets/images_general/dueño.jpg">
            </button>
        </ion-col>
        </ion-row>

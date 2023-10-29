@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { RouterModule } from '@angular/router';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
+import { MenuComponent } from '../Shared/menu/menu.component';
 
 
 @NgModule({
@@ -19,6 +20,6 @@ import { PrincipalComponent } from '../Pages/principal/principal.component';
     ReactiveFormsModule,
     RouterModule,
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent]
 })
 export class HomePageModule {}

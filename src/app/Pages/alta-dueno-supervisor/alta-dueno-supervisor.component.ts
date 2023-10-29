@@ -18,11 +18,11 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
 
   form!: FormGroup;
   spin!: boolean;
+  spinner!:boolean;
   usuario:Usuario;
   scanActive!: boolean;
   dniData:any;
   fotoUrl!:string;
-  spinner!:boolean;
 
   constructor(
     private router: Router,
@@ -33,9 +33,9 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
   ){
     this.usuario = new Usuario();
     this.spin = true;
+    this.spinner = false;
     this.scanActive = false;
     this.fotoUrl = '';
-    this.spinner = false;
   }
 
   ngOnInit() {
