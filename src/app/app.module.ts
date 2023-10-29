@@ -15,12 +15,14 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 import * as fire from 'firebase/app';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AltaEmpleadoComponent } from './Pages/alta-empleado/alta-empleado.component';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [
     AltaDuenoSupervisorComponent,
-    AppComponent
+    AppComponent,
+    AltaEmpleadoComponent
   ],
   imports: [
     BrowserModule,

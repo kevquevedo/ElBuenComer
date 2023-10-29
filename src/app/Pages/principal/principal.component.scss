@@ -1,0 +1,140 @@
+ion-content {
+  --background: radial-gradient(
+    circle,
+    #8294b6 7%,
+    #002366 100%
+  );
+}
+
+.header{
+  --background: transparent;
+}
+
+.toolbar-icon {
+  font-size: 40px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.scanner-activo {
+  --background: transparent;
+  --ion-background-color: transparent;
+}
+
+.visor {
+  margin-top: 2rem;
+  display: grid;
+  place-content: center;
+}
+
+.centrado {
+  padding-top: 0.5rem;
+  display: grid;
+  place-content: center;
+  padding-top: 3rem;
+}
+
+.escanear {
+  display: grid;
+  place-content: center;
+  width: 23rem;
+  height: 5.5rem;
+  background-color: #e28d3a;
+  img{
+    width: 4rem;
+    height: 4rem;
+  }
+}
+.escanear:active {
+  transform: scale(1.1);
+  background: #000;
+  box-shadow: 0 0 12px rgb(255, 255, 255);
+  transition: transform 0.5s, background 0.5s;
+}
+
+.titulo {
+  display: grid;
+  place-content: center;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-top: 0px;
+  color: #fff;
+  text-shadow: 3px 3px 3px #000;
+}
+
+.monto {
+  border: 5px ridge #000;
+  background: linear-gradient(
+    0deg,
+    rgba(91, 88, 88, 1) 0%,
+    rgba(94, 245, 4, 1) 100%
+  );
+  width: 21rem;
+  height: 23rem;
+  font-size: 9rem;
+  display: grid;
+  place-content: center;
+  color: #fff;
+  text-shadow: 3px 3px 3px #000;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  box-shadow: 8px 8px 4px #000;
+}
+.monto-rojo{
+  background-image: url('../../../assets/icon.png')!important;
+  background-size: cover;
+}
+
+.scanner-activo-visor {
+  border: 5px ridge #fff;
+  color: transparent;
+  text-shadow: 3px 3px 3px transparent;
+  background: transparent;
+  background-color: transparent;
+  position: relative;
+  span {
+    position: absolute;
+    top: 0%;
+    width: 100%;
+    height: 3px;
+    background: red;
+    animation-name: move-bar;
+    animation-duration: 0.75s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    box-shadow: 0 0 20px red;
+  }
+}
+
+@keyframes move-bar {
+  0% {
+    top: 0%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+
+.pos3{
+  margin: 0px;
+  position: absolute;
+  width: 100vw;
+  height: 100px;
+  background-color: #e28d3a;
+  }
+
+  .spin-logo{
+    width: 80px;
+    border-radius: 50%;
+  }
+
+  .div-spin-logo{
+    background-color: #002366;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }

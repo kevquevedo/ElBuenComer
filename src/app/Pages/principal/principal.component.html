@@ -1,3 +1,30 @@
-<p>
-  principal works!
-</p>
+<app-menu></app-menu>
+<ion-content *ngIf="!spin" [ngClass]="scanActive?'scanner-activo':''" noscroll>
+  <ion-header>
+  <div class="visor">
+    <h1 class="titulo" *ngIf="!scanActive">BIENVENIDO</h1>
+    <h1 class="titulo" *ngIf="scanActive">ESCANEANDO...</h1>
+    <p class="monto" [ngClass]="{
+      'scanner-activo-visor': scanActive,
+      'monto-rojo': !scanActive}">
+      <span></span>
+    </p>
+  </div>
+</ion-header>
+  <div *ngIf="isCliente">
+    <div class="centrado">
+      <button class="escanear" expand="block" type="button" (click)="startScanner()" *ngIf="!scanActive">
+        <h6>INGRESAR A LISTA DE ESPERA</h6>
+      </button>
+    </div>
+    <ion-row class="scan-button" *ngIf="scanActive">
+      <ion-col class="ion-no-padding">
+        <button type="button" class="pos3" (click)="stopScanner()">CANCELAR</button>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

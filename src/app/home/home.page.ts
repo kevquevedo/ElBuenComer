@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UsuariosService } from '../services/usuarios.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -9,58 +11,82 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  public usuarios: any = new Array<any>();
 
-  loginUsuario:FormGroup;
-  constructor(private afAuth:AngularFireAuth,private fb:FormBuilder,
-    //  private toastr: ToastrService,
-      private router: Router) {
+  loginUsuario: FormGroup;
+  constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
+    private toastr: ToastrService, private router: Router, private usuarioService: UsuariosService) {
     this.loginUsuario = this.fb.group({
-      email: ['',[Validators.required, Validators.email]],
-      pass: ['',[Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      pass: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  login(){
+  login() {
     const email = this.loginUsuario.value.email;
     const pass = this.loginUsuario.value.pass;
-    this.afAuth.signInWithEmailAndPassword(email, pass)
-    .then((user) => {
-      // this.toastr.success("Ingreso satisfactorio", "Sesión iniciada", {timeOut: 1000});
-      this.afAuth.currentUser.then(user=>{
-        const usuario = user?.email
-        console.log(usuario);
-      })
-      this.router.navigate(['/home/principal']);
-    }).catch((error) => {
-      // this.toastr.error("Usuario o contraseña incorrectos","Error", {timeOut: 1000});
-    })
+    this.usuarioService.getListadoUsuarios().then(resp => {
+      if (resp.size > 0) {
+        let userFound = false;
+        resp.forEach((usuario: any) => {
+          if (usuario.data().email == email) {
+            userFound = true;
+            if (usuario.data().clienteValidado == true) {
+              this.afAuth.signInWithEmailAndPassword(email, pass)
+                .then((user) => {
+                  this.afAuth.currentUser.then(user => {
+                    const usuario = user?.email;
+                  });
+                  this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
+                  this.router.navigate(['/home/principal']);
+                }).catch((error) => {
+                  this.toastr.error("Contraseña incorrecta", "Error", { timeOut: 1000 });
+                });
+            } else {
+              this.toastr.error("Usuario no validado", "Error", { timeOut: 1000 });
+            }
+          }
+        });
+
+        if (!userFound) {
+          this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+        }
+      } else {
+        this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+      }
+    }).catch(error => {
+      this.toastr.error("Ocurrió un error al obtener la lista de usuarios", "Error", { timeOut: 1000 });
+    });
   }
-  accesoRegistro(){
+
+
+  accesoRegistro() {
     this.router.navigate(['/home/registro']);
   }
 
-  accesoRapidoAdmin(){
+  accesoRapidoUsuario() {
     this.loginUsuario.setValue({
-      email: "admin@admin.com",
-      pass:"111111"
+      email: "macabf@hotmail.com",
+      pass: "123456"
     });
     this.login();
   }
 
-  accesoRapidoUsuario(){
+  accesoRapidoAdmin() {
     this.loginUsuario.setValue({
-      email: "usuario@usuario.com",
-      pass:"333333"
+      email: "macarenaferrero@hotmail.com",
+      pass: "123456"
     });
     this.login();
   }
 
-  accesoRapidoInvitado(){
+  accesoRapidoInvitado() {
     this.loginUsuario.setValue({
-      email: "invitado@invitado.com",
-      pass:"222222"
+      email: "macarenabetsabeferrero@gmail.com",
+      pass: "123456"
     });
     this.login();
   }
+
 
 }

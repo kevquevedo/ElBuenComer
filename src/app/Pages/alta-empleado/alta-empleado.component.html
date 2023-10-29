@@ -1,0 +1,134 @@
+<ion-header [hidden]="scanActive">
+  <ion-toolbar >
+    <ion-back-button defaultHref="home" slot="start" ></ion-back-button>
+    <ion-title>Alta Empleado
+      <div *ngIf="!spin">
+        <ion-fab vertical="center" horizontal="end">
+          <ion-fab-button color="warning" size="small" (click)="startScan()">
+            <ion-icon name="qr-code-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!spin" >
+
+
+  <div *ngIf="!scanActive">
+
+    <form [formGroup]="form" class="form">
+      <br>
+      <div class="linea-nomape">
+        <!-- NOMBRE -->
+        <ion-item class="ion-padding-horizontal" lines="none" color="fav" fill="solid">
+          <ion-label position="floating">
+            <ion-text>Nombre</ion-text>
+          </ion-label>
+          <ion-input type="text" class="formControl" formControlName="nombre" required></ion-input>
+        </ion-item>
+
+        <!-- APELLIDO -->
+        <ion-item class="ion-padding-horizontal" lines="none" color="fav" fill="solid">
+          <ion-label position="floating">
+            <ion-text>Apellido</ion-text>
+          </ion-label>
+          <ion-input type="text" class="formControl" formControlName="apellido" required></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="linea-dnicuil">
+        <!-- DNI -->
+        <ion-item class="ion-padding-horizontal" lines="none" color="fav" fill="solid">
+          <ion-label position="floating">
+            <ion-text>DNI</ion-text>
+          </ion-label>
+          <ion-input type="text" class="formControl" formControlName="dni" required></ion-input>
+        </ion-item>
+
+        <!-- CUIL -->
+        <ion-item class="ion-padding-horizontal" lines="none" color="fav" fill="solid">
+          <ion-label position="floating">
+            <ion-text>Cuil</ion-text>
+          </ion-label>
+          <ion-input type="text" class="formControl" formControlName="cuil" required></ion-input>
+        </ion-item>
+      </div>
+
+      <!-- CORREO ELECTRONICO -->
+      <ion-item class="ion-padding-horizontal correo" lines="none" color="fav" fill="solid">
+        <ion-label position="floating">
+          <ion-text>Correo electrónico</ion-text>
+        </ion-label>
+        <ion-input type="text" class="formControl" formControlName="email" required></ion-input>
+      </ion-item>
+
+      <!-- CONTRASEÑA -->
+      <ion-item class="ion-padding-horizontal pass" lines="none" color="fav" fill="solid">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" class="formControl" formControlName="pass" required></ion-input>
+      </ion-item>
+      <br>
+
+      <!-- TIPO EMPLEADO -->
+      <div class="ion-padding-horizontal">
+        <ion-label color="white" class="ion-padding-horizontal" >Tipo de empleado</ion-label>
+        <ion-radio-group formControlName="perfil">
+          <ion-item class="ion-padding-horizontal" fill="solid">
+            <ion-label>Mozo</ion-label>
+            <ion-radio color='success' slot="start" value="mozo"></ion-radio>
+          </ion-item>
+          <ion-item class="ion-padding-horizontal" fill="solid">
+            <ion-label>Cocinero</ion-label>
+            <ion-radio color='success' slot="start" value="cocinero"></ion-radio>
+          </ion-item>
+          <ion-item class="ion-padding-horizontal" fill="solid">
+            <ion-label>Bartender</ion-label>
+            <ion-radio color='success' slot="start" value="bartender"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+
+      </div>
+
+      <!-- IMAGEN -->
+      <br>
+      <div class="img">
+        <ion-button class="ion-padding-horizontal" (click)="tomarFoto()">
+          <ion-text>Subir Foto de Perfil</ion-text>
+          <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
+        </ion-button>
+      </div>
+      <br>
+
+      <ion-button expand="full" color="success" type="submit" (click)='aceptar()'>
+        <div class="spin" *ngIf="spinner">
+          <ion-spinner name="crescent"></ion-spinner>
+        </div>
+        <div style="padding-top: 0%;" *ngIf="!spinner">
+          Aceptar
+          <ion-icon name="arrow-forward-circle-outline" ></ion-icon>
+        </div>
+      </ion-button>
+    </form>
+  </div>
+
+</ion-content>
+
+<!-- FONDO PARA ESCANER -->
+<div *ngIf="scanActive">
+  <ion-row class="scanner-buttons" [hidden]="!scanActive">
+    <ion-col  >
+      <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
+    </ion-col>
+  </ion-row>
+  <div class="fondo-transparente" >
+    <div class="scan-box" [hidden]="!scanActive"></div>
+  </div>
+</div>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>
+

@@ -5,12 +5,12 @@ export class Usuario {
   dni: number;
   cuil: number;
   foto: string;
-  uid: string;
+  uid?: string;
   tipo: string;
   tipoEmpleado: string;
   enListaDeEspera: boolean;
   mesa: string;
-  clienteValidado: string;
+  clienteValidado: boolean;
   token:string;
   constructor(){
     this.email= '';
@@ -22,7 +22,7 @@ export class Usuario {
     this.uid= '';
     this.enListaDeEspera = false;
     this.mesa = '';
-    this.clienteValidado = '';
+    this.clienteValidado = false;
     this.token='';
     this.tipo='';
     this.tipoEmpleado='';

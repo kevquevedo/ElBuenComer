@@ -10,6 +10,7 @@ import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
 import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.component';
+import { MenuComponent } from '../Shared/menu/menu.component';
 
 
 @NgModule({
@@ -22,6 +23,6 @@ import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.c
     RouterModule,
     
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, AltaClientesComponent, AltaProductosComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, AltaClientesComponent, AltaProductosComponent, MenuComponent]
 })
 export class HomePageModule {}
