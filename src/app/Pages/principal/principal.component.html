@@ -1,13 +1,16 @@
 <app-menu></app-menu>
 <ion-content *ngIf="!spin" [ngClass]="scanActive?'scanner-activo':''" noscroll>
+  <ion-header>
   <div class="visor">
     <h1 class="titulo" *ngIf="!scanActive">BIENVENIDO</h1>
-    <h1 class="titulo" *ngIf="scanActive">ESCANEANDO ...</h1>
+    <h1 class="titulo" *ngIf="scanActive">ESCANEANDO...</h1>
     <p class="monto" [ngClass]="{
       'scanner-activo-visor': scanActive,
       'monto-rojo': !scanActive}">
+      <span></span>
     </p>
   </div>
+</ion-header>
   <div *ngIf="isCliente">
     <div class="centrado">
       <button class="escanear" expand="block" type="button" (click)="startScanner()" *ngIf="!scanActive">
