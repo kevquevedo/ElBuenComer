@@ -74,29 +74,28 @@ export class AltaProductosComponent  implements OnInit {
 
     if (!this.validarCantidadFotos()) {
       this.errorImagen = false;
-      var resp = this.prodSrv.GuardarNuevoProducto(this.producto)
-      if (resp) {
-        console.log("Producto guardado con exito");
+      
+      this.prodSrv.crearProducto(this.producto).then((creacionExitosa) => {
+        if (creacionExitosa) {
+          this.presentToast('middle', 'La creación fue exitosa', "success", 1500);
+          // La creación fue exitosa
+          setTimeout(() => {
+            // this.utilSrv.successToast("Producto guardado con exito");
+             //this.spinner.hide();
+             this.route.navigate(['/home-empleado']);
+            }, 2000);
        
-        //exito al guardar
-     //   this.toastCtrl.presentToast("Se guardo con el exito el producto", 2000,"success")
-     
-     setTimeout(() => {
-     // this.utilSrv.successToast("Producto guardado con exito");
-      //this.spinner.hide();
-      this.route.navigate(['/home-empleado']);
-     }, 2000);
-
-      }
-      else {
-        setTimeout(() => {
-          //this.utilSrv.errorToast("Error al guardar el nuevo producto")
-          console.log("error al guardar el nuevo producto ");
-          //this.spinner.hide();
-         
-         }, 2000);
-
-      }
+        } else {
+          // Hubo un error en la creación
+          setTimeout(() => {
+            //this.utilSrv.errorToast("Error al guardar el nuevo producto")
+            console.log("error al guardar el nuevo producto ");
+            this.presentToast('middle', 'Error en la creación', "error", 1500);
+            //this.spinner.hide();
+           
+           }, 2000);
+        }
+      });
 
       console.log("Nuevo producto a guardar: " + this.producto.nombre + " " + this.producto.img_src);
     } else {

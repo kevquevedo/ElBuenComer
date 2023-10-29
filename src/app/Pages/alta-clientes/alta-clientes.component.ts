@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { ToastController } from '@ionic/angular';
 import { Usuario, eUsuario } from 'src/app/clases/usuario';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class AltaClientesComponent  implements OnInit {
     private router: Router ,
     private imagesSrv:ImagenesService,
    // private utilidadesSrv:UtilidadesService,
-   // private usersSvc: UsersService,
+    private usuariosSvc: UsuariosService,
     //private authSvc: AuthService,
     //private mail:MailService,
     //private pushSrv:NotificationService
@@ -103,7 +104,10 @@ export class AltaClientesComponent  implements OnInit {
       this.authSvc.Register(this.usuario.email, this.clave).then((credential:any)=>{
         console.log(credential.user.uid);
         this.usuario.uid = credential.user.uid;
-        // this.usersSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario:any)=>{
+
+        this.usuariosSvc.crearUsuario(this.usuario);
+
+        // this.usuariosSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario:any)=>{
         //   console.log(usuario);
         //   //this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta ha sido registrada exitosamente, aguarde a que sea validada por nuestro personal.")
         //   //this.notificar();
