@@ -38,6 +38,8 @@ export class AltaClientesComponent  implements OnInit {
   dni='';
   fotoUrl='../../assets/sacarfoto.png';
   usuarios:any;
+  spin!: boolean;
+
   constructor(
     //private spinner: NgxSpinnerService,
     private fromBuilder: FormBuilder,
@@ -92,37 +94,25 @@ export class AltaClientesComponent  implements OnInit {
 
 
   aceptar() {     
-    // this.spinner.show();
+    this.spin = true;
     if(!this.anonimo){
       this.usuario.email = this.altaForm.value.email;
       this.usuario.nombre = this.altaForm.value.nombre;
       this.usuario.apellido = this.altaForm.value.apellido;
       this.usuario.dni = this.altaForm.value.dni;
       this.usuario.tipo = eUsuario.cliente;
-      this.usuario.nombre = this.altaForm.value.nombre;
-
+      this.usuario.clienteValidado = false;
       this.authSvc.Register(this.usuario.email, this.clave).then((credential:any)=>{
         console.log(credential.user.uid);
         this.usuario.uid = credential.user.uid;
 
         this.usuariosSvc.crearUsuario(this.usuario);
-
-        // this.usuariosSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario:any)=>{
-        //   console.log(usuario);
-        //   //this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta ha sido registrada exitosamente, aguarde a que sea validada por nuestro personal.")
-        //   //this.notificar();
-        //   setTimeout(() => {
-        //     //this.spinner.hide();
-        //     this.presentToast('middle', 'Registro exitoso', "Success", 1500);
-        //     this.router.navigateByUrl('login')
-        //   }, 3000); 
-        // }).catch((err:any)=>{
-        //   this.Errores(err);
-        //   //this.utilidadesSrv.vibracionError();
-        //   console.log(err);
-        // });
+        this.spin = false;
+        this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 1500 );
       }).catch((err:any)=>{
         this.Errores(err);
+        this.spin = false;
+        this.presentToast('middle', 'Error al crear el usuario: ' + err, 'danger', 1500 );
         //this.utilidadesSrv.vibracionError();
         console.log(err);
       }); 
@@ -130,12 +120,13 @@ export class AltaClientesComponent  implements OnInit {
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
-      this.usuario.clienteValidado = 'aceptado';
+      this.usuario.clienteValidado = true;
+      this.usuariosSvc.crearUsuario(this.usuario);
       // this.firestoreSvc.crearUsuario(this.usuario).then((res:any)=>{
       //   this.pushSrv.RegisterFCM(res)
       //   console.log("id del anonimo "+res)
       // });
-
+      this.spin = false;
       setTimeout(() => {
         //this.utilidadesSrv.successToast("Ingreso exitoso.");
         this.navigateTo('');
@@ -253,87 +244,6 @@ export class AltaClientesComponent  implements OnInit {
     BarcodeScanner.stopScan();
     this.scanActive  = false;
   }
-
-
-  // async startScan() {
-
-  //   try {
-  //     const bodyElement1 = document.querySelector('body');
-  //     if (bodyElement1) {
-  //       bodyElement1.classList.remove('scanner-active');
-  //     } else {
-  //       console.error('No se encontró el elemento body');
-  //     }
-  //     const permission = await this.checkPermission();
-  //     if (!permission) {
-  //       return;
-  //     }
-  //     this.scanActive = true;
-  //     await BarcodeScanner.hideBackground();
-  //     const bodyElement2 = document.querySelector('body');
-  //     if (bodyElement2) {
-  //       bodyElement2.classList.remove('scanner-active');
-  //     } else {
-  //       console.error('No se encontró el elemento body');
-  //     }
-  //     this.content_visibility = 'hidden';
-  //     this.scan_visibility = '';
-  //     const result = await BarcodeScanner.startScan();
-
-  //     this.content_visibility = '';
-  //     this.scan_visibility = 'hidden';
-  //     BarcodeScanner.showBackground();
-  //     const bodyElement = document.querySelector('body');
-  //     if (bodyElement) {
-  //       bodyElement.classList.remove('scanner-active');
-  //     } else {
-  //       console.error('No se encontró el elemento body');
-  //     }
-
-  //     if (result?.hasContent) { 
-  //       this.dniData = result.content.split('@'); 
-  //       this.nombre= this.dniData[2];
-  //       this.apellido= this.dniData[1];
-  //       this.dni= this.dniData[4];
-  //       const bodyElement = document.querySelector('body');
-  //       if (bodyElement) {
-  //         bodyElement.classList.remove('scanner-active');
-  //       } else {
-  //         console.error('No se encontró el elemento body');
-  //       }
-  //       this.scanActive = false; 
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     //this.utilidadesSrv.vibracionError();
-  //     this.presentToast('middle', 'Error al escanear el documento.', "danger", 1500);
-  //     const bodyElement = document.querySelector('body');
-  //     if (bodyElement) {
-  //       bodyElement.classList.remove('scanner-active');
-  //     } else {
-  //       console.error('No se encontró el elemento body');
-  //     }
-  //     this.stopScan();
-  //   } 
-  // }
-
- 
-
-  // stopScan() {
-  //   setTimeout(() => { 
-  //   }, 3000);
-  //   this.content_visibility = '';
-  //   this.scan_visibility = 'hidden';
-  //   this.scanActive = false;
-  //   BarcodeScanner.showBackground();
-  //   BarcodeScanner.stopScan();
-  //   const bodyElement = document.querySelector('body');
-  //   if (bodyElement) {
-  //     bodyElement.classList.remove('scanner-active');
-  //   } else {
-  //     console.error('No se encontró el elemento body');
-  //   }
-  // }
 
   ngAfterViewInit(): void {
     BarcodeScanner.prepare();

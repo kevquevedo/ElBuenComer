@@ -5,12 +5,9 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { Photo } from '@capacitor/camera';
 import { Usuario } from 'src/app/clases/usuario';
-<<<<<<< HEAD
-import { ToastController } from '@ionic/angular';
-=======
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
->>>>>>> main
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-alta-dueno-supervisor',
@@ -157,7 +154,7 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
         setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false;}, 2000)
       })
-      .catch( error => {
+      .catch( (error:any) => {
         this.spinner = false;
         this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger')
       })

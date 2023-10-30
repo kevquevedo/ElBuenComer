@@ -23,6 +23,6 @@ import { MenuComponent } from '../Shared/menu/menu.component';
     RouterModule,
     
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, AltaClientesComponent, AltaProductosComponent, MenuComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent]
 })
 export class HomePageModule {}

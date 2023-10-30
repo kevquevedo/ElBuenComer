@@ -13,7 +13,7 @@ export class SplashPage implements OnInit {
     private router:Router
   ) {
     setTimeout(()=>{
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('home/registro');
     },6000);
   }
 

@@ -18,13 +18,7 @@ const routes: Routes = [
   {
     path: 'principal',
     component: PrincipalComponent,
-  },
-  { path: 'alta-clientes',
-    component: AltaClientesComponent 
-  },
-  { path: 'alta-productos',
-    component: AltaProductosComponent 
-  },
+  }
 ];
 
 @NgModule({

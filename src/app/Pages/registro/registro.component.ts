@@ -13,10 +13,10 @@ export class RegistroComponent  implements OnInit {
   ngOnInit() {}
 
   altaClientes(){
-    this.router.navigate(['home/alta-clientes']);
+    this.router.navigate(['alta-clientes']);
   }
   altaProductos(){
-    this.router.navigate(['home/alta-productos']);
+    this.router.navigate(['alta-productos']);
   }
 
   irAltaDuenoSupervisor(){
