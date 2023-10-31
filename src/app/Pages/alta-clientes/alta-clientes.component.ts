@@ -8,6 +8,8 @@ import { ImagenesService } from 'src/app/services/imagenes.service';
 import { ToastController } from '@ionic/angular';
 import { Usuario, eUsuario } from 'src/app/clases/usuario';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -49,7 +51,7 @@ export class AltaClientesComponent  implements OnInit {
     private usuariosSvc: UsuariosService,
     //private authSvc: AuthService,
     //private mail:MailService,
-    //private pushSrv:NotificationService
+    private pushNotiSrv:NotificationService,
     private toastr: ToastController,
     private authSvc: AuthService
   ) {
@@ -220,14 +222,14 @@ export class AltaClientesComponent  implements OnInit {
         this.dniData = result.content.split('@');
         this.nombre= this.dniData[2].trim();;
         this.apellido= this.dniData[1].trim();;
-        // this.dni= this.dniData[4].trim();;
-        // this.usuario.dni = this.dniData[4].trim();
-        // this.usuario.nombre = this.dniData[2].trim();
-        // this.usuario.apellido = this.dniData[1].trim();
-        // this.form.controls['dni'].setValue(this.usuario.dni);
-        // this.form.controls['nombre'].setValue(this.usuario.nombre);
-        // this.form.controls['apellido'].setValue(this.usuario.apellido);
-        // this.form.controls['cuil'].setValue(this.usuario.cuil);
+        this.dni= this.dniData[4].trim();;
+        this.usuario.dni = this.dniData[4].trim();
+        this.usuario.nombre = this.dniData[2].trim();
+        this.usuario.apellido = this.dniData[1].trim();
+        this.altaForm.controls['dni'].setValue(this.usuario.dni);
+        this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
+        this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
+        this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
 
         this.scanActive = false;
       } else {
@@ -278,6 +280,40 @@ export class AltaClientesComponent  implements OnInit {
     });
     await toast.present();
   }
+
+  notificar(){
+    let tokens: any[] = [];
+    this.usuarios.forEach((user:any) => {   
+      if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
+        tokens.push(user.token) 
+      }
+     });
+     
+     tokens.forEach(token => {
+      this.pushNotiSrv 
+      .sendPushNotification({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+             /* registration_ids: [ 
+              token 
+              ], */
+        to: token,      
+        notification: {
+          title: 'Nuevo cliente',
+          body: 'Se registro un nuevo cliente',
+        },
+        data: {
+          ruta: 'home', 
+        },
+      }).pipe(first()).subscribe((data:any)=>{
+        console.log(data) 
+      }) 
+     });
+
+ 
+  }
+
+
+
 
 }
 

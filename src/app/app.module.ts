@@ -18,6 +18,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AltaEmpleadoComponent } from './Pages/alta-empleado/alta-empleado.component';
 import { AltaProductosComponent } from './Pages/alta-productos/alta-productos.component';
 import { AltaClientesComponent } from './Pages/alta-clientes/alta-clientes.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -43,6 +44,7 @@ fire.initializeApp(environment.firebase);
     provideStorage(() => getStorage()),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    HttpClientModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
