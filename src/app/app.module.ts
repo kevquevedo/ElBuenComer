@@ -25,7 +25,7 @@ fire.initializeApp(environment.firebase);
   declarations: [
     AltaDuenoSupervisorComponent,
     AppComponent,
-    AltaEmpleadoComponent
+    AltaEmpleadoComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { MenuComponent } from '../Shared/menu/menu.component';
+import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/registros-pendientes.component';
 
 
 @NgModule({
@@ -20,6 +21,6 @@ import { MenuComponent } from '../Shared/menu/menu.component';
     ReactiveFormsModule,
     RouterModule,
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent]
 })
 export class HomePageModule {}

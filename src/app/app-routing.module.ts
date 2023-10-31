@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta-dueno-supervisor.component';
 import { AltaEmpleadoComponent } from './Pages/alta-empleado/alta-empleado.component';
+import { RegistrosPendientesComponent } from './Pages/registros-pendientes/registros-pendientes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -9,6 +10,7 @@ const routes: Routes = [
   { path: 'splash', loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)},
   { path: 'alta-dueno-supervisor', component: AltaDuenoSupervisorComponent},
   { path: 'alta-empleado', component: AltaEmpleadoComponent},
+  { path: 'registros-pendientes', component: RegistrosPendientesComponent },
 ];
 
 @NgModule({

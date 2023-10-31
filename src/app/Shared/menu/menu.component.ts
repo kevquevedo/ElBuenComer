@@ -46,12 +46,14 @@ export class MenuComponent implements OnInit {
 
   }
 
-
   irAltaDuenoSupervisor() {
     this.router.navigateByUrl('alta-dueno-supervisor')
   }
   irAltaEmpleado() {
     this.router.navigateByUrl('alta-empleado')
+  }
+  irARegistrosPendientes(){
+    this.router.navigateByUrl('registros-pendientes')
   }
 
   logOut() {

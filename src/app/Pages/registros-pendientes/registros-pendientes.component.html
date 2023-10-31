@@ -1,0 +1,40 @@
+<app-menu></app-menu>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>
+
+<ion-content *ngIf="!spin" >
+
+  <div class="ion-padding-horizontal ion-padding-vertical fondo">
+    <ion-text color="light">Aprobaciones Pendientes</ion-text>
+  </div>
+
+  <ion-list class="ion-padding-horizontal ion-padding-vertical">
+
+    <div *ngFor="let cliente of listadoClientes">
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-img src="{{cliente.foto}}"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
+          <p>DNI: {{cliente.dni}}</p>
+        </ion-label>
+        <ion-fab horizontal="end" class="boton-aceptar">
+          <ion-fab-button size="small" color="success" (click)="aceptarCliente(cliente)">
+            <ion-icon name="checkmark-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+        <ion-fab horizontal="end">
+          <ion-fab-button size="small" color="danger" (click)="rechazarCliente(cliente)">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-item>
+    </div>
+
+  </ion-list>
+
+</ion-content>

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
 import { ToastController } from '@ionic/angular';
-import { Photo } from '@capacitor/camera';
 import { Usuario } from 'src/app/clases/usuario';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -18,11 +17,11 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
 
   form!: FormGroup;
   spin!: boolean;
-  spinner!:boolean;
   usuario:Usuario;
   scanActive!: boolean;
   dniData:any;
   fotoUrl!:string;
+  spinner!:boolean;
 
   constructor(
     private router: Router,
@@ -33,9 +32,9 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
   ){
     this.usuario = new Usuario();
     this.spin = true;
-    this.spinner = false;
     this.scanActive = false;
     this.fotoUrl = '';
+    this.spinner = false;
   }
 
   ngOnInit() {
@@ -142,17 +141,10 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       this.spinner = true;
       this.usuario.email = this.email?.value;
       this.usuario.tipoEmpleado = this.perfil?.value;
-      this.usuario.tipo = 'admin';
-      this.usuario.clienteValidado = true;
-      this.usuario.nombre = this.nombre?.value;
-      this.usuario.apellido = this.apellido?.value;
-      this.usuario.dni = this.dni?.value;
-      this.usuario.cuil = this.cuil?.value;
       createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
-        this.usuario.uid = this.auth.currentUser?.uid;
         this.usuarioServ.crearUsuario(this.usuario);
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
-        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false;}, 2000)
+        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false; }, 2000)
       })
       .catch( error => {
         this.spinner = false;
