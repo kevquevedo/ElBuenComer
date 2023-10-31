@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from 'src/app/services/imagenes.service';
-import { Photo } from '@capacitor/camera';
+import { ToastController } from '@ionic/angular';
 import { Usuario } from 'src/app/clases/usuario';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
-import { ToastController } from '@ionic/angular';
+import { QrscannerService } from 'src/app/services/qrscanner.service';
 
 @Component({
   selector: 'app-alta-dueno-supervisor',
@@ -18,13 +18,16 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
 
   form!: FormGroup;
   spin!: boolean;
-  spinner!:boolean;
   usuario:Usuario;
   scanActive!: boolean;
   dniData:any;
   fotoUrl!:string;
+  spinner!: boolean;
+  currentScan!:any;
 
   constructor(
+
+    private qrScanner: QrscannerService ,
     private router: Router,
     private imagenServ: ImagenesService,
     private toastController: ToastController,
@@ -33,9 +36,9 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
   ){
     this.usuario = new Usuario();
     this.spin = true;
-    this.spinner = false;
     this.scanActive = false;
     this.fotoUrl = '';
+    this.spinner = false;
   }
 
   ngOnInit() {
@@ -73,7 +76,7 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
     return this.form.get('perfil');
   }
 
-  // FUNCIONES DE ESCANER
+
   async checkPermission() {
     return new Promise(async (resolve, reject) => {
       const status = await BarcodeScanner.checkPermission({ force: true });
@@ -86,43 +89,39 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
     });
   }
 
-  async startScan() {
-
-    const permiso = await this.checkPermission();
-    if (permiso) {
+  startScan() {
+    setTimeout(() => {
       this.scanActive = true;
-      BarcodeScanner.hideBackground();
-      const result = await BarcodeScanner.startScan();
-      BarcodeScanner.showBackground();
-      if (result.hasContent) {
+      this.qrScanner.startScan().then((result) => {
+        this.currentScan = result?.trim();
+        console.log(this.currentScan);
+        if (this.currentScan) {
 
-        this.dniData = result.content.split('@');
-        let digitosCUIL = this.dniData[8];
-        let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
-        this.usuario.dni = this.dniData[4].trim();
-        this.usuario.nombre = this.dniData[2].trim();
-        this.usuario.apellido = this.dniData[1].trim();
-        this.usuario.cuil = cuil.trim();
-        this.form.controls['dni'].setValue(this.usuario.dni);
-        this.form.controls['nombre'].setValue(this.usuario.nombre);
-        this.form.controls['apellido'].setValue(this.usuario.apellido);
-        this.form.controls['cuil'].setValue(this.usuario.cuil);
+          this.dniData = this.currentScan.split('@');
+          let digitosCUIL = this.dniData[8];
+          let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
+          this.usuario.dni = this.dniData[4].trim();
+          this.usuario.nombre = this.dniData[2].trim();
+          this.usuario.apellido = this.dniData[1].trim();
+          this.usuario.cuil = cuil.trim();
+          this.form.controls['dni'].setValue(this.usuario.dni);
+          this.form.controls['nombre'].setValue(this.usuario.nombre);
+          this.form.controls['apellido'].setValue(this.usuario.apellido);
+          this.form.controls['cuil'].setValue(this.usuario.cuil);
+        }
 
         this.scanActive = false;
-      } else {
-        this.stopScan();
-      }
-    } else {
-      this.stopScan();
-    }
-
-  }
+      });
+    }, 2000);
+  } // end of startScan
 
   stopScan() {
-    BarcodeScanner.showBackground();
-    BarcodeScanner.stopScan();
-    this.scanActive  = false;
-  }
+    setTimeout(() => {
+      this.scanActive = false;
+      this.qrScanner.stopScanner();
+    }, 2000);
+  } // end of stopScan
+
 
   // FUNCIONES DE CAMARA
   tomarFoto() {
@@ -142,17 +141,10 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       this.spinner = true;
       this.usuario.email = this.email?.value;
       this.usuario.tipoEmpleado = this.perfil?.value;
-      this.usuario.tipo = 'admin';
-      this.usuario.clienteValidado = true;
-      this.usuario.nombre = this.nombre?.value;
-      this.usuario.apellido = this.apellido?.value;
-      this.usuario.dni = this.dni?.value;
-      this.usuario.cuil = this.cuil?.value;
       createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
-        this.usuario.uid = this.auth.currentUser?.uid;
         this.usuarioServ.crearUsuario(this.usuario);
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
-        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false;}, 2000)
+        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false; }, 2000)
       })
       .catch( (error:any) => {
         this.spinner = false;

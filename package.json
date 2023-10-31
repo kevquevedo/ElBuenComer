@@ -33,6 +33,7 @@
     "@capacitor/push-notifications": "^5.1.0",
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "5.0.6",
+    "@emailjs/browser": "^3.11.0",
     "@ionic/angular": "^7.0.0",
     "firebase": "^10.5.0",
     "ionicons": "^7.0.0",

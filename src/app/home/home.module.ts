@@ -11,6 +11,7 @@ import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
 import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.component';
 import { MenuComponent } from '../Shared/menu/menu.component';
+import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/registros-pendientes.component';
 
 
 @NgModule({
@@ -23,6 +24,6 @@ import { MenuComponent } from '../Shared/menu/menu.component';
     RouterModule,
     
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent]
 })
 export class HomePageModule {}

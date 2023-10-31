@@ -4,6 +4,7 @@ import { AltaDuenoSupervisorComponent } from './Pages/alta-dueno-supervisor/alta
 import { AltaEmpleadoComponent } from './Pages/alta-empleado/alta-empleado.component';
 import { AltaProductosComponent } from './Pages/alta-productos/alta-productos.component';
 import { AltaClientesComponent } from './Pages/alta-clientes/alta-clientes.component';
+import { RegistrosPendientesComponent } from './Pages/registros-pendientes/registros-pendientes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'alta-empleado', component: AltaEmpleadoComponent},
   { path: 'alta-productos', component: AltaProductosComponent},
   { path: 'alta-clientes', component: AltaClientesComponent},
+  { path: 'registros-pendientes', component: RegistrosPendientesComponent },
 ];
 
 @NgModule({
