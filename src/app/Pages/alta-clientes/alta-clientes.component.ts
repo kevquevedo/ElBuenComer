@@ -10,6 +10,7 @@ import { Usuario, eUsuario } from 'src/app/clases/usuario';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { first } from 'rxjs/operators';
+import { QrscannerService } from 'src/app/services/qrscanner.service';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class AltaClientesComponent  implements OnInit {
   fotoUrl='../../assets/sacarfoto.png';
   usuarios:any;
   spin!: boolean;
+  currentScan: any;
 
   constructor(
     //private spinner: NgxSpinnerService,
@@ -53,7 +55,8 @@ export class AltaClientesComponent  implements OnInit {
     //private mail:MailService,
     private pushNotiSrv:NotificationService,
     private toastr: ToastController,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private qrScanner: QrscannerService 
   ) {
     this.email = '';
     this.clave = '';
@@ -195,7 +198,6 @@ export class AltaClientesComponent  implements OnInit {
   }
 
 
-
    // FUNCIONES DE ESCANER
    async checkPermission() {
     return new Promise(async (resolve, reject) => {
@@ -209,43 +211,82 @@ export class AltaClientesComponent  implements OnInit {
     });
   }
 
-  async startScan() {
-
-    const permiso = await this.checkPermission();
-    if (permiso) {
+  startScan() {
+    setTimeout(() => {
       this.scanActive = true;
-      BarcodeScanner.hideBackground();
-      const result = await BarcodeScanner.startScan();
-      BarcodeScanner.showBackground(); //VEEEEEEEEEEEER
-      if (result.hasContent) {
+      this.qrScanner.startScan().then((result) => {
+        this.currentScan = result?.trim();
+        console.log(this.currentScan);
+        if (this.currentScan) {
 
-        this.dniData = result.content.split('@');
-        this.nombre= this.dniData[2].trim();;
-        this.apellido= this.dniData[1].trim();;
-        this.dni= this.dniData[4].trim();;
-        this.usuario.dni = this.dniData[4].trim();
-        this.usuario.nombre = this.dniData[2].trim();
-        this.usuario.apellido = this.dniData[1].trim();
-        this.altaForm.controls['dni'].setValue(this.usuario.dni);
-        this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
-        this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
-        this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
+          this.dniData = this.currentScan.split('@');
+          let digitosCUIL = this.dniData[8];
+          let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
+          this.usuario.dni = this.dniData[4].trim();
+          this.usuario.nombre = this.dniData[2].trim();
+          this.usuario.apellido = this.dniData[1].trim();
+          this.usuario.cuil = cuil.trim();
+          this.altaForm.controls['dni'].setValue(this.usuario.dni);
+          this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
+          this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
+          this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
+        }
 
         this.scanActive = false;
-      } else {
-        this.stopScan();
-      }
-    } else {
-      this.stopScan();
-    }
+      });
+    }, 2000);
+  } // end of startScan
 
-  }
-
+  
   stopScan() {
-    BarcodeScanner.showBackground();
-    BarcodeScanner.stopScan();
-    this.scanActive  = false;
-  }
+    setTimeout(() => {
+      this.scanActive = false;
+      this.qrScanner.stopScanner();
+    }, 2000);
+  } // end of stopScan
+
+
+
+  // async startScan() {
+
+  //   const permiso = await this.checkPermission();
+  //   if (permiso) {
+  //     this.scanActive = true;
+  //     BarcodeScanner.hideBackground();
+  //     const result = await BarcodeScanner.startScan();
+  //     BarcodeScanner.showBackground(); //VEEEEEEEEEEEER
+  //     if (result.hasContent) {
+
+  //       this.dniData = result.content.split('@');
+  //       this.nombre= this.dniData[2].trim();;
+  //       this.apellido= this.dniData[1].trim();;
+  //       this.dni= this.dniData[4].trim();;
+  //       this.usuario.dni = this.dniData[4].trim();
+  //       this.usuario.nombre = this.dniData[2].trim();
+  //       this.usuario.apellido = this.dniData[1].trim();
+  //       this.altaForm.controls['dni'].setValue(this.usuario.dni);
+  //       this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
+  //       this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
+  //       this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
+
+  //       this.scanActive = false;
+  //     } else {
+  //       this.stopScan();
+  //     }
+  //   } else {
+  //     this.stopScan();
+  //   }
+
+  // }
+
+  // stopScan() {
+  //   BarcodeScanner.showBackground();
+  //   BarcodeScanner.stopScan();
+  //   this.scanActive  = false;
+  // }
+
+  
+  
 
   ngAfterViewInit(): void {
     BarcodeScanner.prepare();
