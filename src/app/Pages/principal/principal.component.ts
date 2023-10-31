@@ -22,6 +22,7 @@ export class PrincipalComponent  implements OnInit {
   isBartender:boolean=false;
   isCocinero:boolean=false;
   isMozo:boolean=false;
+  tieneMesa:boolean=false;
   tipoEmpleado:string="";
   currentScan: any;
   spin!: boolean;
@@ -41,6 +42,9 @@ export class PrincipalComponent  implements OnInit {
             this.isAdmin = true;
           }else if(usuario.data().tipo == "cliente"){
             this.isCliente = true;
+            if(usuario.data().mesa != ""){
+              this.tieneMesa = true;
+            }
           }else{
             this.tipoEmpleado = usuario.data().tipoEmpleado;
               if(this.tipoEmpleado == "bartender"){
@@ -78,6 +82,7 @@ export class PrincipalComponent  implements OnInit {
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
         console.log(this.currentScan);
+        this.router.navigateByUrl(this.currentScan);
         this.scanActive = false;
       });
     }, 2000);

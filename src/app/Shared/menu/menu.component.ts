@@ -15,6 +15,7 @@ export class MenuComponent implements OnInit {
   isBartender: boolean = false;
   isCocinero: boolean = false;
   isMozo: boolean = false;
+  tieneMesa: boolean = false;
 
   constructor(public router: Router, public afAuth: AngularFireAuth, private usuarioService: UsuariosService) { }
 
@@ -27,6 +28,9 @@ export class MenuComponent implements OnInit {
               this.isAdmin = true;
             } else if (usuario.data().tipo == "cliente") {
               this.isCliente = true;
+              if(usuario.data().mesa != ""){
+                this.tieneMesa = true;
+              }
             } else {
               this.tipoEmpleado = usuario.data().tipoEmpleado;
               if(this.tipoEmpleado == "bartender"){
