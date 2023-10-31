@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 import { Usuario } from 'src/app/clases/usuario';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { QrscannerService } from 'src/app/services/qrscanner.service';
 
 @Component({
   selector: 'app-alta-empleado',
@@ -22,8 +23,10 @@ export class AltaEmpleadoComponent  implements OnInit {
   scanActive!: boolean;
   dniData:any;
   fotoUrl!:string;
+  currentScan: any;
 
   constructor(
+    private qrScanner: QrscannerService ,
     private router: Router,
     private imagenServ: ImagenesService,
     private toastController: ToastController,
@@ -72,7 +75,8 @@ export class AltaEmpleadoComponent  implements OnInit {
     return this.form.get('perfil');
   }
 
-  // FUNCIONES DE ESCANER
+
+
   async checkPermission() {
     return new Promise(async (resolve, reject) => {
       const status = await BarcodeScanner.checkPermission({ force: true });
@@ -85,43 +89,43 @@ export class AltaEmpleadoComponent  implements OnInit {
     });
   }
 
-  async startScan() {
-
-    const permiso = await this.checkPermission();
-    if (permiso) {
+  startScan() {
+    setTimeout(() => {
       this.scanActive = true;
-      BarcodeScanner.hideBackground();
-      const result = await BarcodeScanner.startScan();
-      BarcodeScanner.showBackground();
-      if (result.hasContent) {
+      this.qrScanner.startScan().then((result) => {
+        this.currentScan = result?.trim();
+        console.log(this.currentScan);
+        if (this.currentScan) {
 
-        this.dniData = result.content.split('@');
-        let digitosCUIL = this.dniData[8];
-        let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
-        this.usuario.dni = this.dniData[4].trim();
-        this.usuario.nombre = this.dniData[2].trim();
-        this.usuario.apellido = this.dniData[1].trim();
-        this.usuario.cuil = cuil.trim();
-        this.form.controls['dni'].setValue(this.usuario.dni);
-        this.form.controls['nombre'].setValue(this.usuario.nombre);
-        this.form.controls['apellido'].setValue(this.usuario.apellido);
-        this.form.controls['cuil'].setValue(this.usuario.cuil);
+          this.dniData = this.currentScan.split('@');
+          let digitosCUIL = this.dniData[8];
+          let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
+          this.usuario.dni = this.dniData[4].trim();
+          this.usuario.nombre = this.dniData[2].trim();
+          this.usuario.apellido = this.dniData[1].trim();
+          this.usuario.cuil = cuil.trim();
+          this.form.controls['dni'].setValue(this.usuario.dni);
+          this.form.controls['nombre'].setValue(this.usuario.nombre);
+          this.form.controls['apellido'].setValue(this.usuario.apellido);
+          this.form.controls['cuil'].setValue(this.usuario.cuil);
+        }
 
         this.scanActive = false;
-      } else {
-        this.stopScan();
-      }
-    } else {
-      this.stopScan();
-    }
-
-  }
+      });
+    }, 2000);
+  } // end of startScan
 
   stopScan() {
-    BarcodeScanner.showBackground();
-    BarcodeScanner.stopScan();
-    this.scanActive  = false;
-  }
+    setTimeout(() => {
+      this.scanActive = false;
+      this.qrScanner.stopScanner();
+    }, 2000);
+  } // end of stopScan
+
+
+
+
+
 
   // FUNCIONES DE CAMARA
   tomarFoto() {

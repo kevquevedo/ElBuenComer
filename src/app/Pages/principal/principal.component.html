@@ -11,7 +11,7 @@
     </p>
   </div>
 </ion-header>
-  <div *ngIf="isCliente">
+  <div *ngIf="isCliente && !tieneMesa">
     <div class="centrado">
       <button class="escanear" expand="block" type="button" (click)="startScanner()" *ngIf="!scanActive">
         <h6>INGRESAR A LISTA DE ESPERA</h6>

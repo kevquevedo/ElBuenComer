@@ -41,3 +41,9 @@
   align-items: center;
   height: 100vh;
 }
+
+
+body.scanner-active {
+  --background: transparent;
+  --ion-background-color: transparent;
+}
