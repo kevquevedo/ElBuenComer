@@ -12,9 +12,7 @@ export const environment = {
     authDomain: 'elbuencomerapp.firebaseapp.com',
     messagingSenderId: '776359826524',
   },
-  production: false
-
-
+  production: false,
 };
 
 /*

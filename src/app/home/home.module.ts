@@ -21,6 +21,7 @@ import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.compone
     HomePageRoutingModule,
     ReactiveFormsModule,
     RouterModule,
+    
   ],
   declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent, ListaEsperaComponent]
 })

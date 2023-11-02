@@ -150,7 +150,7 @@ export class AltaEmpleadoComponent  implements OnInit {
       this.usuario.apellido = this.apellido?.value;
       this.usuario.cuil = this.cuil?.value;
       this.usuario.tipo = 'empleado';
-      this.usuario.clienteValidado = true;
+      this.usuario.clienteValidado = 'pendiente';
       createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
         this.usuarioServ.crearUsuario(this.usuario);

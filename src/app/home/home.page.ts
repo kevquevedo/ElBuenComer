@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UsuariosService } from '../services/usuarios.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,8 @@ export class HomePage {
 
   loginUsuario: FormGroup;
   constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
-    private toastr: ToastrService, private router: Router, private usuarioService: UsuariosService) {
+    // private toastr: ToastrService, 
+    private router: Router, private usuarioService: UsuariosService) {
     this.loginUsuario = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       pass: ['', [Validators.required, Validators.minLength(6)]],
@@ -37,25 +38,25 @@ export class HomePage {
                   this.afAuth.currentUser.then(user => {
                     const usuario = user?.email;
                   });
-                  this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
+                  // this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
                   this.router.navigate(['/home/principal']);
                 }).catch((error) => {
-                  this.toastr.error("Contraseña incorrecta", "Error", { timeOut: 1000 });
+                  // this.toastr.error("Contraseña incorrecta", "Error", { timeOut: 1000 });
                 });
             } else {
-              this.toastr.error("Usuario no validado", "Error", { timeOut: 1000 });
+              // this.toastr.error("Usuario no validado", "Error", { timeOut: 1000 });
             }
           }
         });
 
         if (!userFound) {
-          this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+          // this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
         }
       } else {
-        this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+        // this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
       }
     }).catch(error => {
-      this.toastr.error("Ocurrió un error al obtener la lista de usuarios", "Error", { timeOut: 1000 });
+      // this.toastr.error("Ocurrió un error al obtener la lista de usuarios", "Error", { timeOut: 1000 });
     });
   }
 

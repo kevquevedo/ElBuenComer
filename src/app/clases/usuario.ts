@@ -10,7 +10,7 @@ export class Usuario {
   tipoEmpleado: string;
   enListaDeEspera: boolean;
   mesa: string;
-  clienteValidado: boolean;
+  clienteValidado: string;
   token:string;
   constructor(){
     this.email= '';
@@ -22,9 +22,23 @@ export class Usuario {
     this.uid= '';
     this.enListaDeEspera = false;
     this.mesa = '';
-    this.clienteValidado = false;
+    this.clienteValidado = '';
     this.token='';
     this.tipo='';
     this.tipoEmpleado='';
   }
 }
+
+export enum eUsuario{
+  dueño='dueño',
+  supervisor='supervisor',
+  empleado='empleado',
+  cliente='cliente',
+  }
+  
+  export enum eEmpleado{
+  metre='metre',
+  mozo='mozo',
+  cocinero='cocinero',
+  bartender='bartender'
+  }

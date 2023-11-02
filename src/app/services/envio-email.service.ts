@@ -20,10 +20,10 @@ export class EnvioEmailService {
     };
 
     emailjs.send("service_z1yzsmw", "template_kldedez", templateParams)
-      .then(res =>{
+      .then((res:any) =>{
         console.log("Email enviado.", res.status, res.text);
       })
-      .catch(error =>{
+      .catch((error:any) =>{
         console.log("Error al enviar el email.", error);
       });
 

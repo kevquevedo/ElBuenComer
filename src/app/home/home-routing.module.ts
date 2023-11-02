@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
+import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
+import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.component';
 import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.component';
 
 const routes: Routes = [

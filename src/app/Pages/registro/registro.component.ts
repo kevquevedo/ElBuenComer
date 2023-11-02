@@ -8,11 +8,16 @@ import { Router } from '@angular/router';
 })
 export class RegistroComponent  implements OnInit {
 
-  constructor(
-    private router: Router
-  ) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+
+  altaClientes(){
+    this.router.navigate(['alta-clientes']);
+  }
+  altaProductos(){
+    this.router.navigate(['alta-mesa']);
+  }
 
   irAltaDuenoSupervisor(){
     this.router.navigateByUrl('alta-dueno-supervisor')

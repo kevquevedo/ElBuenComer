@@ -146,7 +146,7 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
         setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false; }, 2000)
       })
-      .catch( error => {
+      .catch( (error:any) => {
         this.spinner = false;
         this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger')
       })
