@@ -15,7 +15,6 @@ export class HomePage {
 
   loginUsuario: FormGroup;
   constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
-    // private toastr: ToastrService,
     private router: Router, private usuarioService: UsuariosService, private toastr: ToastrService) {
     this.loginUsuario = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,13 +49,13 @@ export class HomePage {
         });
 
         if (!userFound) {
-          // this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+           this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
         }
       } else {
-        // this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+         this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
       }
     }).catch(error => {
-      // this.toastr.error("Ocurrió un error al obtener la lista de usuarios", "Error", { timeOut: 1000 });
+       this.toastr.error("Ocurrió un error al obtener la lista de usuarios", "Error", { timeOut: 1000 });
     });
   }
 
