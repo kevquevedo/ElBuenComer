@@ -16,7 +16,7 @@ export class RegistroComponent  implements OnInit {
     this.router.navigate(['alta-clientes']);
   }
   altaProductos(){
-    this.router.navigate(['alta-productos']);
+    this.router.navigate(['alta-mesa']);
   }
 
   irAltaDuenoSupervisor(){

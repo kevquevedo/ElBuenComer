@@ -27,6 +27,7 @@ export class UsuariosService {
           resolve(); // Se resuelve la promesa si la operación se completa correctamente
         })
         .catch((error) => {
+          alert(error);
           reject(error); // Se rechaza la promesa si ocurre un error durante la operación
         });
     });

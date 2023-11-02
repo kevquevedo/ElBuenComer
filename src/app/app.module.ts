@@ -19,6 +19,7 @@ import { AltaEmpleadoComponent } from './Pages/alta-empleado/alta-empleado.compo
 import { AltaProductosComponent } from './Pages/alta-productos/alta-productos.component';
 import { AltaClientesComponent } from './Pages/alta-clientes/alta-clientes.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -28,7 +29,8 @@ fire.initializeApp(environment.firebase);
     AltaEmpleadoComponent,
     AltaDuenoSupervisorComponent,
     AltaProductosComponent,
-    AltaClientesComponent
+    AltaClientesComponent,
+    AltaMesaComponent
   ],
   imports: [
     BrowserModule,

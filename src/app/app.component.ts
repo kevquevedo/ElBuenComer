@@ -14,9 +14,9 @@ export class AppComponent {
   }
 
   inicializarApp(){
-    //this.router.navigateByUrl('splash');
+    this.router.navigateByUrl('splash');
     //this.router.navigateByUrl('home');
-    this.router.navigateByUrl('registros-pendientes');
+    //this.router.navigateByUrl('registros-pendientes');
   }
 
 

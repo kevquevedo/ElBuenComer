@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-back-button defaultHref="home-empleado" slot="start"></ion-back-button>
+    <ion-title class="ion-text-center">Alta de mesas</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form  [formGroup]="formMesa" class="form ion-text-center">
+ <!-- cantidadComensales -->
+    <ion-item lines="full" class="input-wrapper">
+      <ion-label position="fixed">Cantidad de Comensales</ion-label><br />
+      <ion-input type="text" #cantidadComensales  formControlName="cantidadComensales"> 
+      </ion-input>
+    </ion-item>
+    <small class="invalid" *ngIf="formMesa.controls['cantidadComensales'].errors?.['required'] && formMesa.controls['cantidadComensales'].touched" style="color: var(--ion-color-danger)">El cantidad es requerida.</small>
+<!-- Tipo Mesa -->
+    <ion-item lines="full" class="input-wrapper">
+      <ion-label position="fixed">Tipo mesa</ion-label><br /> 
+      <ion-select placeholder="Seleccione" #tipo formControlName="tipo">
+        <ion-select-option value="estandar">Estandar</ion-select-option>
+        <ion-select-option value="VIP">VIP</ion-select-option>
+        <ion-select-option value="cumpleaños">Cumpleaños</ion-select-option>
+        <ion-select-option value="discapacitados">Discapacitados</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <small class="invalid" *ngIf="formMesa.controls['tipo'].errors?.['required'] && formMesa.controls['tipo'].touched" style="color: var(--ion-color-danger)">El tipo es requerido.</small>
+
+    <!-- imagen -->
+    <div class="img" #imagen>
+      <ion-button class="ion-padding-horizontal" (click)="tomarFotoMesa()">
+        <ion-text>Subir Foto de Mesa</ion-text>
+        <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
+      </ion-button>
+    </div> 
+ <br>
+    <!-- SUBMIT --> 
+      <ion-button  type="submit"  size="medium"  expand="full" color="success" (click)="GuardarNuevoMesa()"
+      [disabled]="(!formMesa.valid || fotoMesa)"><strong>Guardar</strong> </ion-button>
+    
+  </form>
+</ion-content>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

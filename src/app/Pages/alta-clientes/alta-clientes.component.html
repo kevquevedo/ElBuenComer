@@ -1,33 +1,41 @@
 <ion-header [hidden]="scanActive">
-  <ion-header>
-    <ion-toolbar>
-      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
-      <ion-title class="ion-text-center" *ngIf="!anonimo">Registro Cliente</ion-title>
-      <ion-title class="ion-text-center" *ngIf="anonimo">Registro Anónimo</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title class="ion-text-center" *ngIf="!anonimo">Registro Cliente
 
+    </ion-title>
+    <ion-title class="ion-text-center" *ngIf="anonimo">Registro Anónimo
+
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
-<ion-item class="toggle" [hidden]="scanActive">
-  <ion-toggle [(ngModel)]="anonimo"></ion-toggle>
-  <ion-label>Anónimo</ion-label>
-</ion-item>
-<ion-content>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="success" size="large" (click)="startScan()">
-      <ion-icon name="qr-code-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 
-  <div [hidden]="scanActive" *ngIf="!anonimo">
-    <div style="  display: flex;
+
+<!-- <div *ngIf="!spin"> -->
+<ion-content *ngIf="!scanActive" style="display: 100%; width: 100%;" >
+  <!-- <ion-item class="toggle" [hidden]="scanActive" id="anonimo" style="display: 100%; width: 100%;"> -->
+  <div class="toggle ion-text-center" [hidden]="scanActive" id="anonimo">
+    <ion-toggle [(ngModel)]="anonimo"></ion-toggle>
+    <ion-label style="font-size: 21px;color: white;"> Anónimo</ion-label>
+  </div>
+  <!-- </ion-item> -->
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="warning" size="large" (click)="startScan()">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab> -->
+
+  <div [hidden]="scanActive" *ngIf="!anonimo" id="fto">
+    <!-- <div style="  display: flex;
     justify-content: center;">
-      <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
-    </div>
+        <a (click)="tomarFoto()"><img src="{{fotoUrl}}" style="height: 50px; width: 50px;"></a>
+      </div> -->
+
+
 
 
     <br>
-    <form [formGroup]="altaForm" class="form">
+    <form [formGroup]="altaForm" class="form" >
       <ion-item>
         <ion-label position="fixed">Correo </ion-label>
         <ion-input type="text" [(ngModel)]='email' formControlName="email">
@@ -52,17 +60,17 @@
 
       <br>
       <br>
-      <ion-item>
-        <ion-label position="fixed">Confirmar Clave</ion-label>
-        <ion-input type="password" [(ngModel)]='clave2' formControlName="clave2">
-        </ion-input>
-      </ion-item>
-      <small
-        *ngIf="altaForm.get('clave2')?.hasError('required') && (altaForm.get('clave2')?.dirty || altaForm.get('clave2')?.touched)"
-        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small>
-      <small *ngIf="clave2 != clave" style="color: var(--ion-color-danger)">Las claves no coinciden.</small>
-      <br>
-      <br>
+      <!-- <ion-item>
+          <ion-label position="fixed">Confirmar Clave</ion-label>
+          <ion-input type="password" [(ngModel)]='clave2' formControlName="clave2">
+          </ion-input>
+        </ion-item> -->
+      <!-- <small
+          *ngIf="altaForm.get('clave2')?.hasError('required') && (altaForm.get('clave2')?.dirty || altaForm.get('clave2')?.touched)"
+          style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small>
+        <small *ngIf="clave2 != clave" style="color: var(--ion-color-danger)">Las claves no coinciden.</small>
+        <br>
+        <br> -->
 
       <ion-item>
         <ion-label position="fixed">Nombre</ion-label>
@@ -108,15 +116,34 @@
         style="color: var(--ion-color-danger)">El dni debe contener al menos 8 caracteres.</small>
       <br><br><br>
 
+      <div class="img">
+        <ion-button class="ion-padding-horizontal" (click)="tomarFoto()">
+          <ion-text>Subir Foto de Perfil</ion-text>
+          <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
+        </ion-button>
+      </div>
+
       <ion-button expand="full" color="success" [disabled]="!altaForm.valid || !fotoHabilitar " type="submit"
         (click)='aceptar()'>
         <ion-icon name="arrow-forward-circle-outline"></ion-icon>
         Aceptar
       </ion-button>
+      <div *ngIf="!spin">
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button color="warning" size="large" (click)="startScan()">
+            <ion-icon name="qr-code-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+    
+      </div>
     </form>
   </div>
 
-  <form [formGroup]="altaFormAnonimo" [hidden]="scanActive" *ngIf="anonimo">
+
+  <form [formGroup]="altaFormAnonimo" [hidden]="scanActive" *ngIf="anonimo" id="anonimo" style="padding-top: 80px;height: 100%;">
+    <ion-card-header>
+      <img src="../../assets/splash.png">
+    </ion-card-header>
     <ion-item>
       <ion-label position="fixed">Nombre</ion-label>
       <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
@@ -128,41 +155,57 @@
 
     <br>
     <br>
-    <ion-item>
-      <!-- <ion-label>Foto</ion-label>
+
+    <!-- <ion-label>Foto</ion-label>
         <ion-button type="button" class="ingreso" fill="solid" expand="block" color="escanear"
           style="width: 80px; height: 45px" (click)="SacarFoto()">
           <ion-icon name="camera"></ion-icon>
         </ion-button>
         <ion-img class="foto" [src]='this.dataUrl' id="foto"></ion-img> -->
-      <div style="  display: flex; justify-content: center;">
+    <!-- <div style="  display: flex; justify-content: center;">
         <a (click)="tomarFoto()"><img src="{{fotoUrl}}" style="width: 80px; height: 45px"></a>
-      </div>
+      </div> -->
 
+    <div class="img">
+      <ion-button class="ion-padding-horizontal" (click)="tomarFoto()">
+        <ion-text>Subir Foto de Perfil</ion-text>
+        <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
+      </ion-button>
+    </div>
 
-    </ion-item>
 
     <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid || !fotoHabilitar " type="submit"
       (click)='aceptar()'>
       <ion-icon name="arrow-forward-circle-outline"></ion-icon>
       Aceptar
     </ion-button>
+    <div *ngIf="!spin">
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="warning" size="large" (click)="startScan()">
+          <ion-icon name="qr-code-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+  
+    </div>
   </form>
 
-  <div *ngIf="!anonimo">
-    <!-- FONDO PARA ESCANER -->
-    <div *ngIf="scanActive">
-      <ion-row class="scanner-buttons" [hidden]="!scanActive">
-        <ion-col>
-          <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
-        </ion-col>
-      </ion-row>
-      <div class="fondo-transparente">
-        <div class="scan-box" [hidden]="!scanActive"></div>
-      </div>
+</ion-content>
+
+<div *ngIf="!anonimo">
+  <!-- FONDO PARA ESCANER -->
+  <div *ngIf="scanActive">
+    <ion-row class="scanner-buttons" [hidden]="!scanActive">
+      <ion-col>
+        <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
+      </ion-col>
+    </ion-row>
+    <div class="fondo-transparente">
+      <div class="scan-box" [hidden]="!scanActive"></div>
     </div>
   </div>
-</ion-content>
-<!-- <ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>">
-  <p>Cargando...</p>
-</ngx-spinner> -->
+</div>
+<!-- </div> -->
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

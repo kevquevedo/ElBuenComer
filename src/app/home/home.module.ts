@@ -8,8 +8,6 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { RouterModule } from '@angular/router';
 import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
-import { AltaClientesComponent } from '../Pages/alta-clientes/alta-clientes.component';
-import { AltaProductosComponent } from '../Pages/alta-productos/alta-productos.component';
 import { MenuComponent } from '../Shared/menu/menu.component';
 import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/registros-pendientes.component';
 

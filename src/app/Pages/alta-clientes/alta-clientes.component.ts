@@ -11,6 +11,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { first } from 'rxjs/operators';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+
 
 
 @Component({
@@ -41,7 +43,7 @@ export class AltaClientesComponent  implements OnInit {
   dni='';
   fotoUrl='../../assets/sacarfoto.png';
   usuarios:any;
-  spin!: boolean;
+  spin: boolean = false;
   currentScan: any;
 
   constructor(
@@ -56,12 +58,13 @@ export class AltaClientesComponent  implements OnInit {
     private pushNotiSrv:NotificationService,
     private toastr: ToastController,
     private authSvc: AuthService,
-    private qrScanner: QrscannerService 
+    private qrScanner: QrscannerService,
+    private auth: Auth,
   ) {
     this.email = '';
     this.clave = '';
     this.clave2 = '';
-    //this.usuario = new Usuario();
+    this.usuario = new Usuario();
 
   }
 
@@ -74,7 +77,7 @@ export class AltaClientesComponent  implements OnInit {
       email: ["", [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       clave: ["", Validators.required],
       //clave2: ["", [Validators.required, this.comparePassValidator(this.altaForm.value.clave1, this.altaForm.value.clave2)]]
-      clave2: ["", Validators.compose([Validators.required])],
+      //clave2: ["", Validators.compose([Validators.required])],
 
     });
 
@@ -101,31 +104,58 @@ export class AltaClientesComponent  implements OnInit {
   aceptar() {     
     this.spin = true;
     if(!this.anonimo){
+
       this.usuario.email = this.altaForm.value.email;
       this.usuario.nombre = this.altaForm.value.nombre;
       this.usuario.apellido = this.altaForm.value.apellido;
       this.usuario.dni = this.altaForm.value.dni;
       this.usuario.tipo = eUsuario.cliente;
-      this.usuario.clienteValidado = false;
-      this.authSvc.Register(this.usuario.email, this.clave).then((credential:any)=>{
-        console.log(credential.user.uid);
-        this.usuario.uid = credential.user.uid;
-
+      this.usuario.clienteValidado = 'pendiente';
+      this.usuario.tipoEmpleado = '';
+      this.usuario.cuil = 0;
+      this.usuario.mesa = '';
+      this.usuario.token = '';
+      this.usuario.enListaDeEspera = false;
+      alert(
+        this.usuario.email +
+        this.usuario.apellido +
+        this.usuario.dni +this.usuario.tipo + this.usuario.clienteValidado
+        );
+      createUserWithEmailAndPassword(this.auth, this.email, this.clave).then( () => {
+        this.usuario.uid = this.auth.currentUser?.uid;
         this.usuariosSvc.crearUsuario(this.usuario);
-        this.spin = false;
+        //this.notificar();
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 1500 );
-      }).catch((err:any)=>{
-        this.Errores(err);
+        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spin = false;}, 2000)
+      })
+      .catch( error => {
         this.spin = false;
-        this.presentToast('middle', 'Error al crear el usuario: ' + err, 'danger', 1500 );
-        //this.utilidadesSrv.vibracionError();
-        console.log(err);
-      }); 
+        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
+      })
+
+
+
+      // this.authSvc.Register(this.usuario.email, this.clave).then((credential:any)=>{
+      //   alert(credential.user.uid);
+      //   alert(this.auth.currentUser?.uid);
+      //   this.usuario.uid = this.auth.currentUser?.uid;
+      //   alert(this.usuario);
+      //   this.usuariosSvc.crearUsuario(this.usuario);
+      //   this.notificar();
+      //   this.spin = false;
+      //   this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 1500 );
+      // }).catch((err:any)=>{
+      //   this.Errores(err);
+      //   this.spin = false;
+      //   this.presentToast('middle', 'Error al crear el usuario: ' + err, 'danger', 1500 );
+      //   //this.utilidadesSrv.vibracionError();
+      //   console.log(err);
+      // }); 
     }
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
-      this.usuario.clienteValidado = true;
+      this.usuario.clienteValidado = 'aceptado';
       this.usuariosSvc.crearUsuario(this.usuario);
       // this.firestoreSvc.crearUsuario(this.usuario).then((res:any)=>{
       //   this.pushSrv.RegisterFCM(res)
@@ -179,13 +209,16 @@ export class AltaClientesComponent  implements OnInit {
     }, 2000);
   }
 
-
   tomarFoto() {
     this.imagesSrv.agregarFoto()
-    .then(() => {
-      this.presentToast('middle', 'Se procesó OK la imagen', "Success", 1500);
+    .then((url:any) => {
+      //alert(url);
+      this.usuario.foto = url;
+      this.fotoHabilitar = true;
+      this.presentToast('middle', 'Se procesó con éxito la imagen', "success", 1500);
     }
     ).catch((err:any) => {
+      alert(err);
       this.presentToast('middle', 'Error al subir imagen: '  + err, "danger", 1500);
     })
     // this.sacarFoto();
@@ -216,20 +249,20 @@ export class AltaClientesComponent  implements OnInit {
       this.scanActive = true;
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
-        console.log(this.currentScan);
+        //alert(this.currentScan);
         if (this.currentScan) {
 
           this.dniData = this.currentScan.split('@');
-          let digitosCUIL = this.dniData[8];
-          let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
+          //let digitosCUIL = this.dniData[8];
+          //let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
           this.usuario.dni = this.dniData[4].trim();
           this.usuario.nombre = this.dniData[2].trim();
           this.usuario.apellido = this.dniData[1].trim();
-          this.usuario.cuil = cuil.trim();
+          //alert(this.usuario.nombre);
+          //this.usuario.cuil = cuil.trim();
           this.altaForm.controls['dni'].setValue(this.usuario.dni);
           this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
-          this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
-          this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
+          this.altaForm.controls['apellido'].setValue(this.usuario.apellido);;
         }
 
         this.scanActive = false;
@@ -237,7 +270,7 @@ export class AltaClientesComponent  implements OnInit {
     }, 2000);
   } // end of startScan
 
-  
+
   stopScan() {
     setTimeout(() => {
       this.scanActive = false;
@@ -269,7 +302,7 @@ export class AltaClientesComponent  implements OnInit {
   //       this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
   //       this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
 
-  //       this.scanActive = false;
+  //       this.stopScan();
   //     } else {
   //       this.stopScan();
   //     }
@@ -285,12 +318,7 @@ export class AltaClientesComponent  implements OnInit {
   //   this.scanActive  = false;
   // }
 
-  
-  
 
-  ngAfterViewInit(): void {
-    BarcodeScanner.prepare();
-  }
 
   Errores(error:any)
   {
@@ -329,7 +357,7 @@ export class AltaClientesComponent  implements OnInit {
         tokens.push(user.token) 
       }
      });
-     
+     alert(tokens);
      tokens.forEach(token => {
       this.pushNotiSrv 
       .sendPushNotification({

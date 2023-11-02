@@ -45,15 +45,17 @@
     <small class="invalid" *ngIf="formProducto.controls['sector'].errors?.['required'] && formProducto.controls['sector'].touched" style="color: var(--ion-color-danger)">El sector es requerido.</small>
 
     <!-- imagen -->
-    <b>{{i_NroImagen}}</b>
     <ion-item class="image-item input-wrapper" *ngIf="i_NroImagen<3"> 
       <ion-col size="6">
         <ion-label style="color: white;">Fotos del producto (3)</ion-label>
       </ion-col>
       <ion-col size="6">
-        <div class="mx-auto d-block circular--portrait image-default" (click)="tomarFotoProducto()"  #imagen>
-          <img src="../../../assets/sacarfoto.html" style="height: 100px; width: 100px;">
-        </div>  
+        <div class="img" #imagen>
+          <ion-button class="ion-padding-horizontal" (click)="tomarFotoProducto()" >
+            <ion-text>Subir Foto de Perfil</ion-text>
+            <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
+          </ion-button>
+        </div> 
       </ion-col>  
     </ion-item> <br>
     <ion-row class="uploaded-images">
