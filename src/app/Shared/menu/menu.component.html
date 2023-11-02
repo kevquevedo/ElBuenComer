@@ -5,8 +5,8 @@
     </ion-item>
     <ion-list slot="content">
 
-    <ion-item  *ngIf="tieneMesa">
-      <ion-label class="text-center">Ver lista de Espera</ion-label>
+    <ion-item  *ngIf="isMetre">
+      <ion-label class="text-center" (click)="irAListaEspera()">Lista de Espera</ion-label>
     </ion-item>
     <ion-item   *ngIf="isCliente">
       <ion-label class="text-center">Juegos</ion-label>

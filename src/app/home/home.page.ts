@@ -31,7 +31,7 @@ export class HomePage {
         resp.forEach((usuario: any) => {
           if (usuario.data().email == email) {
             userFound = true;
-            if (usuario.data().clienteValidado == true) {
+            if (usuario.data().clienteValidado == "aceptado") {
               this.afAuth.signInWithEmailAndPassword(email, pass)
                 .then((user) => {
                   this.afAuth.currentUser.then(user => {

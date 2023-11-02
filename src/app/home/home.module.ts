@@ -10,6 +10,7 @@ import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { MenuComponent } from '../Shared/menu/menu.component';
 import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/registros-pendientes.component';
+import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.component';
 
 
 @NgModule({
@@ -21,6 +22,6 @@ import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/regi
     ReactiveFormsModule,
     RouterModule,
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent]
+  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent, ListaEsperaComponent]
 })
 export class HomePageModule {}
