@@ -27,7 +27,7 @@
           <ion-label color="danger" *ngIf="loginUsuario.get('pass')?.hasError('minLength') && loginUsuario.get('pass')?.touched"  class="text-danger form-floating"><p>La contraseña debe tener mínimo 6 carácteres</p></ion-label>
         </ion-item>
         <ion-button expand="full" (click)="login()" [disabled]="loginUsuario.invalid">Aceptar</ion-button>
-        <button class="custom-button" (click)="altaClientes()" id="registro">Nuevo Cliente</button>
+        <button class="custom-button" (click)="altaClientes()" style="color: ligth;" id="registro">Nuevo Cliente</button>
       </form>
       <ion-row class="custom-margin">
        <ion-col class="form-group">
