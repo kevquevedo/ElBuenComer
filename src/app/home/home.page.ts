@@ -15,8 +15,8 @@ export class HomePage {
 
   loginUsuario: FormGroup;
   constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
-    // private toastr: ToastrService, 
-    private router: Router, private usuarioService: UsuariosService) {
+    // private toastr: ToastrService,
+    private router: Router, private usuarioService: UsuariosService, private toastr: ToastrService) {
     this.loginUsuario = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       pass: ['', [Validators.required, Validators.minLength(6)]],
@@ -38,13 +38,13 @@ export class HomePage {
                   this.afAuth.currentUser.then(user => {
                     const usuario = user?.email;
                   });
-                  // this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
+                   this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
                   this.router.navigate(['/home/principal']);
                 }).catch((error) => {
-                  // this.toastr.error("Contraseña incorrecta", "Error", { timeOut: 1000 });
+                   this.toastr.error("Contraseña incorrecta", "Error", { timeOut: 1000 });
                 });
             } else {
-              // this.toastr.error("Usuario no validado", "Error", { timeOut: 1000 });
+               this.toastr.error("Usuario no validado", "Error", { timeOut: 1000 });
             }
           }
         });
@@ -61,8 +61,8 @@ export class HomePage {
   }
 
 
-  accesoRegistro() {
-    this.router.navigate(['/home/registro']);
+  altaClientes(){
+    this.router.navigate(['alta-clientes']);
   }
 
   accesoRapidoUsuario() {
@@ -89,5 +89,27 @@ export class HomePage {
     this.login();
   }
 
+  accesoRapidoCliente() {
+    this.loginUsuario.setValue({
+      email: "macabf@gmail.com",
+      pass: "123456"
+    });
+    this.login();
+  }
 
+  accesoRapidoBartender() {
+    this.loginUsuario.setValue({
+      email: "maquitis1415@gmail.com",
+      pass: "123456"
+    });
+    this.login();
+  }
+
+  accesoRapidoMetre() {
+    this.loginUsuario.setValue({
+      email: "macarenaf@gmail.com",
+      pass: "123456"
+    });
+    this.login();
+  }
 }

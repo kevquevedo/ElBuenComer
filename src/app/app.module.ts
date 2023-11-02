@@ -20,6 +20,7 @@ import { AltaProductosComponent } from './Pages/alta-productos/alta-productos.co
 import { AltaClientesComponent } from './Pages/alta-clientes/alta-clientes.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
+import { ToastrModule } from 'ngx-toastr';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -40,7 +41,7 @@ fire.initializeApp(environment.firebase);
     IonicModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule,
-   //ToastrModule.forRoot(),
+    ToastrModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideStorage(() => getStorage()),

@@ -65,7 +65,12 @@ export class MenuComponent implements OnInit {
   irAListaEspera(){
     this.router.navigateByUrl('home/listaEspera')
   }
-
+  altaProductos(){
+    this.router.navigate(['alta-productos']);
+  }
+  altaMesa(){
+    this.router.navigate(['alta-mesa']);
+  }
   logOut() {
     this.afAuth.signOut().then(() => this.router.navigate([""]));
   }

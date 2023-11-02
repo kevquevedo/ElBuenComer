@@ -11,6 +11,7 @@ import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { MenuComponent } from '../Shared/menu/menu.component';
 import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/registros-pendientes.component';
 import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.compone
     HomePageRoutingModule,
     ReactiveFormsModule,
     RouterModule,
-    
+
   ],
   declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent, ListaEsperaComponent]
 })
