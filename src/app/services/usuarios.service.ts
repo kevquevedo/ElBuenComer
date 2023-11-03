@@ -38,7 +38,6 @@ export class UsuariosService {
     return getDocs(usuarios);
   }
 
-<<<<<<< HEAD
   actualizarEstadoCliente(usuario: any, estado:string){
     let usuariosRef = doc(this.firestore, 'usuarios', usuario.id);
     updateDoc(usuariosRef, {
@@ -46,7 +45,6 @@ export class UsuariosService {
     });
   }
 
-=======
   UpdateListadoEspera(id:string): Promise<void> {
     return new Promise((resolve, reject) => {
       const usuario = doc(this.allUsuarios, id);
@@ -77,6 +75,5 @@ export class UsuariosService {
         });
     });
   }
->>>>>>> d71f30a8f0160654bc4567edf5226c379c00c593
 
 }
