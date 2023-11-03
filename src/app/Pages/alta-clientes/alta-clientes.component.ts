@@ -28,8 +28,8 @@ export class AltaClientesComponent  implements OnInit {
   clave2: string;
   show_error: boolean = false; //
   descripcion_error: string = '';
-  public altaForm!: FormGroup; 
-  public altaFormAnonimo!: FormGroup; 
+  public altaForm!: FormGroup;
+  public altaFormAnonimo!: FormGroup;
   fotoHabilitar:boolean=false;
   path:string='';
   anonimo:boolean = false;
@@ -104,7 +104,7 @@ export class AltaClientesComponent  implements OnInit {
 }
 
 
-  aceptar() {     
+  aceptar() {
     this.spin = true;
     if(!this.anonimo){
 
@@ -119,11 +119,6 @@ export class AltaClientesComponent  implements OnInit {
       this.usuario.mesa = '';
       this.usuario.token = '';
       this.usuario.enListaDeEspera = false;
-      alert(
-        this.usuario.email +
-        this.usuario.apellido +
-        this.usuario.dni +this.usuario.tipo + this.usuario.clienteValidado
-        );
       createUserWithEmailAndPassword(this.auth, this.email, this.clave).then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
         this.usuariosSvc.crearUsuario(this.usuario);
@@ -133,7 +128,7 @@ export class AltaClientesComponent  implements OnInit {
       })
       .catch( error => {
         this.spin = false;
-        this.Errores(error);
+        // this.Errores(error);
         //this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
 
@@ -154,39 +149,39 @@ export class AltaClientesComponent  implements OnInit {
         this.presentToast('middle', 'Error al crear el usuario', 'danger', 1500 );
       })
     }
- 
+
   }
 
- 
+
   // notificar(){
   //   let tokens=[];
-  //   this.usuarios.forEach(user => {   
+  //   this.usuarios.forEach(user => {
   //     if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
-  //       tokens.push(user.token) 
+  //       tokens.push(user.token)
   //     }
   //    });
-     
+
   //    tokens.forEach(token => {
-  //     this.pushSrv 
+  //     this.pushSrv
   //     .sendPushNotification({
   //       // eslint-disable-next-line @typescript-eslint/naming-convention
-  //            /* registration_ids: [ 
-  //             token 
+  //            /* registration_ids: [
+  //             token
   //             ], */
-  //       to: token,      
+  //       to: token,
   //       notification: {
   //         title: 'Nuevo cliente',
   //         body: 'Se registro un nuevo cliente',
   //       },
   //       data: {
-  //         ruta: 'listado-clientes-pendientes', 
+  //         ruta: 'listado-clientes-pendientes',
   //       },
   //     }).pipe(first()).subscribe((data)=>{
-  //       console.log(data) 
-  //     }) 
+  //       console.log(data)
+  //     })
   //    });
 
- 
+
   // }
 
   navigateTo(url: string) {
@@ -198,13 +193,11 @@ export class AltaClientesComponent  implements OnInit {
   tomarFoto() {
     this.imagesSrv.agregarFoto()
     .then((url:any) => {
-      //alert(url);
       this.usuario.foto = url;
       this.fotoHabilitar = true;
       this.presentToast('middle', 'Se procesó con éxito la imagen', "success", 1500);
     }
     ).catch((err:any) => {
-      alert(err);
       this.presentToast('middle', 'Error al subir imagen: '  + err, "danger", 1500);
     })
     // this.sacarFoto();
@@ -235,7 +228,6 @@ export class AltaClientesComponent  implements OnInit {
       this.scanActive = true;
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
-        //alert(this.currentScan);
         if (this.currentScan) {
           this.dniData = this.currentScan.split('@');
           //let digitosCUIL = this.dniData[8];
@@ -243,7 +235,6 @@ export class AltaClientesComponent  implements OnInit {
           this.usuario.dni = this.dniData[4].trim();
           this.usuario.nombre = this.dniData[2].trim();
           this.usuario.apellido = this.dniData[1].trim();
-          alert(this.usuario.nombre);
           //this.usuario.cuil = cuil.trim();
           this.altaForm.controls['dni'].setValue(this.usuario.dni);
           this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
@@ -317,7 +308,7 @@ export class AltaClientesComponent  implements OnInit {
       }
       else if(error.code == 'auth/weak-password')
       {
-        this.presentToast('middle', 'La contraseña debe tener al menos 8 caracteres.', "danger", 1500);
+        this.presentToast('middle', 'La contraseña debe tener al menos 6 caracteres.', "danger", 1500);
       }
       else
       {
@@ -337,33 +328,32 @@ export class AltaClientesComponent  implements OnInit {
 
   notificar(){
     let tokens: any[] = [];
-    this.usuarios.forEach((user:any) => {   
+    this.usuarios.forEach((user:any) => {
       if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
-        tokens.push(user.token) 
+        tokens.push(user.token)
       }
      });
-     alert(tokens);
      tokens.forEach(token => {
-      this.pushNotiSrv 
+      this.pushNotiSrv
       .sendPushNotification({
         // eslint-disable-next-line @typescript-eslint/naming-convention
-             /* registration_ids: [ 
-              token 
+             /* registration_ids: [
+              token
               ], */
-        to: token,      
+        to: token,
         notification: {
           title: 'Nuevo cliente',
           body: 'Se registro un nuevo cliente',
         },
         data: {
-          ruta: 'home', 
+          ruta: 'home',
         },
       }).pipe(first()).subscribe((data:any)=>{
-        console.log(data) 
-      }) 
+        console.log(data)
+      })
      });
 
- 
+
   }
 
 
