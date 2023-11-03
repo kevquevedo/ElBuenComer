@@ -61,6 +61,7 @@ export class HomePage {
   }
 
 
+  
   altaClientes(){
     this.router.navigate(['alta-clientes']);
   }
@@ -81,7 +82,7 @@ export class HomePage {
     this.login();
   }
 
-  accesoRapidoInvitado() {WE
+  accesoRapidoInvitado() {
     this.loginUsuario.setValue({
       email: "macarenabetsabeferrero@gmail.com",
       pass: "123456"
@@ -89,14 +90,12 @@ export class HomePage {
     this.login();
   }
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 1500,
-      position: position,
-      color: color
+  accesoRapidoCliente() {
+    this.loginUsuario.setValue({
+      email: "macabf@gmail.com",
+      pass: "123456"
     });
-    await toast.present();
+    this.login();
   }
 
   accesoRapidoBartender() {
@@ -114,4 +113,15 @@ export class HomePage {
     });
     this.login();
   }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 1500,
+      position: position,
+      color: color
+    });
+    await toast.present();
+  }
+
 }
