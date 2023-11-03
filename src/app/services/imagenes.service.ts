@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, Photo, CameraSource } from '@capacitor/camera';
 import { Observable } from 'rxjs';
-import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
+import { Storage, getDownloadURL, ref, uploadBytes} from '@angular/fire/storage';
+
 
 @Injectable({
   providedIn: 'root'

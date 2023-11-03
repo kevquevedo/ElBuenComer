@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "776359826524",
+    "project_id": "elbuencomerapp",
+    "storage_bucket": "elbuencomerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776359826524:android:b1f33e694faf473d53c299",
+        "android_client_info": {
+          "package_name": "elbuencomer.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp_8L3YndGnGO4PP9gr_qLX3ry9LCf81g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

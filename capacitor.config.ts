@@ -10,7 +10,11 @@ const config: CapacitorConfig = {
   plugins:{
     SplashScreen:{
       launchShowDuration: 1000
-    }
+    },
+    BarcodeScanner: {
+      "ENABLE_CAMERA_SWITCH": true
+    },
+    
   }
 };
 

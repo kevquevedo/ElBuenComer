@@ -15,6 +15,7 @@ export class MenuComponent implements OnInit {
   isBartender: boolean = false;
   isCocinero: boolean = false;
   isMozo: boolean = false;
+  isMetre: boolean = false;
   tieneMesa: boolean = false;
 
   constructor(public router: Router, public afAuth: AngularFireAuth, private usuarioService: UsuariosService) { }
@@ -37,6 +38,8 @@ export class MenuComponent implements OnInit {
                 this.isBartender = true;
               }else if(this.tipoEmpleado == "cocinero"){
                 this.isCocinero = true;
+              }else if(this.tipoEmpleado == "metre"){
+                this.isMetre = true;
               }else{
                 this.isMozo = true;
               }
@@ -59,7 +62,15 @@ export class MenuComponent implements OnInit {
   irARegistrosPendientes(){
     this.router.navigateByUrl('registros-pendientes')
   }
-
+  irAListaEspera(){
+    this.router.navigateByUrl('home/listaEspera')
+  }
+  altaProductos(){
+    this.router.navigate(['alta-productos']);
+  }
+  altaMesa(){
+    this.router.navigate(['alta-mesa']);
+  }
   logOut() {
     this.afAuth.signOut().then(() => this.router.navigate([""]));
   }
