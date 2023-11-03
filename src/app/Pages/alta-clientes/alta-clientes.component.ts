@@ -114,7 +114,7 @@ export class AltaClientesComponent  implements OnInit {
       this.usuario.dni = this.altaForm.value.dni;
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.clienteValidado = 'pendiente';
-      this.usuario.tipoEmpleado = '';
+      this.usuario.tipoEmpleado = 'registrado';
       this.usuario.cuil = 0;
       this.usuario.mesa = '';
       this.usuario.token = '';
