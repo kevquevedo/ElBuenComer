@@ -6,10 +6,11 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { RouterModule } from '@angular/router';
-import { RegistroComponent } from '../Pages/registro/registro.component';
 import { PrincipalComponent } from '../Pages/principal/principal.component';
 import { MenuComponent } from '../Shared/menu/menu.component';
 import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/registros-pendientes.component';
+import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @NgModule({
@@ -20,8 +21,8 @@ import { RegistrosPendientesComponent } from '../Pages/registros-pendientes/regi
     HomePageRoutingModule,
     ReactiveFormsModule,
     RouterModule,
-    
+
   ],
-  declarations: [HomePage, RegistroComponent, PrincipalComponent, MenuComponent, RegistrosPendientesComponent]
+  declarations: [HomePage, PrincipalComponent, MenuComponent, RegistrosPendientesComponent, ListaEsperaComponent]
 })
 export class HomePageModule {}

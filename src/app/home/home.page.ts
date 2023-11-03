@@ -61,8 +61,8 @@ export class HomePage {
   }
 
 
-  accesoRegistro() {
-    this.router.navigate(['/home/registro']);
+  altaClientes(){
+    this.router.navigate(['alta-clientes']);
   }
 
   accesoRapidoUsuario() {
@@ -81,7 +81,7 @@ export class HomePage {
     this.login();
   }
 
-  accesoRapidoInvitado() {
+  accesoRapidoInvitado() {WE
     this.loginUsuario.setValue({
       email: "macarenabetsabeferrero@gmail.com",
       pass: "123456"
@@ -99,4 +99,19 @@ export class HomePage {
     await toast.present();
   }
 
+  accesoRapidoBartender() {
+    this.loginUsuario.setValue({
+      email: "maquitis1415@gmail.com",
+      pass: "123456"
+    });
+    this.login();
+  }
+
+  accesoRapidoMetre() {
+    this.loginUsuario.setValue({
+      email: "macarenaf@gmail.com",
+      pass: "123456"
+    });
+    this.login();
+  }
 }

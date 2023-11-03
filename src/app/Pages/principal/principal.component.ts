@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { StatusBar } from '@capacitor/status-bar';
-import { AlertController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -22,12 +22,15 @@ export class PrincipalComponent  implements OnInit {
   isBartender:boolean=false;
   isCocinero:boolean=false;
   isMozo:boolean=false;
+  isMetre:boolean=false;
   tieneMesa:boolean=false;
   tipoEmpleado:string="";
   currentScan: any;
   spin!: boolean;
   spinner!:boolean;
-  constructor(private qrScanner: QrscannerService ,private router:Router,private usuarioService: UsuariosService ,public afAuth:AngularFireAuth,public alertController: AlertController)
+  enListaEspera:boolean = false;
+  constructor(private qrScanner: QrscannerService ,private router:Router,private usuarioService: UsuariosService ,
+    public afAuth:AngularFireAuth,private toastController: ToastController)
   {
     this.spin = true;
     this.spinner = false;
@@ -51,10 +54,14 @@ export class PrincipalComponent  implements OnInit {
                 this.isBartender = true;
               }else if(this.tipoEmpleado == "cocinero"){
                 this.isCocinero = true;
-              }else{
+              }else if(this.tipoEmpleado == "metre"){
+                this.isMetre = true;
+              }
+              else{
                 this.isMozo = true;
               }
           }
+          this.usuario = usuario.data();
         }
       }
       );
@@ -82,8 +89,10 @@ export class PrincipalComponent  implements OnInit {
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
         console.log(this.currentScan);
-        this.router.navigateByUrl(this.currentScan);
+        this.usuarioService.UpdateListadoEspera(this.usuario.id);
         this.scanActive = false;
+        this.presentarToast('middle', 'Te encontrás en lista de espera, en unos minutos el metre te asignará una mesa.', 'success');
+        this.enListaEspera = true;
       });
     }, 2000);
   } // end of startScan
@@ -97,5 +106,15 @@ export class PrincipalComponent  implements OnInit {
 
 
 
+
+  async presentarToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2500,
+      position: position,
+      color: color
+    });
+    await toast.present();
+  }
 
 }

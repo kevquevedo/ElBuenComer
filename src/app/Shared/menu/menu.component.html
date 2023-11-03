@@ -5,8 +5,8 @@
     </ion-item>
     <ion-list slot="content">
 
-    <ion-item  *ngIf="tieneMesa">
-      <ion-label class="text-center">Ver lista de Espera</ion-label>
+    <ion-item  *ngIf="isMetre">
+      <ion-label class="text-center" (click)="irAListaEspera()">Lista de Espera</ion-label>
     </ion-item>
     <ion-item   *ngIf="isCliente">
       <ion-label class="text-center">Juegos</ion-label>
@@ -16,6 +16,12 @@
     </ion-item>
     <ion-item   *ngIf="isBartender">
       <ion-label class="text-center">Bebidas pendientes</ion-label>
+    </ion-item>
+    <ion-item   *ngIf="isBartender || isCocinero">
+      <ion-label class="text-center" (click)="altaProductos()">Alta Producto</ion-label>
+    </ion-item>
+    <ion-item   *ngIf="isAdmin">
+      <ion-label class="text-center" (click)="altaMesa()">Alta mesa</ion-label>
     </ion-item>
     <ion-item  *ngIf="isAdmin">
       <ion-label class="text-center" (click)="irARegistrosPendientes()">Registros pendientes</ion-label>
