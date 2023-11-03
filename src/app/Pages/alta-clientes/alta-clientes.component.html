@@ -35,10 +35,10 @@
 
 
     <br>
-    <form [formGroup]="altaForm" class="form" >
+    <form [formGroup]="altaForm" class="form ion-text-center" >
       <ion-item>
         <ion-label position="fixed">Correo </ion-label>
-        <ion-input type="text" [(ngModel)]='email' formControlName="email">
+        <ion-input type="text" formControlName="email">
         </ion-input>
       </ion-item>
       <small
@@ -51,7 +51,7 @@
       <br>
       <ion-item>
         <ion-label position="fixed">Clave</ion-label>
-        <ion-input type="password" [(ngModel)]='clave' formControlName="clave">
+        <ion-input type="password" formControlName="clave">
         </ion-input>
       </ion-item>
       <small
@@ -74,7 +74,7 @@
 
       <ion-item>
         <ion-label position="fixed">Nombre</ion-label>
-        <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
+        <ion-input type="text"  formControlName="nombre">
         </ion-input>
       </ion-item>
       <small
@@ -85,7 +85,7 @@
       <br>
       <ion-item>
         <ion-label position="fixed">Apellido </ion-label>
-        <ion-input type="text" [(ngModel)]='apellido' formControlName="apellido">
+        <ion-input type="text" formControlName="apellido">
         </ion-input>
       </ion-item>
       <small
@@ -98,7 +98,7 @@
       <br>
       <ion-item>
         <ion-label position="fixed">DNI</ion-label>
-        <ion-input type="number" [(ngModel)]='dni' formControlName="dni">
+        <ion-input type="number" formControlName="dni">
         </ion-input>
       </ion-item>
       <small
@@ -146,7 +146,7 @@
     </ion-card-header>
     <ion-item>
       <ion-label position="fixed">Nombre</ion-label>
-      <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
+      <ion-input type="text" formControlName="nombre">
       </ion-input>
     </ion-item>
     <small

@@ -34,7 +34,7 @@ export class AltaMesaComponent  implements OnInit {
     private toastr: ToastController,
    // private spinner: NgxSpinnerService
     ) {
-
+      this.spin = true;
   }
 
   navigateBack(){
@@ -49,7 +49,7 @@ export class AltaMesaComponent  implements OnInit {
       'cantidadComensales': ['', [Validators.required]],
       'tipo': ['', [Validators.required]]
     }); 
-    setTimeout( ()=>{ this.spin = false; }, 2500)
+    setTimeout( ()=>{ this.spin = false; }, 2000)
 
     
   }

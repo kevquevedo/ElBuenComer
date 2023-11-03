@@ -65,6 +65,7 @@ export class AltaClientesComponent  implements OnInit {
     this.clave = '';
     this.clave2 = '';
     this.usuario = new Usuario();
+    this.spin = true;
 
   }
 
@@ -84,6 +85,8 @@ export class AltaClientesComponent  implements OnInit {
     this.altaFormAnonimo = this.fromBuilder.group({
       'nombre': ['', Validators.required]
     });
+
+    setTimeout( ()=>{ this.spin = false; }, 2000)
 
 
     // this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.dueño).subscribe((res)=>{
@@ -130,43 +133,26 @@ export class AltaClientesComponent  implements OnInit {
       })
       .catch( error => {
         this.spin = false;
-        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
+        this.Errores(error);
+        //this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
 
-
-
-      // this.authSvc.Register(this.usuario.email, this.clave).then((credential:any)=>{
-      //   alert(credential.user.uid);
-      //   alert(this.auth.currentUser?.uid);
-      //   this.usuario.uid = this.auth.currentUser?.uid;
-      //   alert(this.usuario);
-      //   this.usuariosSvc.crearUsuario(this.usuario);
-      //   this.notificar();
-      //   this.spin = false;
-      //   this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 1500 );
-      // }).catch((err:any)=>{
-      //   this.Errores(err);
-      //   this.spin = false;
-      //   this.presentToast('middle', 'Error al crear el usuario: ' + err, 'danger', 1500 );
-      //   //this.utilidadesSrv.vibracionError();
-      //   console.log(err);
-      // }); 
     }
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.clienteValidado = 'aceptado';
-      this.usuariosSvc.crearUsuario(this.usuario);
-      // this.firestoreSvc.crearUsuario(this.usuario).then((res:any)=>{
-      //   this.pushSrv.RegisterFCM(res)
-      //   console.log("id del anonimo "+res)
-      // });
-      this.spin = false;
-      setTimeout(() => {
-        //this.utilidadesSrv.successToast("Ingreso exitoso.");
-        this.navigateTo('');
-      }, 5000);
-
+      this.usuariosSvc.crearUsuario(this.usuario).then(() =>{
+        this.spin = false;
+        setTimeout(() => {
+          //this.utilidadesSrv.successToast("Ingreso exitoso.");
+          this.navigateTo('');
+        }, 2000);
+      })
+      .catch( error => {
+        this.spin = false;
+        this.presentToast('middle', 'Error al crear el usuario', 'danger', 1500 );
+      })
     }
  
   }
@@ -251,14 +237,13 @@ export class AltaClientesComponent  implements OnInit {
         this.currentScan = result?.trim();
         //alert(this.currentScan);
         if (this.currentScan) {
-
           this.dniData = this.currentScan.split('@');
           //let digitosCUIL = this.dniData[8];
           //let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
           this.usuario.dni = this.dniData[4].trim();
           this.usuario.nombre = this.dniData[2].trim();
           this.usuario.apellido = this.dniData[1].trim();
-          //alert(this.usuario.nombre);
+          alert(this.usuario.nombre);
           //this.usuario.cuil = cuil.trim();
           this.altaForm.controls['dni'].setValue(this.usuario.dni);
           this.altaForm.controls['nombre'].setValue(this.usuario.nombre);

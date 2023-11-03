@@ -35,7 +35,7 @@ export class AltaProductosComponent  implements OnInit {
     private authSrv:AuthService,
    // private spinner: NgxSpinnerService
     ) {
-
+      this.spin = true;
   }
 
   navigateBack(){

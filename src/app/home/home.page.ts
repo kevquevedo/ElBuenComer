@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UsuariosService } from '../services/usuarios.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ export class HomePage {
 
   loginUsuario: FormGroup;
   constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
-    // private toastr: ToastrService, 
+    private toastController: ToastController,
     private router: Router, private usuarioService: UsuariosService) {
     this.loginUsuario = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,31 +32,31 @@ export class HomePage {
         resp.forEach((usuario: any) => {
           if (usuario.data().email == email) {
             userFound = true;
-            if (usuario.data().clienteValidado == true) {
+            if (usuario.data().clienteValidado == 'aceptado') {
               this.afAuth.signInWithEmailAndPassword(email, pass)
                 .then((user) => {
                   this.afAuth.currentUser.then(user => {
                     const usuario = user?.email;
                   });
-                  // this.toastr.success("Bienvenido", "Ingreso correcto", { timeOut: 1000 });
+                  this.presentToast('middle', 'Bienvenido. Ingreso correcto', 'success');
                   this.router.navigate(['/home/principal']);
                 }).catch((error) => {
-                  // this.toastr.error("Contraseña incorrecta", "Error", { timeOut: 1000 });
+                  this.presentToast('middle', 'Contraseña incorrecta.', 'danger');
                 });
             } else {
-              // this.toastr.error("Usuario no validado", "Error", { timeOut: 1000 });
+              this.presentToast('middle', 'Usuario no validado.', 'danger');
             }
           }
         });
 
         if (!userFound) {
-          // this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+          this.presentToast('middle', 'Usuario no registrado.', 'danger');
         }
       } else {
-        // this.toastr.error("Usuario no registrado", "Error", { timeOut: 1000 });
+        this.presentToast('middle', 'Usuario no registrado.', 'danger');
       }
     }).catch(error => {
-      // this.toastr.error("Ocurrió un error al obtener la lista de usuarios", "Error", { timeOut: 1000 });
+      this.presentToast('middle', 'Ocurrió un error al obtener la lista de usuarios.', 'danger');
     });
   }
 
@@ -89,5 +89,14 @@ export class HomePage {
     this.login();
   }
 
+  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 1500,
+      position: position,
+      color: color
+    });
+    await toast.present();
+  }
 
 }
