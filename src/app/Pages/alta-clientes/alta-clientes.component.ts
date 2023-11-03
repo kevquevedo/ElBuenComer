@@ -119,7 +119,7 @@ export class AltaClientesComponent  implements OnInit {
       this.usuario.mesa = '';
       this.usuario.token = '';
       this.usuario.enListaDeEspera = false;
-      createUserWithEmailAndPassword(this.auth, this.email, this.clave).then( () => {
+      createUserWithEmailAndPassword(this.auth, this.usuario.email, this.altaForm.value.clave).then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
         this.usuariosSvc.crearUsuario(this.usuario);
         //this.notificar();
@@ -129,7 +129,7 @@ export class AltaClientesComponent  implements OnInit {
       .catch( error => {
         this.spin = false;
         // this.Errores(error);
-        //this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
+        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
 
     }
