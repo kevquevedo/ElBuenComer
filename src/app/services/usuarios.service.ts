@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { Usuario } from '../clases/usuario';
 import { Observable } from 'rxjs';
 
@@ -36,4 +36,13 @@ export class UsuariosService {
     const usuarios = collection(this.firestore, 'usuarios');
     return getDocs(usuarios);
   }
+
+  actualizarEstadoCliente(usuario: any, estado:string){
+    let usuariosRef = doc(this.firestore, 'usuarios', usuario.id);
+    updateDoc(usuariosRef, {
+      clienteValidado: estado
+    });
+  }
+
+
 }

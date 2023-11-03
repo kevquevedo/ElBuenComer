@@ -25,12 +25,16 @@ export class RegistrosPendientesComponent  implements OnInit {
   }
 
   ngOnInit() {
+    this.actualizarUsuariosPendientes();
+  }
+
+  actualizarUsuariosPendientes(){
     this.usuarioServ.getListadoUsuarios().then(resp => {
       this.listadoClientes=[];
       this.existenAprob = false;
       if (resp.size > 0) {
         resp.forEach((usuario: any) => {
-          if (!usuario.data().clienteValidado && usuario.data().tipo == 'cliente' && usuario.data().tipoEmpleado == 'registrado') {
+          if (usuario.data().clienteValidado == 'pendiente' && usuario.data().tipo == 'cliente' && usuario.data().tipoEmpleado == 'registrado') {
             this.existenAprob = true;
             this.listadoClientes.push(usuario.data())
           }
@@ -41,15 +45,17 @@ export class RegistrosPendientesComponent  implements OnInit {
   }
 
   aceptarCliente(usuario:any){
-    this.emailServ.enviarEmail(usuario.nombre + ' ' + usuario.apellido, usuario.email, 'Felicitaciones! La solicitud de alta de su usuario fue aprobada.');
-    this.presentarToast('bottom', 'El mail se envió correctamente.', 'success')
-    //CAMBIAR ESTADO DE USUARIO + ACTUALIZAR LISTADO DE PENDIENTES;
+    this.emailServ.enviarEmail(usuario.nombre + ' ' + usuario.apellido, usuario.email, '¡Felicitaciones! La solicitud de alta de su usuario fue aprobada.');
+    this.usuarioServ.actualizarEstadoCliente(usuario, 'aceptado');
+    this.actualizarUsuariosPendientes();
+    //this.presentarToast('bottom', 'El mail se envió correctamente.', 'success');
   }
 
   rechazarCliente(usuario:any){
-    this.emailServ.enviarEmail(usuario.nombre + ' ' + usuario.apellido, usuario.email, 'Lo sentimos! La solicitud de alta de su usuario fue rechazada.');
-    this.presentarToast('bottom', 'El mail se envió correctamente.', 'success');
-    //CAMBIAR ESTADO DE USUARIO + ACTUALIZAR LISTADO DE PENDIENTES
+    this.emailServ.enviarEmail(usuario.nombre + ' ' + usuario.apellido, usuario.email, '¡Lo sentimos! La solicitud de alta de su usuario fue rechazada.');
+    this.usuarioServ.actualizarEstadoCliente(usuario, 'rechazado');
+    this.actualizarUsuariosPendientes();
+    //this.presentarToast('bottom', 'El mail se envió correctamente.', 'success');
   }
 
   async presentarToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {

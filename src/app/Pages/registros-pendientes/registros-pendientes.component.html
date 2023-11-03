@@ -8,33 +8,44 @@
 <ion-content *ngIf="!spin" >
 
   <div class="ion-padding-horizontal ion-padding-vertical fondo">
-    <ion-text color="light">Aprobaciones Pendientes</ion-text>
+    <ion-text color="light"><h3>Aprobaciones Pendientes</h3></ion-text>
   </div>
 
-  <ion-list class="ion-padding-horizontal ion-padding-vertical">
+  <div *ngIf="!existenAprob" class="sin-aprobaciones">
+    <ion-item class="ion-padding-horizontal ion-padding-vertical">
+      <ion-label>
+        <h2 class="ion-text-center">No existen aprobaciones pendientes</h2>
+      </ion-label>
+    </ion-item>
+  </div>
 
-    <div *ngFor="let cliente of listadoClientes">
-      <ion-item>
-        <ion-avatar slot="start">
-          <ion-img src="{{cliente.foto}}"></ion-img>
-        </ion-avatar>
-        <ion-label>
-          <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
-          <p>DNI: {{cliente.dni}}</p>
-        </ion-label>
-        <ion-fab horizontal="end" class="boton-aceptar">
-          <ion-fab-button size="small" color="success" (click)="aceptarCliente(cliente)">
-            <ion-icon name="checkmark-outline"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
-        <ion-fab horizontal="end">
-          <ion-fab-button size="small" color="danger" (click)="rechazarCliente(cliente)">
-            <ion-icon name="close-outline"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
-      </ion-item>
-    </div>
+  <div *ngIf="existenAprob">
 
-  </ion-list>
+    <ion-list class="ion-padding-horizontal ion-padding-vertical">
+
+      <div *ngFor="let cliente of listadoClientes">
+        <ion-item>
+          <ion-avatar slot="start">
+            <ion-img src="{{cliente.foto}}"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
+            <p>DNI: {{cliente.dni}}</p>
+          </ion-label>
+          <ion-fab horizontal="end" class="boton-aceptar">
+            <ion-fab-button size="small" color="success" (click)="aceptarCliente(cliente)">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+          <ion-fab horizontal="end">
+            <ion-fab-button size="small" color="danger" (click)="rechazarCliente(cliente)">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-item>
+      </div>
+
+    </ion-list>
+  </div>
 
 </ion-content>
