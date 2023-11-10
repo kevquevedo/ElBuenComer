@@ -12,6 +12,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { first } from 'rxjs/operators';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 
 
@@ -57,7 +58,7 @@ export class AltaClientesComponent  implements OnInit {
     //private mail:MailService,
     private pushNotiSrv:NotificationService,
     private toastr: ToastController,
-    private authSvc: AuthService,
+    private afAuth: AngularFireAuth,
     private qrScanner: QrscannerService,
     private auth: Auth,
   ) {
@@ -135,18 +136,24 @@ export class AltaClientesComponent  implements OnInit {
     }
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
+      this.usuario.email = this.usuario.nombre +'@anonimo.com';
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.clienteValidado = 'aceptado';
-      this.usuariosSvc.crearUsuario(this.usuario).then(() =>{
-        this.spin = false;
-        setTimeout(() => {
-          //this.utilidadesSrv.successToast("Ingreso exitoso.");
-          this.navigateTo('');
-        }, 2000);
+      this.usuario.tipoEmpleado = 'anonimo';
+      createUserWithEmailAndPassword(this.auth,this.usuario.email , "123456").then( () => {
+        this.usuario.uid = this.auth.currentUser?.uid;
+        this.usuariosSvc.crearUsuario(this.usuario);
+        //this.notificar();
+        this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 2000 );
+        this.afAuth.signInWithEmailAndPassword(this.usuario.email, "123456");
+        debugger;
+        setTimeout( ()=>{ this.router.navigateByUrl('home/principal');
+         this.spin = false;}, 2000)
       })
       .catch( error => {
         this.spin = false;
-        this.presentToast('middle', 'Error al crear el usuario', 'danger', 1500 );
+        // this.Errores(error);
+        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
     }
 

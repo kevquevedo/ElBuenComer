@@ -23,6 +23,18 @@
       </ion-col>
     </ion-row>
   </div>
+  <div *ngIf="isCliente && tieneMesa && !mesaAsignada">
+    <div class="centrado">
+      <button class="escanear" expand="block" type="button" (click)="startScannerMesa()" *ngIf="!scanActive">
+        <h6>INGRESAR A LA MESA</h6>
+      </button>
+    </div>
+    <ion-row class="scan-button" *ngIf="scanActive">
+      <ion-col class="ion-no-padding">
+        <button type="button" class="pos3" (click)="stopScanner()">CANCELAR</button>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>
 <!-- SPINNER -->
 <div *ngIf="spin" class="div-spin-logo">

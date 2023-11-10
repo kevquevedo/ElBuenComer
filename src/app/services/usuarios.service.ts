@@ -60,7 +60,7 @@ export class UsuariosService {
     });
   }
 
-  UpdateMesa(id:string, mesa:string): Promise<void> {
+  UpdateMesaCliente(id:string, mesa:any): Promise<void> {
     return new Promise((resolve, reject) => {
       const usuario = doc(this.allUsuarios, id);
       updateDoc(usuario, {
