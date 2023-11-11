@@ -133,7 +133,7 @@ export class AltaEmpleadoComponent  implements OnInit {
     .then((url :any)=> {
       this.usuario.foto = url;
       this.fotoUrl = url;
-      this.presentToast('top', 'Se procesó OK la imagen.', 'success')
+      this.presentToast('top', 'Se procesó correctamente la imagen.', 'success')
     }).catch((err:any) => {
       this.presentToast('top', 'Error al subir imagen: ' + err, 'danger')
     })

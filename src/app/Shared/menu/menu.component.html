@@ -11,6 +11,9 @@
     <ion-item   *ngIf="isCliente">
       <ion-label class="text-center">Juegos</ion-label>
     </ion-item>
+    <ion-item   *ngIf="isCliente && enListaEspera">
+      <ion-label class="text-center">Encuestas Anteriores</ion-label>
+    </ion-item>
     <ion-item   *ngIf="isCocinero">
       <ion-label class="text-center">Menús pendientes</ion-label>
     </ion-item>
