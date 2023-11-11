@@ -1,0 +1,119 @@
+
+<ion-header class="ion-text-center">
+  <ion-toolbar color="header">
+    <ion-back-button defaultHref="home-cliente" slot="start"></ion-back-button>
+    <ion-title>
+      Encuesta
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button style="margin: auto;" type="button" menu="menu" color="escanear">
+        <ion-icon name="menu"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content slot="fixed">
+  <div class="container-datos">
+    <form [formGroup]="form" (ngSubmit)="EnviarEncuesta()">
+      <br>
+
+        <div class="inputdiv" style="padding-top: 6px;">
+          <ion-item color="transp2">
+            <ion-checkbox color="dark" formControlName="orden"></ion-checkbox>
+            <ion-label class="label" style="margin-left: 20px;">¿Mesa ordenada?</ion-label>
+          </ion-item>
+        </div>
+
+        <div>
+          <div class="inputdiv">
+            <ion-label class="label">Puntaje del establecimiento</ion-label>
+            <ion-item color="transp2">
+              <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="puntaje">
+                <ion-icon slot="start" name="thumbs-down-outline"></ion-icon>
+                <ion-icon slot="end" name="thumbs-up-outline"></ion-icon>
+              </ion-range>
+            </ion-item>
+            <ion-label class="invalid"
+              *ngIf="form.controls['puntaje'].errors?.['required'] && form.controls['puntaje'].touched">
+              Coloque en un valor.
+            </ion-label>
+          </div>
+  
+
+        <div class="inputdiv">
+          <ion-item color="transp2">
+            <ion-radio-group value="biff" formControlName="inconvenientes" style="width: 100%;">
+              <ion-label class="label" style="margin-bottom: 10px;">¿Qué opina de la carta?</ion-label>
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#59c96c;" name="checkmark-circle-outline"></ion-icon>
+                <ion-label>Buena</ion-label>
+                <ion-radio slot="start" value="ninguno" color="dark"></ion-radio>
+              </ion-item>
+
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#e0cb4f;" name="alert-circle-outline"></ion-icon>
+                <ion-label>Regular</ion-label>
+                <ion-radio slot="start" value="algunos" color="dark"></ion-radio>
+              </ion-item>
+
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#db5252;" name="close-circle-outline"></ion-icon>
+                <ion-label>Mala</ion-label>
+                <ion-radio slot="start" value="muchos" color="dark"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-item>
+          <ion-label class="invalid"
+            *ngIf="form.controls['inconvenientes'].errors?.['required'] && form.controls['inconvenientes'].touched">
+            Seleccione una opción.
+          </ion-label>
+        </div>
+      </div>
+
+
+
+      <div class="inputdiv" style="padding-top: 6px;">
+        <ion-item color="transp2">
+          <ion-label color='dark' position="floating" class="label">Quejas sobre el servicio</ion-label>
+          <ion-select value="0" formControlName="quejas" okText="Confirmar" cancelText="Cancelar">
+            <ion-select-option value="0">Ninguna</ion-select-option>
+            <ion-select-option value="1">Lento</ion-select-option>
+            <ion-select-option value="2">Hostil</ion-select-option>
+            <ion-select-option value="3">Torpe</ion-select-option>
+            <ion-select-option value="4">Grosero</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-label class="invalid"
+          *ngIf="form.controls['quejas'].errors?.['required'] && form.controls['quejas'].touched">
+          Campo requerido.
+        </ion-label>
+      </div>
+
+      <div class="inputdiv">
+        <ion-label color='dark' class="label">Cargar fotos</ion-label>
+        <ion-item color="transp2">
+          <ion-input type="file" accept="image/*" formControlName="foto1" (change)="SubirFoto1($event)"></ion-input>
+          <ion-input type="file" accept="image/*" formControlName="foto2" (change)="SubirFoto2($event)"></ion-input>
+          <ion-input type="file" accept="image/*" formControlName="foto3" (change)="SubirFoto3($event)"></ion-input>
+
+        </ion-item>
+      </div>
+
+      <div class="inputdiv">
+        <ion-label color='dark' class="label">Comentarios</ion-label>
+        <ion-item color="transp" style="padding: 10px">
+          <ion-textarea formControlName="comentario"></ion-textarea>
+        </ion-item>
+      </div>
+
+      <ion-button type="submit" class="ingreso" fill="solid" expand="block" color="enviar" id="enviar"
+        style="margin-top: 23px;" [disabled]="form.invalid">Enviar</ion-button>
+    </form>
+  </div>
+</ion-content>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

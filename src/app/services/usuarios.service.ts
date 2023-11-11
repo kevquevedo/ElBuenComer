@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc, updateDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Usuario } from '../clases/usuario';
 import { Observable } from 'rxjs';
 
@@ -42,6 +42,27 @@ export class UsuariosService {
     let usuariosRef = doc(this.firestore, 'usuarios', usuario.id);
     updateDoc(usuariosRef, {
       clienteValidado: estado
+    });
+  }
+
+  // actualizarToken(id: any, token:string){
+  //   let usuariosRef = doc(this.firestore, 'usuarios', id);
+  //   updateDoc(usuariosRef, {
+  //     token: token
+  //   });
+  // }
+
+  actualizarToken(uid: string, nuevoToken: string) {
+    const usuariosRef = collection(this.firestore, 'usuarios');
+    const q = query(usuariosRef, where('uid', '==', uid));
+  
+    getDocs(q).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // Actualizar el token del usuario encontrado
+        updateDoc(doc.ref, { token: nuevoToken });
+      });
+    }).catch((error) => {
+      console.error('Error al buscar y actualizar el token:', error);
     });
   }
 

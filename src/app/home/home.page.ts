@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UsuariosService } from '../services/usuarios.service';
 import { ToastController } from '@ionic/angular';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,8 @@ export class HomePage {
   loginUsuario: FormGroup;
   constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
     private toastController: ToastController,
-    private router: Router, private usuarioService: UsuariosService) {
+    private router: Router, private usuarioService: UsuariosService,
+    private pushNotiSvc: NotificationService) {
     this.loginUsuario = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       pass: ['', [Validators.required, Validators.minLength(6)]],
@@ -38,6 +40,12 @@ export class HomePage {
                   this.afAuth.currentUser.then(user => {
                     const usuario = user?.email;
                   });
+                  console.log(usuario.data().id);
+                  //this.pushNotiSvc.initializePushNotifications(usuario.data().id);
+                  let userToken = localStorage.getItem('deviceToken'); 
+                  if(userToken != null){
+                    this.usuarioService.actualizarToken(usuario.data().id, JSON.parse(userToken));
+                  }
                   this.presentToast('middle', 'Bienvenido. Ingreso correcto', 'success');
                   this.router.navigate(['/home/principal']);
                 }).catch((error) => {

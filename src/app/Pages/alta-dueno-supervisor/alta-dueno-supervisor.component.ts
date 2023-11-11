@@ -8,6 +8,7 @@ import { Usuario } from 'src/app/clases/usuario';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-alta-dueno-supervisor',
@@ -32,7 +33,8 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
     private imagenServ: ImagenesService,
     private toastController: ToastController,
     private auth: Auth,
-    private usuarioServ: UsuariosService
+    private usuarioServ: UsuariosService,
+    private pushNotiSrv:NotificationService
   ){
     this.usuario = new Usuario();
     this.spin = true;
@@ -135,16 +137,16 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
     })
   }
 
-  aceptar() {
+  async aceptar() {
 
     if(this.evaluarErrores()){
       this.spinner = true;
       this.usuario.email = this.email?.value;
       this.usuario.tipoEmpleado = this.perfil?.value;
-      createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
+      createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( async () => {
         this.usuarioServ.crearUsuario(this.usuario);
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
-        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false; }, 2000)
+        setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false; }, 2000);
       })
       .catch( (error:any) => {
         this.spinner = false;

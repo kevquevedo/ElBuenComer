@@ -23,9 +23,9 @@ import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 export class AltaClientesComponent  implements OnInit {
 
   usuario!: Usuario;
-  email: string;
-  clave: string;
-  clave2: string;
+  email!: string;
+  clave!: string;
+  clave2!: string;
   show_error: boolean = false; //
   descripcion_error: string = '';
   public altaForm!: FormGroup;
@@ -42,7 +42,7 @@ export class AltaClientesComponent  implements OnInit {
   apellido='';
   dni='';
   fotoUrl='../../assets/sacarfoto.png';
-  usuarios:any;
+  listadoClientes = new Array<any>();
   spin: boolean = false;
   currentScan: any;
 
@@ -61,11 +61,22 @@ export class AltaClientesComponent  implements OnInit {
     private qrScanner: QrscannerService,
     private auth: Auth,
   ) {
-    this.email = '';
-    this.clave = '';
-    this.clave2 = '';
+
     this.usuario = new Usuario();
     this.spin = true;
+    this.usuariosSvc.getListadoUsuarios().then(res => {
+      if(res.size > 0){
+        this.listadoClientes = [];
+        res.forEach((usuario: any) => {
+          console.log(usuario.data());
+          if (usuario.data().tipoEmpleado == 'dueño') {
+            this.listadoClientes.push(usuario.data())
+          }
+        });
+        console.log(this.listadoClientes);
+      }
+    })
+   
 
   }
 
@@ -114,21 +125,24 @@ export class AltaClientesComponent  implements OnInit {
       this.usuario.dni = this.altaForm.value.dni;
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.clienteValidado = 'pendiente';
-      this.usuario.tipoEmpleado = '';
+      this.usuario.tipoEmpleado = 'registrado';
       this.usuario.cuil = 0;
       this.usuario.mesa = '';
       this.usuario.token = '';
       this.usuario.enListaDeEspera = false;
       createUserWithEmailAndPassword(this.auth, this.usuario.email, this.altaForm.value.clave).then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
+        //alert(JSON.stringify(this.usuario));
         this.usuariosSvc.crearUsuario(this.usuario);
-        //this.notificar();
+        //this.pushNotiSrv.initializePushNotifications(this.usuario.uid);
+        this.notificar();
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 1500 );
         setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spin = false;}, 2000)
       })
       .catch( error => {
         this.spin = false;
         // this.Errores(error);
+        alert(error);
         this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
 
@@ -153,36 +167,6 @@ export class AltaClientesComponent  implements OnInit {
   }
 
 
-  // notificar(){
-  //   let tokens=[];
-  //   this.usuarios.forEach(user => {
-  //     if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
-  //       tokens.push(user.token)
-  //     }
-  //    });
-
-  //    tokens.forEach(token => {
-  //     this.pushSrv
-  //     .sendPushNotification({
-  //       // eslint-disable-next-line @typescript-eslint/naming-convention
-  //            /* registration_ids: [
-  //             token
-  //             ], */
-  //       to: token,
-  //       notification: {
-  //         title: 'Nuevo cliente',
-  //         body: 'Se registro un nuevo cliente',
-  //       },
-  //       data: {
-  //         ruta: 'listado-clientes-pendientes',
-  //       },
-  //     }).pipe(first()).subscribe((data)=>{
-  //       console.log(data)
-  //     })
-  //    });
-
-
-  // }
 
   navigateTo(url: string) {
     setTimeout(() => {
@@ -255,67 +239,6 @@ export class AltaClientesComponent  implements OnInit {
   } // end of stopScan
 
 
-
-  // async startScan() {
-
-  //   const permiso = await this.checkPermission();
-  //   if (permiso) {
-  //     this.scanActive = true;
-  //     BarcodeScanner.hideBackground();
-  //     const result = await BarcodeScanner.startScan();
-  //     BarcodeScanner.showBackground(); //VEEEEEEEEEEEER
-  //     if (result.hasContent) {
-
-  //       this.dniData = result.content.split('@');
-  //       this.nombre= this.dniData[2].trim();;
-  //       this.apellido= this.dniData[1].trim();;
-  //       this.dni= this.dniData[4].trim();;
-  //       this.usuario.dni = this.dniData[4].trim();
-  //       this.usuario.nombre = this.dniData[2].trim();
-  //       this.usuario.apellido = this.dniData[1].trim();
-  //       this.altaForm.controls['dni'].setValue(this.usuario.dni);
-  //       this.altaForm.controls['nombre'].setValue(this.usuario.nombre);
-  //       this.altaForm.controls['apellido'].setValue(this.usuario.apellido);
-  //       this.altaForm.controls['cuil'].setValue(this.usuario.cuil);
-
-  //       this.stopScan();
-  //     } else {
-  //       this.stopScan();
-  //     }
-  //   } else {
-  //     this.stopScan();
-  //   }
-
-  // }
-
-  // stopScan() {
-  //   BarcodeScanner.showBackground();
-  //   BarcodeScanner.stopScan();
-  //   this.scanActive  = false;
-  // }
-
-
-
-  Errores(error:any)
-  {
-    if(error.code == 'auth/email-already-in-use')
-      {
-        this.presentToast('middle', 'El correo ya está en uso.', "danger", 1500);
-      }
-      else if(error.code == 'auth/missing-email' || error.code == 'auth/internal-error')
-      {
-        this.presentToast('middle', 'No pueden quedar campos vacíos.', "danger", 1500);
-      }
-      else if(error.code == 'auth/weak-password')
-      {
-        this.presentToast('middle', 'La contraseña debe tener al menos 6 caracteres.', "danger", 1500);
-      }
-      else
-      {
-        this.presentToast('middle', 'Correo o contraseña inválidos.', "danger", 1500);
-      }
-  }
-
   async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color:string, duration: number) {
     const toast = await this.toastr.create({
       message: mensaje,
@@ -328,29 +251,16 @@ export class AltaClientesComponent  implements OnInit {
 
   notificar(){
     let tokens: any[] = [];
-    this.usuarios.forEach((user:any) => {
+    
+    alert(JSON.stringify(this.listadoClientes));
+    this.listadoClientes.forEach((user:any) => {
       if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
         tokens.push(user.token)
       }
      });
      tokens.forEach(token => {
       this.pushNotiSrv
-      .sendPushNotification({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-             /* registration_ids: [
-              token
-              ], */
-        to: token,
-        notification: {
-          title: 'Nuevo cliente',
-          body: 'Se registro un nuevo cliente',
-        },
-        data: {
-          ruta: 'home',
-        },
-      }).pipe(first()).subscribe((data:any)=>{
-        console.log(data)
-      })
+      .sendPushNotification(token, 'registros-pendientes', 'Nuevo Cliente', 'Se registro un nuevo cliente');
      });
 
 

@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">FLECHAS</ion-title>
+    <!-- <ion-button (click)="cerrarSesion()"  slot="end"> 
+      <ion-icon name="exit-outline"></ion-icon>
+    </ion-button> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div id="empezar" *ngIf="!empezado">
+          <button class="btn btn-success btn-block" (click)="empezar()">Empezar</button>
+        </div>
+        <div class="row" *ngIf="tiempoTerminado">
+          <div class="col-4">
+            <h2>Puntos:</h2>
+          </div>
+          <div class="col-4">
+            <h2>{{puntaje}}</h2>
+          </div>
+          <div class="col-12">
+            <div *ngFor="let puntaje of listaOrdenada">
+              <div class="row">
+                <div class="col-4">
+                  <h4>{{puntaje.usuario}}</h4>
+                </div>
+                <div class="col-4">
+                  <h4>{{puntaje.puntos}}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="empezado">
+          <h2>Puntos:</h2>
+          <h2>{{puntaje}}</h2>
+          <p><strong>{{timeLeft}}</strong> Seconds Left....</p>
+          <!-- <button (click)='startTimer()'>Start Timer</button>
+          <button (click)='pauseTimer()'>Pause</button> -->
+          <!-- <img  src="../../../assets/flechas/arriba.png"> -->
+          <img id="img" [src]="getImage()" alt="">
+
+          <div style="margin-left: 70px;">
+            <ion-button class="btn btn-lg" (click)="onArriba()" style="margin-left: 70px;">
+              <ion-icon name="arrow-up-circle-outline"></ion-icon>
+            </ion-button>
+            <!-- <a class="btn btn-info btn-lg justify-content-center" (click)="onArriba()">
+          <span class="glyphicon glyphicon-arrow-up"></span>
+        </a> -->
+
+            <br>
+
+            <ion-button class="btn btn-lg" (click)="onIzquierda()">
+              <ion-icon name="arrow-back-circle-outline"></ion-icon>
+            </ion-button>
+            <!-- <a class="btn btn-info btn-lg" (click)="onIzquierda()">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+          </a> -->
+
+
+            <!-- <a class="btn btn-info btn-lg" (click)="onAbajo()">
+            <span class="glyphicon glyphicon-arrow-down"></span>
+          </a> -->
+            <ion-button class="btn btn-lg" (click)="onAbajo()">
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </ion-button>
+
+            <ion-button class="btn btn-lg" (click)="onDerecha()">
+              <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+            </ion-button>
+            <!-- <a class="btn btn-info btn-lg" (click)="onDerecha()">
+            <span class="glyphicon glyphicon-arrow-right"></span>
+          </a> -->
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

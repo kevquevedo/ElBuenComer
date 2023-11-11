@@ -21,6 +21,8 @@ import { AltaClientesComponent } from './Pages/alta-clientes/alta-clientes.compo
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
 import { ToastrModule } from 'ngx-toastr';
+import { EncuestaClienteComponent } from './Pages/encuesta-cliente/encuesta-cliente.component';
+import { FlechasComponent } from './Pages/flechas/flechas.component';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -31,7 +33,9 @@ fire.initializeApp(environment.firebase);
     AltaDuenoSupervisorComponent,
     AltaProductosComponent,
     AltaClientesComponent,
-    AltaMesaComponent
+    AltaMesaComponent,
+    EncuestaClienteComponent,
+    FlechasComponent
   ],
   imports: [
     BrowserModule,
