@@ -1,0 +1,244 @@
+<!--
+  <app-menu></app-menu>
+-->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+
+      <div class="productoCompra">
+
+        <ion-text>
+          <h1>$5000</h1>
+          <ion-fab horizontal="center" vertical="center">
+            <ion-fab-button size="small" color="success">
+              <ion-icon name="cart-outline" size="large"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-text>
+
+      </div>
+
+    </ion-title>
+    <ion-fab horizontal="end" vertical="center">
+      <ion-fab-button size="small" color="success" id="open-modal">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!spin">
+  <div class="fondo">
+
+    <div class="contenedor-menu">
+
+      <ion-list>
+        <ion-item-group>
+          <ion-item-divider>
+            <ion-label>
+              <ion-text color="dark">
+                <h2 class="fw-bold">COMIDAS</h2>
+              </ion-text>
+            </ion-label>
+          </ion-item-divider>
+
+          <div *ngFor="let itemCocina of listadoCocina; index as i">
+
+            <ion-item>
+
+              <div class="nombreDescr">
+                <ion-text><h4 class="ion-text-center">{{itemCocina.producto.nombre}}</h4></ion-text>
+                <ion-text class="opacity-75"><p class="ion-text-center">{{itemCocina.producto.descripcion}}</p></ion-text>
+              </div>
+
+              <div>
+                <div id="collapseExample{{i}}" class="carousel fotosProducto">
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img src="{{itemCocina.producto.img_src[0]}}" alt="..." width="150px" height="150px" class="img-menu">
+                    </div>
+                    <div class="carousel-item">
+                      <img src="{{itemCocina.producto.img_src[1]}}" alt="..." width="150px" height="150px" class="img-menu">
+                    </div>
+                    <div class="carousel-item">
+                      <img src="{{itemCocina.producto.img_src[2]}}" alt="..." width="150px" height="150px" class="img-menu">
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#collapseExample'+i" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#collapseExample'+i" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+                <ion-text><h3 class="ion-text-center fw-bold">${{itemCocina.producto.precio}}</h3></ion-text>
+              </div>
+
+
+              <ion-fab horizontal="start" vertical="bottom" class="sumar">
+                <ion-fab-button size="small" (click)="sumarProducto(itemCocina)">
+                  <ion-icon name="add"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+              <ion-fab vertical="bottom" class="numero">
+                <ion-label>
+                  <h2 class="fw-bold cantidadItem" *ngIf="itemCocina.cantidad < 10">
+                    {{itemCocina.cantidad}}
+                  </h2>
+                  <h2 class="fw-bold cantidadItem10" *ngIf="itemCocina.cantidad >= 10">
+                    {{itemCocina.cantidad}}
+                  </h2>
+                </ion-label>
+              </ion-fab>
+              <ion-fab horizontal="start" vertical="bottom">
+                <ion-fab-button size="small" (click)="restarProducto(itemCocina)">
+                  <ion-icon name="remove-outline"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+
+            </ion-item>
+
+          </div>
+        </ion-item-group>
+
+        <ion-item-group>
+          <ion-item-divider>
+            <ion-label>
+              <ion-text color="dark">
+                <h2 class="fw-bold">BEBIDAS</h2>
+              </ion-text>
+            </ion-label>
+          </ion-item-divider>
+
+          <div *ngFor="let itemBebida of listadoBebida; index as i">
+            <ion-item>
+
+              <div class="nombreDescr">
+                <ion-text><h4 class="ion-text-center">{{itemBebida.producto.nombre}}</h4></ion-text>
+                <ion-text class="opacity-75"><p class="ion-text-center">{{itemBebida.producto.descripcion}}</p></ion-text>
+              </div>
+
+              <div>
+                <div id="collapseExample2{{i}}" class="carousel fotosProducto">
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img src="{{itemBebida.producto.img_src[0]}}" alt="..." width="150px" height="150px" class="img-menu">
+                    </div>
+                    <div class="carousel-item">
+                      <img src="{{itemBebida.producto.img_src[1]}}" alt="..." width="150px" height="150px" class="img-menu">
+                    </div>
+                    <div class="carousel-item">
+                      <img src="{{itemBebida.producto.img_src[2]}}" alt="..." width="150px" height="150px" class="img-menu">
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#collapseExample2'+i" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#collapseExample2'+i" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+
+                <ion-text><h3 class="ion-text-center fw-bold">${{itemBebida.producto.precio}}</h3></ion-text>
+              </div>
+
+              <ion-fab horizontal="start" vertical="bottom" class="sumar">
+                <ion-fab-button size="small" (click)="sumarProducto(itemBebida)">
+                  <ion-icon name="add"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+              <ion-fab  vertical="bottom" class="numero">
+                <ion-label>
+                  <h2 class="fw-bold cantidadItem" *ngIf="itemBebida.cantidad < 10">
+                    {{itemBebida.cantidad}}
+                  </h2>
+                  <h2 class="fw-bold cantidadItem10" *ngIf="itemBebida.cantidad >= 10">
+                    {{itemBebida.cantidad}}
+                  </h2>
+                </ion-label>
+              </ion-fab>
+              <ion-fab horizontal="start" vertical="bottom">
+                <ion-fab-button size="small" (click)="restarProducto(itemBebida)">
+                  <ion-icon name="remove-outline"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+
+            </ion-item>
+          </div>
+
+        </ion-item-group>
+      </ion-list>
+    </div>
+
+  </div>
+</ion-content>
+
+
+
+
+
+
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>
+
+
+
+
+
+
+<!-- MODAL CHAT -->
+<ion-modal #modal trigger="open-modal">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Chat - Mesa 1</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="light" (click)="modal.dismiss()">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-content>
+      <ion-list *ngFor="let mensaje of listadoMensajes">
+        <ion-item *ngIf=" mensaje.emisor === 'mozo' ">
+          <ion-avatar slot="start">
+            <ion-img src="../../../assets/icon/mozo-icon.jpeg"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf=" mensaje.emisor === 'cliente' ">
+          <ion-label slot="end">
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+          <ion-avatar slot="end">
+            <ion-img src="../../../assets/icon/cliente-icon.png"></ion-img>
+          </ion-avatar>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer [translucent]="true">
+      <ion-toolbar class="ion-text-center">
+        <div class="input-consulta">
+          <ion-textarea placeholder="Escribe un mensaje..." [(ngModel)]="mensaje"></ion-textarea>
+        </div>
+        <ion-button class="ion-margin-bottom" (click)="enviarMensaje()">
+          <ion-text class="ion-margin-horizontal">Enviar Mensaje</ion-text>
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+
+  </ng-template>
+</ion-modal>
+

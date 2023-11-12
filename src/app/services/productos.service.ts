@@ -15,7 +15,7 @@ export class ProductosService {
 
   constructor(
     private firestore: Firestore,
-  ) { 
+  ) {
       this.productos = collectionData(this.allProductos);
   }
 
@@ -53,12 +53,12 @@ export class ProductosService {
   async obtenerTodosLosProductos() {
     const productosRef = collection(this.firestore, 'productos');
     const querySnapshot = await getDocs(productosRef);
-  
+
     const productos:any = [];
     querySnapshot.forEach((doc) => {
       productos.push({ id: doc.id, ...doc.data() });
     });
-  
+
     return productos;
   }
 

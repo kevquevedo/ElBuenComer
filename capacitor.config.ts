@@ -14,7 +14,6 @@ const config: CapacitorConfig = {
     BarcodeScanner: {
       "ENABLE_CAMERA_SWITCH": true
     },
-    
   }
 };
 

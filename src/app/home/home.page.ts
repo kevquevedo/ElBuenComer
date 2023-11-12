@@ -61,7 +61,7 @@ export class HomePage {
   }
 
 
-  
+
   altaClientes(){
     this.router.navigate(['alta-clientes']);
   }

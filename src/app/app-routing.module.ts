@@ -6,6 +6,7 @@ import { AltaProductosComponent } from './Pages/alta-productos/alta-productos.co
 import { AltaClientesComponent } from './Pages/alta-clientes/alta-clientes.component';
 import { RegistrosPendientesComponent } from './Pages/registros-pendientes/registros-pendientes.component';
 import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
+import { MenuPedidoComponent } from './Pages/menu-pedido/menu-pedido.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'alta-clientes', component: AltaClientesComponent},
   { path: 'registros-pendientes', component: RegistrosPendientesComponent },
   { path: 'alta-mesa', component: AltaMesaComponent },
+  { path: 'menu-pedido', component: MenuPedidoComponent },
 ];
 
 @NgModule({

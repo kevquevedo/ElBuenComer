@@ -13,9 +13,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class NotificationService {
 
   //admin = require('firebase-admin');
-  projectId = 'elbuencomer.app';  
+  projectId = 'elbuencomer.app';
   url = `https://fcm.googleapis.com/v1/projects/${this.projectId}/messages:send`;
-  
+
 
   constructor(
     private firestore: Firestore,
@@ -61,7 +61,7 @@ export class NotificationService {
       });
 
     });
-    
+
     // PushNotifications.addListener('pushNotificationReceived', (notification: PushNotification) => {
     //   // Procesa la notificación aquí
     //   console.log('Notificación recibida', JSON.stringify(notification));
@@ -89,9 +89,9 @@ export class NotificationService {
         }
         this.router.navigateByUrl(notificationAction.notification.extra.data.ruta)
 
-        
+
       }
-    ); 
+    );
   }
 
 
@@ -110,23 +110,14 @@ export class NotificationService {
       }
     };
 
-    return this.http.post<any>(this.url, message, {  headers} );
-    
-    
+    return this.http.post<any>(this.url, message, {  headers } );
 
-    // return this.http.post<Observable<any>>(environment.fcmUrl, req, {
-    //   headers: {
-    //     // eslint-disable-next-line @typescript-eslint/naming-convention
-    //     Authorization: `key=${environment.fcmServerKey}`,
-    //     // eslint-disable-next-line @typescript-eslint/naming-convention
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+
   }
 
-  
 
-  
-  
-  
+
+
+
+
 }
