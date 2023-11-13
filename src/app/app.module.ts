@@ -23,6 +23,8 @@ import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
 import { ToastrModule } from 'ngx-toastr';
 import { EncuestaClienteComponent } from './Pages/encuesta-cliente/encuesta-cliente.component';
 import { FlechasComponent } from './Pages/flechas/flechas.component';
+import { provideFunctions,getFunctions } from '@angular/fire/functions';
+import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -51,7 +53,9 @@ fire.initializeApp(environment.firebase);
     provideStorage(() => getStorage()),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    HttpClientModule
+    HttpClientModule,
+    provideFunctions(() => getFunctions()),
+    provideMessaging(() => getMessaging())
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

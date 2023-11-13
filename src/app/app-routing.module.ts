@@ -8,6 +8,7 @@ import { RegistrosPendientesComponent } from './Pages/registros-pendientes/regis
 import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
 import { EncuestaClienteComponent } from './Pages/encuesta-cliente/encuesta-cliente.component';
 import { FlechasComponent } from './Pages/flechas/flechas.component';
+import { MenuPedidoComponent } from './Pages/menu-pedido/menu-pedido.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'encuesta-clientes', component: EncuestaClienteComponent },
   { path: 'flechas', component: FlechasComponent },
 
+  { path: 'menu-pedido', component: MenuPedidoComponent },
 ];
 
 @NgModule({

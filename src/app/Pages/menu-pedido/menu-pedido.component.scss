@@ -1,0 +1,84 @@
+.div-spin-logo{
+  background-color: #002366;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.fondo{
+  background-color: #002366;
+}
+
+.contenedor-menu{
+  padding: 20px;
+  --border-radius: 20px;
+}
+
+.sumar{
+  margin-left: 80px;
+}
+
+.numero{
+  margin-left: 70px;
+  margin-bottom: 15px;
+  z-index: 25;
+}
+
+.fotosProducto{
+  margin: 20px;
+}
+
+.img-menu{
+  border-radius: 10px;
+  border: 1px solid black;
+}
+.ver{
+  border: 1px solid red;
+  width: 100%;
+  height: 100%
+}
+
+.nombreDescr{
+  width: 50%;
+  height: 150px;
+}
+
+h4{
+  margin-top: 0;
+}
+
+.datoCompra{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cantidadItem{
+  margin-left: 4px;
+}
+
+.cantidadItem10{
+  margin-left: 0px;
+}
+
+ion-modal {
+  --height: 70%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+}
+
+ion-modal::part(backdrop) {
+  background: rgba(209, 213, 219);
+  opacity: 1;
+}
+
+ion-modal ion-toolbar {
+  --background: #002366;
+  --color: white;
+}
+
+.input-consulta{
+  margin: 20px;
+}

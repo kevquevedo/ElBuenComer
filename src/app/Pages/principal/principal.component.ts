@@ -41,9 +41,9 @@ export class PrincipalComponent  implements OnInit {
     this.enListaEspera = false;
   }
   async ngOnInit()
-  {this.enListaEspera = false;
+  {
+    this.enListaEspera = false;
     this.tieneMesa = false;
-    debugger;
     this.afAuth.currentUser.then(user=>{
       console.log(user);
       console.log(user?.email);
@@ -52,7 +52,6 @@ export class PrincipalComponent  implements OnInit {
         if (usuario.data().email == user?.email) {
           if (usuario.data().tipo == "admin") {
             this.isAdmin = true;
-            debugger;
           }else if(usuario.data().tipo == "cliente"){
             this.isCliente = true;
             this.enListaEspera = usuario.data().enListaDeEspera;
@@ -152,20 +151,21 @@ export class PrincipalComponent  implements OnInit {
         this.mesaService.updateMesaOcupada(this.mesa, true);
         this.mesaAsignada = true;
         this.presentarToast('middle', 'Mesa asignada correctamente.', 'success');
+        setTimeout(() => { this.router.navigateByUrl('menu-pedido'); }, 2000);
       }
       else{
         this.presentarToast('middle', `El código QR no es válido. Debe scannear la mesa ${this.mesa.numero}`, 'danger');
       }
       this.scanActive = false;
       });
-    }, 2000);
+    }, 1000);
   } // end of startScan
 
   stopScanner() {
     setTimeout(() => {
       this.scanActive = false;
       this.qrScanner.stopScanner();
-    }, 2000);
+    }, 1000);
   } // end of stopScan
 
 
@@ -174,7 +174,7 @@ export class PrincipalComponent  implements OnInit {
   async presentarToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 3000,
+      duration: 2000,
       position: position,
       color: color
     });

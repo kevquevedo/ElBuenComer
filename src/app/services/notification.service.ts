@@ -14,7 +14,7 @@ import { UsuariosService } from './usuarios.service';
 export class NotificationService {
 
   //admin = require('firebase-admin');
-  projectId = 'elbuencomerapp';  
+  projectId = 'elbuencomer.app';
   url = `https://fcm.googleapis.com/v1/projects/${this.projectId}/messages:send`;
   pushNotificationToken: any;
 
@@ -67,6 +67,10 @@ export class NotificationService {
 
     });
 
+    // PushNotifications.addListener('pushNotificationReceived', (notification: PushNotification) => {
+    //   // Procesa la notificación aquí
+    //   console.log('Notificación recibida', JSON.stringify(notification));
+
 
     await PushNotifications.addListener(
       'pushNotificationActionPerformed',
@@ -97,6 +101,11 @@ export class NotificationService {
         this.router.navigate([ruta]);
       }
     });
+    //     this.router.navigateByUrl(notificationAction.notification.extra.data.ruta)
+
+
+    //   }
+    // );
   }
 
 
@@ -131,4 +140,14 @@ export class NotificationService {
 
 
   
+  //   return this.http.post<any>(this.url, message, {  headers } );
+
+
+  // }
+
+
+
+
+
+
 }
