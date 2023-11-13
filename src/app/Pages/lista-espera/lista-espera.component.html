@@ -11,9 +11,17 @@
     <ion-text color="light">En lista de espera</ion-text>
   </div>
 
+  <div *ngIf="!existenPendientes" class="sin-aprobaciones">
+    <ion-item class="ion-padding-horizontal ion-padding-vertical">
+      <ion-label>
+        <h2 class="ion-text-center">No existen aprobaciones pendientes</h2>
+      </ion-label>
+    </ion-item>
+  </div>
+
   <ion-list class="ion-padding-horizontal ion-padding-vertical">
 
-    <div *ngFor="let cliente of enListaEspera">
+    <div class="card-body" *ngFor="let cliente of enListaEspera">
       <ion-item>
         <ion-avatar slot="start">
           <ion-img src="{{cliente.foto}}"></ion-img>
@@ -21,11 +29,13 @@
         <ion-label>
           <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
         </ion-label>
-        <ion-fab horizontal="end" class="boton-aceptar">
-          <ion-fab-button size="small" color="success" (click)="designarMesa(cliente)">
-            <ion-icon name="checkmark-outline"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
+      </ion-item>
+      <ion-item>
+        <ion-label>Asignar Mesa</ion-label>
+        <ion-select okText="Seleccionar" cancelText="Cancelar"
+          (ionChange)="asignarMesa(cliente, $event)">
+          <ion-select-option [value]="item.detail" *ngFor="let item of mesas">{{item.numero}}</ion-select-option>
+        </ion-select>
       </ion-item>
     </div>
 

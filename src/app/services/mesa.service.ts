@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Mesa } from '../clases/mesa';
 
@@ -14,7 +14,7 @@ export class MesaService {
   constructor(
     private firestore: Firestore,
   ) {
-      this.mesas = collectionData(this.allMesas);
+    this.mesas = collectionData(this.allMesas);
   }
 
   // crearMesa(mesa: Mesa) :Promise<void>{
@@ -39,6 +39,7 @@ export class MesaService {
       alert(numeroMasAlto);
       mesa.numero = numeroMasAlto + 1;
 
+
       const mesas = doc(this.allMesas);
       await setDoc(mesas, {
         id: mesas.id,
@@ -55,10 +56,12 @@ export class MesaService {
     const mesasRef = collection(this.firestore, 'mesas');
     const querySnapshot = await getDocs(mesasRef);
 
+
     const mesas:any = [];
     querySnapshot.forEach((doc) => {
       mesas.push({ id: doc.id, ...doc.data() });
     });
+
 
     return mesas;
   }
@@ -66,7 +69,6 @@ export class MesaService {
   async obtenerNumeroMesaMasAlto(): Promise<number> {
     const mesasRef = collection(this.firestore, 'mesas');
     const querySnapshot = await getDocs(mesasRef);
-
     let numeroMasAlto = 0;
     querySnapshot.forEach((doc) => {
       const mesa = doc.data();
@@ -74,7 +76,6 @@ export class MesaService {
         numeroMasAlto = mesa['numero'];
       }
     });
-
     return numeroMasAlto;
   }
 
@@ -83,5 +84,18 @@ export class MesaService {
     return getDocs(chatmesas);
   }
 
+  updateChatsMesas(mensajes:any, idMesa: any){
+    const chatMesasRef = doc(this.firestore, 'chats-mesas', idMesa);
+    updateDoc(chatMesasRef, {
+      mensajes: mensajes
+    });
+  }
+
+  updateMesaOcupada(mesa: any, estado:boolean){
+    const mesasRef = doc(this.firestore, 'mesas', mesa.id);
+    updateDoc(mesasRef, {
+      ocupada: estado
+    });
+  }
 
 }

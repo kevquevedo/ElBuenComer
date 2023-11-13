@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { MesaService } from 'src/app/services/mesa.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
@@ -10,30 +11,29 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class ListaEsperaComponent  implements OnInit {
 
   enListaEspera:any[] = [];
-  mesasOcupadas:any[] = [];
-  mesa:string = "1";
+  mesas:any[] = [];
   spin!: boolean;
+  mesaSeleccionada: any;
+  existenPendientes: boolean = false;
 
-  constructor(private usuarioService:UsuariosService,private toastController: ToastController) {
+  constructor(private usuarioService:UsuariosService,private toastController: ToastController, private mesaService:MesaService) {
     this.spin = true;
   }
 
   ngOnInit() {
    this.traerListaEspera();
+   this.getMesas();
   }
 
   traerListaEspera(){
     this.enListaEspera = [];
-    this.mesasOcupadas = [];
+    this.existenPendientes = false;
     this.usuarioService.getListadoUsuarios().then(resp => {
       resp.forEach((usuario: any) => {
         if (usuario.data().enListaDeEspera == true) {
+          this.existenPendientes = true;
           this.enListaEspera.push(usuario.data());
           console.log(this.enListaEspera);
-        }
-        if(usuario.data().mesa != ""){
-          this.mesasOcupadas.push(usuario.data().mesa);
-          console.log(this.mesasOcupadas);
         }
       }
       )
@@ -42,16 +42,35 @@ export class ListaEsperaComponent  implements OnInit {
     );
   }
 
-  designarMesa(usuario:any){
-    while(this.mesasOcupadas.includes(this.mesa)){
-      this.mesa = (parseInt(this.mesa) + 1).toString();
-    }
-    this.presentarToast('middle', 'Mesa asignada correctamente', 'success');
-
-    this.usuarioService.UpdateMesa(usuario.id, this.mesa);
-    this.traerListaEspera();
+  getMesas() {
+    this.mesaService.obtenerTodosLosMesas().then((data: any) => {
+      this.mesas = [];
+      for (let item of data) {
+        if (!item.ocupada) {
+          this.mesas.push(item);
+        }
+      }
+    });
   }
 
+  getMesaSeleccionada(numero:any){
+    this.mesas.forEach(mesa => {
+      if(mesa.numero == numero){
+        this.mesaSeleccionada = mesa;
+      }
+    });
+  }
+
+  asignarMesa(cliente: any, mesa: any){
+    console.log(cliente.id + " cliente ");
+    console.log(mesa.detail.value + " mesa");
+    debugger;
+    this.getMesaSeleccionada(mesa.detail.value);
+    this.usuarioService.UpdateMesaCliente(cliente.id, this.mesaSeleccionada);
+    this.presentarToast('middle', 'Mesa asignada con exito', 'success');
+    this.traerListaEspera();
+    this.getMesas();
+  }
 
 
   async presentarToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {

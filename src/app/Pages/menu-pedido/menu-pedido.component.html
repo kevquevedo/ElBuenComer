@@ -9,9 +9,9 @@
       <div class="productoCompra">
 
         <ion-text>
-          <h1>$5000</h1>
+          <h1>Total: ${{valorTotal}}</h1>
           <ion-fab horizontal="center" vertical="center">
-            <ion-fab-button size="small" color="success">
+            <ion-fab-button size="small" color="success" (click)="realizarPedido()">
               <ion-icon name="cart-outline" size="large"></ion-icon>
             </ion-fab-button>
           </ion-fab>
@@ -199,7 +199,7 @@
   <ng-template>
 
     <ion-toolbar>
-      <ion-title>Chat - Mesa 1</ion-title>
+      <ion-title>Chat - Mesa {{mesaUsuario}}</ion-title>
       <ion-buttons slot="end">
         <ion-button color="light" (click)="modal.dismiss()">Cerrar</ion-button>
       </ion-buttons>

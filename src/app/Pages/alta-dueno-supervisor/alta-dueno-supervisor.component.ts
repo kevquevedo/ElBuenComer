@@ -141,7 +141,14 @@ export class AltaDuenoSupervisorComponent  implements OnInit {
       this.spinner = true;
       this.usuario.email = this.email?.value;
       this.usuario.tipoEmpleado = this.perfil?.value;
+      this.usuario.dni = this.dni?.value;
+      this.usuario.nombre = this.nombre?.value;
+      this.usuario.apellido = this.apellido?.value;
+      this.usuario.cuil = this.cuil?.value;
+      this.usuario.tipo = 'admin';
+      this.usuario.clienteValidado = 'aceptado';
       createUserWithEmailAndPassword(this.auth, this.email?.value, this.pass?.value).then( () => {
+        this.usuario.uid = this.auth.currentUser?.uid;
         this.usuarioServ.crearUsuario(this.usuario);
         this.presentToast('middle', 'Se creó el usuario correctamente.', 'success');
         setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spinner = false; }, 2000)
