@@ -92,6 +92,34 @@
 </div>
 
 
+# QRs - Aplicación
+<br><br>
+**QR - Lista de Espera**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/68977ada-b198-40d1-8147-37fcffdc6088" width=200>
+<br><br><br><br>
+
+**QR - Mesa 1**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/6f478a19-c98e-425a-bd88-f9b4f362cc63" width=200>
+<br><br><br><br>
+
+**QR - Mesa 2**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/e97dd44b-d206-4f1e-8210-f6a3c08ecd86" width=200>
+<br><br><br><br>
+
+**QR - Mesa 3**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/36d9b1c2-d8e2-4809-a2c9-41bcb99d5495" width=200>
+<br><br><br><br>
+
+**QR - Mesa 4**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/4fab070c-5f8a-46f0-8da4-f7eb0befa9fc" width=200>
+<br><br><br><br>
+
+
 
 
 
