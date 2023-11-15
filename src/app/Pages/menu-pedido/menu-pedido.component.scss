@@ -32,6 +32,7 @@
 .img-menu{
   border-radius: 10px;
   border: 1px solid black;
+  margin-right: 0;
 }
 .ver{
   border: 1px solid red;
@@ -66,7 +67,6 @@ ion-modal {
   --height: 70%;
   --border-radius: 16px;
   --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
 }
 
 ion-modal::part(backdrop) {
@@ -81,4 +81,48 @@ ion-modal ion-toolbar {
 
 .input-consulta{
   margin: 20px;
+}
+
+ion-chip {
+  --background: #002366;
+  --color: white;
+}
+
+.icons{
+  --color: #adefd1;
+}
+
+.modalcarrito ion-toolbar {
+  --background: #002366;
+  --color: white;
+}
+
+.modalcarrito {
+  --height: 100%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-card{
+  --background: #002366;
+}
+
+.realizarPedido{
+  display: flex;
+  flex-direction: row;
+}
+
+h4{
+  margin-top: 0;
+  padding: 0;
+}
+
+.precio{
+  margin-bottom: 25px;
+}
+
+.preciofinal{
+  background-color: #002366;
+  color: white;
+  border-radius: 20px;
 }

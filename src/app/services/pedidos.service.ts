@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, Firestore, collection, collectionData, doc, getDocs, setDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,6 +26,11 @@ export class PedidosService {
         resolve(); // Se resuelve la promesa si la operación se completa correctamente
       })
     });
+  }
+
+  obtenerPedidos(){
+    const pedidos = collection(this.firestore, 'pedidos');
+    return getDocs(pedidos);
   }
 
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { Producto } from 'src/app/clases/producto';
 import { MesaService } from 'src/app/services/mesa.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
@@ -26,6 +28,9 @@ export class MenuPedidoComponent  implements OnInit {
   idMesa! : string;
   usuarioLogueado! : any;
   valorTotal! : any;
+  modalCarritoAbierto! : boolean;
+  modalChatAbierto! : boolean;
+  tiempoEstimado! : any;
 
   constructor(
     private prodServ: ProductosService,
@@ -33,13 +38,19 @@ export class MenuPedidoComponent  implements OnInit {
     private mesaServ: MesaService,
     private userServ: UsuariosService,
     private auth: Auth,
-    private pedidosServ: PedidosService
+    private pedidosServ: PedidosService,
+    private toastController: ToastController,
+    private router: Router
   ) {
     this.spin = true;
     this.listadoMensajes = [];
     this.existenMensajes = false;
     this.idMesa = '';
     this.valorTotal = 0;
+    this.modalCarritoAbierto = false;
+    this.modalChatAbierto = false;
+    this.productosElegidos = [];
+    this.tiempoEstimado = 0;
   }
 
   ngOnInit() {
@@ -83,6 +94,7 @@ export class MenuPedidoComponent  implements OnInit {
   sumarProducto(productoCocina:any){
     productoCocina.cantidad++;
     this.calcularTotal();
+    this.calcularTiempoEstimado();
   }
 
   restarProducto(productoBebida:any){
@@ -90,8 +102,8 @@ export class MenuPedidoComponent  implements OnInit {
       productoBebida.cantidad--;
     }
     this.calcularTotal();
+    this.calcularTiempoEstimado();
   }
-
 
   calcularTotal(){
     this.valorTotal = 0;
@@ -107,7 +119,21 @@ export class MenuPedidoComponent  implements OnInit {
     });
   }
 
-  realizarPedido(){
+  calcularTiempoEstimado(){
+    this.tiempoEstimado = 0;
+    this.listadoCocina.forEach( (item:any) => {
+      if(item.producto.tiempo_elaboracion > this.tiempoEstimado){
+        this.tiempoEstimado = item.producto.tiempo_elaboracion;
+      }
+    });
+    this.listadoBebida.forEach( (item:any) => {
+      if(item.producto.tiempo_elaboracion > this.tiempoEstimado){
+        this.tiempoEstimado = item.producto.tiempo_elaboracion;
+      }
+    });
+  }
+
+  armarPedido(){
     this.productosElegidos = [];
     this.listadoCocina.forEach( (item:any) => {
       if(item.cantidad > 0){
@@ -119,8 +145,25 @@ export class MenuPedidoComponent  implements OnInit {
         this.productosElegidos.push(item);
       }
     });
-    let pedido = { productos: this.productosElegidos, usuario: this.usuarioLogueado, valorTotal: this.valorTotal, estado: 'pendiente' }
-    this.pedidosServ.crearPedido(pedido)
+  }
+
+  realizarPedido(){
+    let pedido = {
+      productos: this.productosElegidos,
+      usuario: this.usuarioLogueado,
+      valorTotal: this.valorTotal,
+      estado: 'pendiente',
+      num_mesa: this.mesaUsuario,
+      tiempo_estimado: this.tiempoEstimado
+    }
+    this.pedidosServ.crearPedido(pedido);
+    this.presentarToast('bottom', `Se realizó el pedido con éxito.`, 'success');
+    this.modalCarritoAbierto = false;
+    this.spin = true;
+    setTimeout( ()=>{
+      this.spin = false;
+      this.router.navigateByUrl('home/principal')
+    }, 2000)
   }
 
   enviarMensaje(){
@@ -132,8 +175,6 @@ export class MenuPedidoComponent  implements OnInit {
       this.mesaServ.updateChatsMesas(this.listadoMensajes, this.idMesa);
       //PUSH
       this.mensaje = "";
-    }else{
-      //PONER TOAST
     }
     setTimeout( ()=>{ this.actualizarChat(this.mesaUsuario); }, 1000)
 
@@ -148,6 +189,25 @@ export class MenuPedidoComponent  implements OnInit {
       })
       console.log(this.listadoMensajes)
     })
+  }
+
+  modalCarrito(abierto: boolean){
+    this.modalCarritoAbierto = abierto;
+    this.armarPedido();
+  }
+
+  modalChat(abierto: boolean){
+    this.modalChatAbierto = abierto;
+  }
+
+  async presentarToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      position: position,
+      color: color
+    });
+    await toast.present();
   }
 
 
