@@ -25,6 +25,9 @@ import { EncuestaClienteComponent } from './Pages/encuesta-cliente/encuesta-clie
 import { FlechasComponent } from './Pages/flechas/flechas.component';
 import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { provideMessaging,getMessaging } from '@angular/fire/messaging';
+import { PedidosComponent } from './Pages/pedidos/pedidos.component';
+import { DetallePedidoComponent } from './Pages/detalle-pedido/detalle-pedido.component';
+import { Pedido } from './clases/pedido';
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -37,7 +40,9 @@ fire.initializeApp(environment.firebase);
     AltaClientesComponent,
     AltaMesaComponent,
     EncuestaClienteComponent,
-    FlechasComponent
+    FlechasComponent,
+    DetallePedidoComponent,
+    PedidosComponent
   ],
   imports: [
     BrowserModule,

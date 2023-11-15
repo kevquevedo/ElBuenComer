@@ -23,6 +23,10 @@
     <ion-item   *ngIf="isBartender || isCocinero">
       <ion-label class="text-center" (click)="altaProductos()">Alta Producto</ion-label>
     </ion-item>
+    <ion-item   *ngIf="isBartender || isCocinero">
+      <ion-label class="text-center" (click)="listadoPedidos()">Lista Pedidos</ion-label>
+    </ion-item>
+
     <ion-item   *ngIf="isAdmin">
       <ion-label class="text-center" (click)="altaMesa()">Alta mesa</ion-label>
     </ion-item>

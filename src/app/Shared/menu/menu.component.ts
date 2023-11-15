@@ -74,6 +74,12 @@ export class MenuComponent implements OnInit {
   altaMesa(){
     this.router.navigate(['alta-mesa']);
   }
+  listadoPedidos(){
+    this.router.navigate(['pedidos']);
+  }
+  detallePedido(){
+    this.router.navigate(['detalle-pedido']);
+  }
   logOut() {
     this.afAuth.signOut().then(() => this.router.navigate([""]));
   }

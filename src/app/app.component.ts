@@ -14,8 +14,8 @@ export class AppComponent {
   }
 
   inicializarApp(){
-    this.router.navigateByUrl('menu-pedido');
-    //this.router.navigateByUrl('splash');
+   //this.router.navigateByUrl('pedidos');
+    this.router.navigateByUrl('splash');
   }
 
 

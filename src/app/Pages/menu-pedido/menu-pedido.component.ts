@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
+import { ToastController } from '@ionic/angular';
 import { Producto } from 'src/app/clases/producto';
 import { MesaService } from 'src/app/services/mesa.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
@@ -33,7 +34,8 @@ export class MenuPedidoComponent  implements OnInit {
     private mesaServ: MesaService,
     private userServ: UsuariosService,
     private auth: Auth,
-    private pedidosServ: PedidosService
+    private pedidosServ: PedidosService,
+    private toastController: ToastController,
   ) {
     this.spin = true;
     this.listadoMensajes = [];
@@ -133,7 +135,7 @@ export class MenuPedidoComponent  implements OnInit {
       //PUSH
       this.mensaje = "";
     }else{
-      //PONER TOAST
+     // this.presentToast('top', 'Se procesó correctamente la imagen.', 'success')
     }
     setTimeout( ()=>{ this.actualizarChat(this.mesaUsuario); }, 1000)
 
@@ -149,6 +151,17 @@ export class MenuPedidoComponent  implements OnInit {
       console.log(this.listadoMensajes)
     })
   }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 1500,
+      position: position,
+      color: color
+    });
+    await toast.present();
+  }
+
 
 
 }
