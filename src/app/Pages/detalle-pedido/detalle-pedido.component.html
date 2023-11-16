@@ -26,7 +26,7 @@
           <ion-item>
             <ion-label>Estado: {{pedido.estado}} </ion-label><br>
             <ion-button size="small" color="warning"
-              *ngIf="(pedido.estado=='confirmado' || pedido.estado=='EN_ELABORACION') && pedido.estado =='pendiente'"
+              *ngIf="(pedido.estado=='confirmado' || pedido.estado=='en_elaboracion') && pedido.estado =='pendiente'"
               (click)="cambiarEstado(pedido, 'EN_ELABORACION')">Iniciar preparacion</ion-button>
             <ion-button size="small" color="success" *ngIf="pedido.estado =='en elaboración'"
               (click)="cambiarEstado(pedido,'TERMINADO' )">Finalizar preparacion</ion-button>
