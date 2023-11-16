@@ -8,6 +8,7 @@ import { RegistrosPendientesComponent } from './Pages/registros-pendientes/regis
 import { AltaMesaComponent } from './Pages/alta-mesa/alta-mesa.component';
 import { MenuPedidoComponent } from './Pages/menu-pedido/menu-pedido.component';
 import { EstadoPedidoComponent } from './Pages/estado-pedido/estado-pedido.component';
+import { ChatMozoComponent } from './Pages/chat-mozo/chat-mozo.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'alta-mesa', component: AltaMesaComponent },
   { path: 'menu-pedido', component: MenuPedidoComponent },
   { path: 'estado-pedido', component: EstadoPedidoComponent },
+  { path: 'chat-mozo', component: ChatMozoComponent },
 ];
 
 @NgModule({

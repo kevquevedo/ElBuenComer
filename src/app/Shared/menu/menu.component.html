@@ -4,37 +4,39 @@
       <ion-label  class="text-center">Menú</ion-label>
     </ion-item>
     <ion-list slot="content">
-
-    <ion-item  *ngIf="isMetre">
-      <ion-label class="text-center" (click)="irAListaEspera()">Lista de Espera</ion-label>
-    </ion-item>
-    <ion-item   *ngIf="isCliente">
-      <ion-label class="text-center">Juegos</ion-label>
-    </ion-item>
-    <ion-item   *ngIf="isCliente && enListaEspera">
-      <ion-label class="text-center">Encuestas Anteriores</ion-label>
-    </ion-item>
-    <ion-item   *ngIf="isCocinero">
-      <ion-label class="text-center">Menús pendientes</ion-label>
-    </ion-item>
-    <ion-item   *ngIf="isBartender">
-      <ion-label class="text-center">Bebidas pendientes</ion-label>
-    </ion-item>
-    <ion-item   *ngIf="isBartender || isCocinero">
-      <ion-label class="text-center" (click)="altaProductos()">Alta Producto</ion-label>
-    </ion-item>
-    <ion-item   *ngIf="isAdmin">
-      <ion-label class="text-center" (click)="altaMesa()">Alta mesa</ion-label>
-    </ion-item>
-    <ion-item  *ngIf="isAdmin">
-      <ion-label class="text-center" (click)="irARegistrosPendientes()">Registros pendientes</ion-label>
-    </ion-item>
-    <ion-item  *ngIf="isAdmin">
-      <ion-label class="text-center" (click)="irAltaEmpleado()">Crear perfil Empleado</ion-label>
-    </ion-item>
-    <ion-item  *ngIf="isAdmin">
-      <ion-label class="text-center" (click)="irAltaDuenoSupervisor()">Crear perfil Dueño/Supervisor</ion-label>
-    </ion-item>
+      <ion-item  *ngIf="isMetre">
+        <ion-label class="text-center" (click)="irAListaEspera()">Lista de Espera</ion-label>
+      </ion-item>
+      <ion-item   *ngIf="isCliente">
+        <ion-label class="text-center">Juegos</ion-label>
+      </ion-item>
+      <ion-item   *ngIf="isCliente && enListaEspera">
+        <ion-label class="text-center">Encuestas Anteriores</ion-label>
+      </ion-item>
+      <ion-item   *ngIf="isCocinero">
+        <ion-label class="text-center">Menús pendientes</ion-label>
+      </ion-item>
+      <ion-item   *ngIf="isBartender">
+        <ion-label class="text-center">Bebidas pendientes</ion-label>
+      </ion-item>
+      <ion-item   *ngIf="isBartender || isCocinero">
+        <ion-label class="text-center" (click)="altaProductos()">Alta Producto</ion-label>
+      </ion-item>
+      <ion-item   *ngIf="isAdmin">
+        <ion-label class="text-center" (click)="altaMesa()">Alta mesa</ion-label>
+      </ion-item>
+      <ion-item  *ngIf="isAdmin">
+        <ion-label class="text-center" (click)="irARegistrosPendientes()">Registros pendientes</ion-label>
+      </ion-item>
+      <ion-item  *ngIf="isAdmin">
+        <ion-label class="text-center" (click)="irAltaEmpleado()">Crear perfil Empleado</ion-label>
+      </ion-item>
+      <ion-item  *ngIf="isAdmin">
+        <ion-label class="text-center" (click)="irAltaDuenoSupervisor()">Crear perfil Dueño/Supervisor</ion-label>
+      </ion-item>
+      <ion-item  *ngIf="isMozo">
+        <ion-label class="text-center" (click)="irAlChat()">Chat Mesas</ion-label>
+      </ion-item>
       <ion-item color="light" (click)="logOut()">
         <ion-label  class="text-center">Cerrar Sesión</ion-label>
       </ion-item>

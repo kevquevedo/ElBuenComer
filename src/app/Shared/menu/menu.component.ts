@@ -74,6 +74,9 @@ export class MenuComponent implements OnInit {
   altaMesa(){
     this.router.navigate(['alta-mesa']);
   }
+  irAlChat(){
+    this.router.navigateByUrl('chat-mozo')
+  }
   logOut() {
     this.afAuth.signOut().then(() => this.router.navigate([""]));
   }

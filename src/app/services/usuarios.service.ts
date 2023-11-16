@@ -76,6 +76,24 @@ export class UsuariosService {
     });
   }
 
+  async actualizarToken( token :any, email :string): Promise<void> {
+    const resp = await this.obtenerIdUsuario(email);
+    const aux = doc(this.firestore, `usuarios/${resp}`);
+    await updateDoc(aux, {
+      token: token
+    })
+  }
 
+  obtenerIdUsuario(email:string) : Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getListadoUsuarios().then( resp =>{
+        resp.forEach( (item:any) =>{
+          if(item.data().email == email){
+            resolve(item.data().id)
+          }
+        })
+      })
+    });
+  }
 
 }

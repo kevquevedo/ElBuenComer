@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { MesaService } from 'src/app/services/mesa.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
+import { PushNotificationService } from 'src/app/services/push-notification.service';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -43,12 +44,14 @@ export class PrincipalComponent  implements OnInit {
     public afAuth:AngularFireAuth,
     private toastController: ToastController,
     private mesaService:MesaService,
-    private pedidosService: PedidosService
+    private pedidosService: PedidosService,
+    private push: PushNotificationService
   ){
     this.spin = true;
     this.spinner = false;
     this.enListaEspera = false;
     this.pedidoRealizado = false;
+
   }
   async ngOnInit(){
 
@@ -92,6 +95,7 @@ export class PrincipalComponent  implements OnInit {
                 this.isMozo = true;
               }
           }
+
           this.usuario = usuario.data();
         }
         // else if(usuario.data().tipoEmpleado == "anonimo"){

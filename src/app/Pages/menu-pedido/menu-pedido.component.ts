@@ -31,6 +31,7 @@ export class MenuPedidoComponent  implements OnInit {
   modalCarritoAbierto! : boolean;
   modalChatAbierto! : boolean;
   tiempoEstimado! : any;
+  listadoMozos!: any;
 
   constructor(
     private prodServ: ProductosService,
@@ -56,12 +57,20 @@ export class MenuPedidoComponent  implements OnInit {
   ngOnInit() {
 
     this.userServ.getListadoUsuarios().then( resp =>{
+
+      this.listadoMozos = [];
       resp.forEach( (item:any) => {
+
         if(item.data().email == this.auth.currentUser?.email){
           this.mesaUsuario = item.data().mesa.numero;
           this.usuarioLogueado = item.data();
           this.actualizarChat(this.mesaUsuario);
         }
+
+        if(item.data().tipoEmpleado == 'mozo'){
+          this.listadoMozos.push(item.data())
+        }
+
       })
     })
 
@@ -173,7 +182,26 @@ export class MenuPedidoComponent  implements OnInit {
       let mensajeEnviado = {mensaje: this.mensaje, emisor: 'cliente', mesa: '1'};
       this.listadoMensajes.push(mensajeEnviado);
       this.mesaServ.updateChatsMesas(this.listadoMensajes, this.idMesa);
-      //PUSH
+      this.listadoMozos.forEach( (mozo:any) => {
+        if(mozo.token != ''){
+          console.log(mozo)
+          this.pushServ.enviarPushNotification({
+            registration_ids: [ mozo.token, ],
+            notification: {
+              title: 'Consulta - Mesa ' + this.mesaUsuario,
+              body: 'Recibió una nueva consulta de un cliente.',
+            },
+            data: {
+              ruta: 'chat-mozo',
+            },
+          }).subscribe( resp =>{
+            console.log(resp)
+          })
+
+        }
+
+      })
+
       this.mensaje = "";
     }
     setTimeout( ()=>{ this.actualizarChat(this.mesaUsuario); }, 1000)
@@ -187,7 +215,6 @@ export class MenuPedidoComponent  implements OnInit {
           this.listadoMensajes = mesaChat.data().mensajes;
         }
       })
-      console.log(this.listadoMensajes)
     })
   }
 

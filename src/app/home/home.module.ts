@@ -13,6 +13,7 @@ import { ListaEsperaComponent } from '../Pages/lista-espera/lista-espera.compone
 import { ToastrService } from 'ngx-toastr';
 import { MenuPedidoComponent } from '../Pages/menu-pedido/menu-pedido.component';
 import { EstadoPedidoComponent } from '../Pages/estado-pedido/estado-pedido.component';
+import { ChatMozoComponent } from '../Pages/chat-mozo/chat-mozo.component';
 
 
 @NgModule({
@@ -25,6 +26,15 @@ import { EstadoPedidoComponent } from '../Pages/estado-pedido/estado-pedido.comp
     RouterModule,
 
   ],
-  declarations: [HomePage, PrincipalComponent, MenuComponent, RegistrosPendientesComponent, ListaEsperaComponent, MenuPedidoComponent, EstadoPedidoComponent]
+  declarations: [
+    HomePage,
+    PrincipalComponent,
+    MenuComponent,
+    RegistrosPendientesComponent,
+    ListaEsperaComponent,
+    MenuPedidoComponent,
+    EstadoPedidoComponent,
+    ChatMozoComponent
+  ]
 })
 export class HomePageModule {}
