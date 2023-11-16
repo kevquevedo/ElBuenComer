@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home/principal" slot="start"></ion-back-button>
+    <ion-title>
+      <div class="ion-text-center">
+        <ion-text>
+          <h1 class="titulo">Estado Pedido</h1>
+        </ion-text>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- CONTENIDO -->
+<ion-content *ngIf="!spin">
+  <div class="fondo">
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Hola {{usuario.nombre}} {{usuario.apellido}}!</ion-card-title>
+        <ion-card-subtitle>Estado del pedido: {{pedido.estado | titlecase}}.</ion-card-subtitle>
+        <ion-card-subtitle>Tiempo de elaboración: {{pedido.tiempo_estimado}} min.</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngFor="let item of pedido.productos">
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <img alt="Silhouette of mountains" src="{{item.producto.img_src[0]}}" />
+            </ion-thumbnail>
+            <ion-label>{{item.producto.nombre}}</ion-label>
+            <ion-label slot="end">
+              <h2 *ngIf="item.cantidad === 1">{{item.cantidad}} unidad</h2>
+              <h2 *ngIf="item.cantidad !== 1">{{item.cantidad}} unidades</h2>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
+
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

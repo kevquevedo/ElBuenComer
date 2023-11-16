@@ -29,7 +29,11 @@
             <ion-img src="{{cliente.foto}}"></ion-img>
           </ion-avatar>
           <ion-label>
-            <h2>{{cliente.nombre}} {{cliente.apellido}}</h2>
+            <ion-text>
+              <h2 class="nombre">{{cliente.nombre}}</h2>
+              <h2 class="nombre">{{cliente.apellido}}</h2>
+            </ion-text>
+
             <p>DNI: {{cliente.dni}}</p>
           </ion-label>
           <ion-fab horizontal="end" class="boton-aceptar">

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UsuariosService } from '../services/usuarios.service';
 import { ToastController } from '@ionic/angular';
@@ -15,14 +15,22 @@ export class HomePage {
   public usuarios: any = new Array<any>();
 
   loginUsuario: FormGroup;
-  constructor(private afAuth: AngularFireAuth, private fb: FormBuilder,
+  constructor(
+    private afAuth: AngularFireAuth,
+    private fb: FormBuilder,
     private toastController: ToastController,
-    private router: Router, private usuarioService: UsuariosService,
-    private pushNotiSvc: NotificationService) {
+    private router: Router,
+    private usuarioService: UsuariosService,
+    private activatedRoute: ActivatedRoute,
+    ) {
     this.loginUsuario = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       pass: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.loginUsuario.reset();
+    })
   }
 
   login() {
@@ -42,29 +50,30 @@ export class HomePage {
                   });
                   console.log(usuario.data().id);
                   //this.pushNotiSvc.initializePushNotifications(usuario.data().id);
-                  let userToken = localStorage.getItem('deviceToken'); 
-                  if(userToken != null){
-                    this.usuarioService.actualizarToken(usuario.data().id, JSON.parse(userToken));
-                  }
-                  this.presentToast('middle', 'Bienvenido. Ingreso correcto', 'success');
+                  // let userToken = localStorage.getItem('deviceToken'); 
+                  // if(userToken != null){
+                  //   this.usuarioService.actualizarToken(usuario.data().id, JSON.parse(userToken));
+                  // }
+                  //this.presentToast('middle', 'Bienvenido. Ingreso correcto', 'success');
+                  this.presentToast('bottom', 'Bienvenido. Ingreso correcto', 'success');
                   this.router.navigate(['/home/principal']);
                 }).catch((error) => {
-                  this.presentToast('middle', 'Contraseña incorrecta.', 'danger');
+                  this.presentToast('bottom', 'Contraseña incorrecta.', 'danger');
                 });
             } else {
-              this.presentToast('middle', 'Usuario no validado.', 'danger');
+              this.presentToast('bottom', 'Usuario no validado.', 'danger');
             }
           }
         });
 
         if (!userFound) {
-          this.presentToast('middle', 'Usuario no registrado.', 'danger');
+          this.presentToast('bottom', 'Usuario no registrado.', 'danger');
         }
       } else {
-        this.presentToast('middle', 'Usuario no registrado.', 'danger');
+        this.presentToast('bottom', 'Usuario no registrado.', 'danger');
       }
     }).catch(error => {
-      this.presentToast('middle', 'Ocurrió un error al obtener la lista de usuarios.', 'danger');
+      this.presentToast('bottom', 'Ocurrió un error al obtener la lista de usuarios.', 'danger');
     });
   }
 

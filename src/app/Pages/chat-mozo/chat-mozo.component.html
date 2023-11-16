@@ -1,0 +1,245 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home/principal" slot="start"></ion-back-button>
+    <ion-title>
+      <div class="ion-text-center titulo">
+        <ion-text>
+          <h1>Chat Mesas</h1>
+        </ion-text>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- MENU -->
+
+<ion-content *ngIf="!spin">
+  <div class="fondo">
+
+    <!-- MESA 1 -->
+    <ion-card class="ion-text-center ion-margin-vertical">
+      <ion-card-header>
+        <ion-card-title>Chat - Mesa 1</ion-card-title>
+      </ion-card-header>
+      <ion-button class="ion-margin-vertical" (click)="modalChat1Estado(true)">Ver Chat</ion-button>
+    </ion-card>
+    <!-- MESA 2 -->
+    <ion-card class="ion-text-center ion-margin-vertical">
+      <ion-card-header>
+        <ion-card-title>Chat - Mesa 2</ion-card-title>
+      </ion-card-header>
+      <ion-button class="ion-margin-vertical" (click)="modalChat2Estado(true)">Ver Chat</ion-button>
+    </ion-card>
+    <!-- MESA 3 -->
+    <ion-card class="ion-text-center ion-margin-vertical">
+      <ion-card-header>
+        <ion-card-title>Chat - Mesa 3</ion-card-title>
+      </ion-card-header>
+      <ion-button class="ion-margin-vertical" (click)="modalChat3Estado(true)">Ver Chat</ion-button>
+    </ion-card>
+    <!-- MESA 4 -->
+    <ion-card class="ion-text-center ion-margin-vertical">
+      <ion-card-header>
+        <ion-card-title>Chat - Mesa 4</ion-card-title>
+      </ion-card-header>
+      <ion-button class="ion-margin-vertical" (click)="modalChat4Estado(true)">Ver Chat</ion-button>
+    </ion-card>
+  </div>
+</ion-content>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>
+
+<!-- MODAL CHAT 1-->
+<ion-modal #modal trigger="open-modal" [isOpen]="modalChat1">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Chat - Mesa 1</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="light" (click)="modalChat1Estado(false)">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-content>
+      <ion-list *ngFor="let mensaje of listadoMensajes1">
+        <ion-item *ngIf=" mensaje.emisor === 'cliente' ">
+          <ion-avatar slot="start">
+            <ion-img src="../../../assets/icon/cliente-icon.png"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf=" mensaje.emisor === 'mozo' ">
+          <ion-label slot="end">
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+          <ion-avatar slot="end">
+            <ion-img src="../../../assets/icon/mozo-icon.jpeg"></ion-img>
+          </ion-avatar>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer [translucent]="true">
+      <ion-toolbar class="ion-text-center">
+        <div class="input-consulta">
+          <ion-textarea placeholder="Escribe un mensaje..." [(ngModel)]="mensaje"></ion-textarea>
+        </div>
+        <ion-button class="ion-margin-bottom" (click)="enviarMensaje1()">
+          <ion-text class="ion-margin-horizontal">Enviar Mensaje</ion-text>
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+
+  </ng-template>
+</ion-modal>
+
+<!-- MODAL CHAT 2-->
+<ion-modal #modal trigger="open-modal" [isOpen]="modalChat2">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Chat - Mesa 2</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="light" (click)="modalChat2Estado(false)">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-content>
+      <ion-list *ngFor="let mensaje of listadoMensajes2">
+        <ion-item *ngIf=" mensaje.emisor === 'cliente' ">
+          <ion-avatar slot="start">
+            <ion-img src="../../../assets/icon/cliente-icon.png"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf=" mensaje.emisor === 'mozo' ">
+          <ion-label slot="end">
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+          <ion-avatar slot="end">
+            <ion-img src="../../../assets/icon/mozo-icon.jpeg"></ion-img>
+          </ion-avatar>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer [translucent]="true">
+      <ion-toolbar class="ion-text-center">
+        <div class="input-consulta">
+          <ion-textarea placeholder="Escribe un mensaje..." [(ngModel)]="mensaje"></ion-textarea>
+        </div>
+        <ion-button class="ion-margin-bottom" (click)="enviarMensaje2()">
+          <ion-text class="ion-margin-horizontal">Enviar Mensaje</ion-text>
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+
+  </ng-template>
+</ion-modal>
+
+<!-- MODAL CHAT 3-->
+<ion-modal #modal trigger="open-modal" [isOpen]="modalChat3">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Chat - Mesa 3</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="light" (click)="modalChat3Estado(false)">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-content>
+      <ion-list *ngFor="let mensaje of listadoMensajes3">
+        <ion-item *ngIf=" mensaje.emisor === 'cliente' ">
+          <ion-avatar slot="start">
+            <ion-img src="../../../assets/icon/cliente-icon.png"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf=" mensaje.emisor === 'mozo' ">
+          <ion-label slot="end">
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+          <ion-avatar slot="end">
+            <ion-img src="../../../assets/icon/mozo-icon.jpeg"></ion-img>
+          </ion-avatar>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer [translucent]="true">
+      <ion-toolbar class="ion-text-center">
+        <div class="input-consulta">
+          <ion-textarea placeholder="Escribe un mensaje..." [(ngModel)]="mensaje"></ion-textarea>
+        </div>
+        <ion-button class="ion-margin-bottom" (click)="enviarMensaje3()">
+          <ion-text class="ion-margin-horizontal">Enviar Mensaje</ion-text>
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+
+  </ng-template>
+</ion-modal>
+
+<!-- MODAL CHAT 4-->
+<ion-modal #modal trigger="open-modal" [isOpen]="modalChat4">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Chat - Mesa 4</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="light" (click)="modalChat4Estado(false)">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-content>
+      <ion-list *ngFor="let mensaje of listadoMensajes4">
+        <ion-item *ngIf=" mensaje.emisor === 'cliente' ">
+          <ion-avatar slot="start">
+            <ion-img src="../../../assets/icon/cliente-icon.png"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf=" mensaje.emisor === 'mozo' ">
+          <ion-label slot="end">
+            <h2>{{mensaje.mensaje}}</h2>
+          </ion-label>
+          <ion-avatar slot="end">
+            <ion-img src="../../../assets/icon/mozo-icon.jpeg"></ion-img>
+          </ion-avatar>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer [translucent]="true">
+      <ion-toolbar class="ion-text-center">
+        <div class="input-consulta">
+          <ion-textarea placeholder="Escribe un mensaje..." [(ngModel)]="mensaje"></ion-textarea>
+        </div>
+        <ion-button class="ion-margin-bottom" (click)="enviarMensaje4()">
+          <ion-text class="ion-margin-horizontal">Enviar Mensaje</ion-text>
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+
+  </ng-template>
+</ion-modal>

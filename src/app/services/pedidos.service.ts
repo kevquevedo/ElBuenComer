@@ -84,4 +84,9 @@ export class PedidosService {
   }
 
 
+  obtenerPedidos(){
+    const pedidos = collection(this.firestore, 'pedidos');
+    return getDocs(pedidos);
+  }
+
 }

@@ -12,6 +12,9 @@ import { HttpClient } from '@angular/common/http';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Auth } from '@angular/fire/auth';
+import { UsuariosService } from './usuarios.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -24,42 +27,43 @@ export class PushNotificationService {
     private platform: Platform,
     private firestore: Firestore,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private auth: Auth,
+    private usuarioService: UsuariosService
   ) {
     this.inicializar();
   }
 
   inicializar() : boolean {
     let retorno = false;
-    if(this.platform.is("mobile")){
+
       PushNotifications.requestPermissions().then(result => {
-        console.log(PushNotifications.requestPermissions())
         if (result.receive === 'granted') {
           PushNotifications.register();
           this.addListeners();
           retorno = true;
         }
       });
-    }
+
     return retorno;
   }
 
 
-  addListeners(){
+  async addListeners(){
 
     PushNotifications.addListener('registration', (token: Token) => {
-      alert('Push registration success, token: ' + token.value);
-      //AGREGAR EL TOKEN EN EL USUARIO
+      this.usuarioService.actualizarToken(token.value, this.auth.currentUser?.email!);
     });
 
     PushNotifications.addListener('registrationError', (error: any) => {
       console.error('Registration error: ', error.error);
     });
 
-    PushNotifications.addListener(
+    await PushNotifications.addListener(
       'pushNotificationReceived',
       (notification: PushNotificationSchema) => {
 
+        console.log(notification.data);
         LocalNotifications.schedule({
           notifications: [
             {
@@ -76,27 +80,31 @@ export class PushNotificationService {
       },
     );
 
-    PushNotifications.addListener(
+    await PushNotifications.addListener(
       'pushNotificationActionPerformed',
       (notification: ActionPerformed) => {
-        if(notification.notification.data.pedido_id!= null){
-          this.router.navigate([notification.notification.data.ruta,
-          { pedido_id: notification.notification.data.pedido_id }]);
-        }
+
         this.router.navigateByUrl(notification.notification.data.ruta)
       },
     );
+
+    await LocalNotifications.addListener(
+      'localNotificationActionPerformed',
+      (notificationAction) => {
+
+        this.router.navigateByUrl(notificationAction.notification.extra.data.ruta)
+      }
+    );
+
   }
 
-  enviarPushNotification(){
-
-    // return this.http.post<any>(environment.fcmURl, message, {
-    //   headers: {
-    //     Authorization: `key=${environment.fcmServerKey}`,
-    //     'Content-Type': 'application/json',
-    //   }
-    // } );
-
+  enviarPushNotification(message: any): Observable<any>{
+    return this.http.post<any>(environment.fcmURl, message, {
+      headers: {
+        Authorization: `key=${environment.fcmServerKey}`,
+        'Content-Type': 'application/json',
+      }
+    } );
   }
 
 

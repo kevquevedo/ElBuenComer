@@ -11,10 +11,12 @@ import { FlechasComponent } from './Pages/flechas/flechas.component';
 import { MenuPedidoComponent } from './Pages/menu-pedido/menu-pedido.component';
 import { PedidosComponent } from './Pages/pedidos/pedidos.component';
 import { DetallePedidoComponent } from './Pages/detalle-pedido/detalle-pedido.component';
+import { EstadoPedidoComponent } from './Pages/estado-pedido/estado-pedido.component';
+import { ChatMozoComponent } from './Pages/chat-mozo/chat-mozo.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path:'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule) },
+  { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule) },
   { path: 'splash', loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)},
   { path: 'alta-dueno-supervisor', component: AltaDuenoSupervisorComponent},
   { path: 'alta-empleado', component: AltaEmpleadoComponent},
@@ -28,6 +30,8 @@ const routes: Routes = [
   { path: 'pedidos', component: PedidosComponent },
   { path: 'detalle-pedido', component: DetallePedidoComponent },
   { path: 'menu-pedido', component: MenuPedidoComponent },
+  { path: 'estado-pedido', component: EstadoPedidoComponent },
+  { path: 'chat-mozo', component: ChatMozoComponent },
 ];
 
 @NgModule({

@@ -80,6 +80,9 @@ export class MenuComponent implements OnInit {
   detallePedido(){
     this.router.navigate(['detalle-pedido']);
   }
+  irAlChat(){
+    this.router.navigateByUrl('chat-mozo')
+  }
   logOut() {
     this.afAuth.signOut().then(() => this.router.navigate([""]));
   }

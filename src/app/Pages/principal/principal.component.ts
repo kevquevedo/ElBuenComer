@@ -6,6 +6,8 @@ import { StatusBar } from '@capacitor/status-bar';
 import { ToastController } from '@ionic/angular';
 import { ToastrService } from 'ngx-toastr';
 import { MesaService } from 'src/app/services/mesa.service';
+import { PedidosService } from 'src/app/services/pedidos.service';
+import { PushNotificationService } from 'src/app/services/push-notification.service';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -33,15 +35,26 @@ export class PrincipalComponent  implements OnInit {
   mesa:any;
   mesaAsignada:boolean=true;
   usuarioAnonimo:any;
-  constructor(private qrScanner: QrscannerService ,private router:Router,private usuarioService: UsuariosService ,
-    public afAuth:AngularFireAuth,private toastController: ToastController, private mesaService:MesaService)
-  {
+  pedidoRealizado!: boolean;
+
+  constructor(
+    private qrScanner: QrscannerService,
+    private router:Router,
+    private usuarioService: UsuariosService,
+    public afAuth:AngularFireAuth,
+    private toastController: ToastController,
+    private mesaService:MesaService,
+    private pedidosService: PedidosService,
+    private push: PushNotificationService
+  ){
     this.spin = true;
     this.spinner = false;
     this.enListaEspera = false;
+    this.pedidoRealizado = false;
+
   }
-  async ngOnInit()
-  {
+  async ngOnInit(){
+
     this.enListaEspera = false;
     this.tieneMesa = false;
     this.afAuth.currentUser.then(user=>{
@@ -63,7 +76,7 @@ export class PrincipalComponent  implements OnInit {
                     this.mesa = mesa;
                     if(mesa.ocupada == false){
                       this.mesaAsignada = false;
-                      this.presentarToast('middle', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
+                      this.presentarToast('bottom', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
                     }
                   }
                 });
@@ -82,6 +95,7 @@ export class PrincipalComponent  implements OnInit {
                 this.isMozo = true;
               }
           }
+
           this.usuario = usuario.data();
         }
         // else if(usuario.data().tipoEmpleado == "anonimo"){
@@ -102,11 +116,21 @@ export class PrincipalComponent  implements OnInit {
         //     });
         //   }
         // }
-      }
-      );
-    }
-    );
+      });
+      this.pedidosService.obtenerPedidos().then( resp=>{
+        resp.forEach( (item:any) =>{
+          if(item.data().num_mesa == this.usuario.mesa.numero){
+            this.pedidoRealizado = true;
+          }
+        })
+      });
     });
+
+
+  });
+
+
+
     setTimeout( ()=>{ this.spin = false; }, 2500)
   }
 
@@ -130,15 +154,15 @@ export class PrincipalComponent  implements OnInit {
         console.log(this.currentScan);
         if(this.currentScan == 'home/listaEspera'){
         this.usuarioService.UpdateListadoEspera(this.usuario.id);
-        this.presentarToast('middle', 'Te encontrás en lista de espera, en unos minutos el metre te asignará una mesa.', 'success');
+        this.presentarToast('bottom', 'Te encontrás en lista de espera, en unos minutos el metre te asignará una mesa.', 'success');
         this.enListaEspera = true;
       }
       else{
-        this.presentarToast('middle', 'El código QR no es válido.', 'danger');
+        this.presentarToast('bottom', 'El código QR no es válido.', 'danger');
       }
       this.scanActive = false;
       });
-    }, 2000);
+    }, 2500);
   } // end of startScan
 
   startScannerMesa() {
@@ -148,16 +172,25 @@ export class PrincipalComponent  implements OnInit {
         this.currentScan = result?.trim();
         console.log(this.currentScan);
         if(this.currentScan == this.mesa.numero){
-        this.mesaService.updateMesaOcupada(this.mesa, true);
-        this.mesaAsignada = true;
-        this.presentarToast('middle', 'Mesa asignada correctamente.', 'success');
-        setTimeout(() => { this.router.navigateByUrl('menu-pedido'); }, 2000);
-      }
-      else{
-        this.presentarToast('middle', `El código QR no es válido. Debe scannear la mesa ${this.mesa.numero}`, 'danger');
-      }
-      this.scanActive = false;
-      });
+
+          if(this.pedidoRealizado){
+            setTimeout(() => { this.router.navigateByUrl('estado-pedido'); }, 1000);
+          }else{
+            //
+            this.mesaService.updateMesaOcupada(this.mesa, true);
+            this.mesa.ocupada = true;
+            this.usuarioService.UpdateMesaCliente(this.usuario.id, this.mesa)
+            //
+            this.mesaAsignada = true;
+            this.presentarToast('bottom', 'Mesa asignada correctamente.', 'success');
+            setTimeout(() => { this.router.navigateByUrl('menu-pedido'); }, 2000);
+          }
+        }
+        else{
+          this.presentarToast('bottom', `El código QR no es válido. Debe scannear la mesa ${this.mesa.numero}`, 'danger');
+        }
+        this.scanActive = false;
+        });
     }, 1000);
   } // end of startScan
 

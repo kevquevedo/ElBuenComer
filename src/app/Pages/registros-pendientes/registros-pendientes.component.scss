@@ -22,7 +22,7 @@ ion-list,
 
 ion-item{
   --border-radius: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .boton-aceptar{
@@ -31,4 +31,8 @@ ion-item{
 
 .fondo{
   background-color: #002366;
+}
+
+.nombre{
+  width: 60%;
 }
