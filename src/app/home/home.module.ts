@@ -35,7 +35,8 @@ import { FlechasComponent } from '../Pages/flechas/flechas.component';
     ListaEsperaComponent,
     MenuPedidoComponent,
     EstadoPedidoComponent,
-    ChatMozoComponent
+    ChatMozoComponent,
+    FlechasComponent
   ]
 })
 export class HomePageModule {}

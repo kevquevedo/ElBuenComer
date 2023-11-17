@@ -83,6 +83,9 @@ export class MenuComponent implements OnInit {
   irAlChat(){
     this.router.navigateByUrl('chat-mozo')
   }
+  irAJuegos(){
+    this.router.navigateByUrl('flechas')
+  }
   logOut() {
     this.afAuth.signOut().then(() => this.router.navigate([""]));
   }

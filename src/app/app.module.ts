@@ -40,7 +40,6 @@ fire.initializeApp(environment.firebase);
     AltaClientesComponent,
     AltaMesaComponent,
     EncuestaClienteComponent,
-    FlechasComponent,
     DetallePedidoComponent,
     PedidosComponent
   ],
