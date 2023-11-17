@@ -52,19 +52,19 @@ export class UsuariosService {
   //   });
   // }
 
-  actualizarToken(uid: string, nuevoToken: string) {
-    const usuariosRef = collection(this.firestore, 'usuarios');
-    const q = query(usuariosRef, where('uid', '==', uid));
-  
-    getDocs(q).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        // Actualizar el token del usuario encontrado
-        updateDoc(doc.ref, { token: nuevoToken });
-      });
-    }).catch((error) => {
-      console.error('Error al buscar y actualizar el token:', error);
-    });
-  }
+  // actualizarToken(uid: string, nuevoToken: string) {
+  //   const usuariosRef = collection(this.firestore, 'usuarios');
+  //   const q = query(usuariosRef, where('uid', '==', uid));
+
+  //   getDocs(q).then((querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       // Actualizar el token del usuario encontrado
+  //       updateDoc(doc.ref, { token: nuevoToken });
+  //     });
+  //   }).catch((error) => {
+  //     console.error('Error al buscar y actualizar el token:', error);
+  //   });
+  // }
 
   UpdateListadoEspera(id:string): Promise<void> {
     return new Promise((resolve, reject) => {
