@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { StatusBar } from '@capacitor/status-bar';
 import { ToastController } from '@ionic/angular';
@@ -45,18 +45,27 @@ export class PrincipalComponent  implements OnInit {
     private toastController: ToastController,
     private mesaService:MesaService,
     private pedidosService: PedidosService,
-    private push: PushNotificationService
+    private push: PushNotificationService,
+    private activatedRoute: ActivatedRoute,
   ){
     this.spin = true;
     this.spinner = false;
     this.enListaEspera = false;
     this.pedidoRealizado = false;
 
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.checkearUsuario();
+    })
   }
   async ngOnInit(){
 
     this.enListaEspera = false;
     this.tieneMesa = false;
+    this.checkearUsuario();
+    setTimeout( ()=>{ this.spin = false; }, 2500)
+  }
+
+  checkearUsuario(){
     this.afAuth.currentUser.then(user=>{
       console.log(user);
       console.log(user?.email);
@@ -128,10 +137,6 @@ export class PrincipalComponent  implements OnInit {
 
 
   });
-
-
-
-    setTimeout( ()=>{ this.spin = false; }, 2500)
   }
 
   async checkPermission() {
