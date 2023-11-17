@@ -77,7 +77,7 @@ export class AltaClientesComponent  implements OnInit {
         console.log(this.listadoClientes);
       }
     })
-   
+
 
   }
 
@@ -137,14 +137,14 @@ export class AltaClientesComponent  implements OnInit {
         this.usuariosSvc.crearUsuario(this.usuario);
         //this.pushNotiSrv.initializePushNotifications(this.usuario.uid);
         this.notificar();
-        this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 1500 );
+        this.presentToast('bottom', 'Se creó el usuario correctamente.', 'success', 1500 );
         setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spin = false;}, 2000)
       })
       .catch( error => {
         this.spin = false;
         // this.Errores(error);
         alert(error);
-        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
+        this.presentToast('bottom', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
 
     }
@@ -158,7 +158,7 @@ export class AltaClientesComponent  implements OnInit {
         this.usuario.uid = this.auth.currentUser?.uid;
         this.usuariosSvc.crearUsuario(this.usuario);
         //this.notificar();
-        this.presentToast('middle', 'Se creó el usuario correctamente.', 'success', 2000 );
+        this.presentToast('bottom', 'Se creó el usuario correctamente.', 'success', 2000 );
         this.afAuth.signInWithEmailAndPassword(this.usuario.email, "123456");
         debugger;
         setTimeout( ()=>{ this.router.navigateByUrl('home/principal');
@@ -167,7 +167,7 @@ export class AltaClientesComponent  implements OnInit {
       .catch( error => {
         this.spin = false;
         // this.Errores(error);
-        this.presentToast('middle', 'Error al crear el usuario: ' + error, 'danger', 1500 );
+        this.presentToast('bottom', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
     }
 
@@ -186,10 +186,10 @@ export class AltaClientesComponent  implements OnInit {
     .then((url:any) => {
       this.usuario.foto = url;
       this.fotoHabilitar = true;
-      this.presentToast('middle', 'Se procesó con éxito la imagen', "success", 1500);
+      this.presentToast('bottom', 'Se procesó con éxito la imagen', "success", 1500);
     }
     ).catch((err:any) => {
-      this.presentToast('middle', 'Error al subir imagen: '  + err, "danger", 1500);
+      this.presentToast('bottom', 'Error al subir imagen: '  + err, "danger", 1500);
     })
     // this.sacarFoto();
   }
@@ -258,7 +258,7 @@ export class AltaClientesComponent  implements OnInit {
 
   notificar(){
     let tokens: any[] = [];
-    
+
     alert(JSON.stringify(this.listadoClientes));
     this.listadoClientes.forEach((user:any) => {
       if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){

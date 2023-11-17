@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MenuPedidoComponent } from '../Pages/menu-pedido/menu-pedido.component';
 import { EstadoPedidoComponent } from '../Pages/estado-pedido/estado-pedido.component';
 import { ChatMozoComponent } from '../Pages/chat-mozo/chat-mozo.component';
+import { FlechasComponent } from '../Pages/flechas/flechas.component';
 
 
 @NgModule({
