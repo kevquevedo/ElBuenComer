@@ -35,7 +35,7 @@ export class EstadoPedidoComponent  implements OnInit {
 
       this.pedidosService.obtenerPedidos().then( resp =>{
         resp.forEach( (item:any) =>{
-          if(item.data().estado == 'pendiente' && this.numeroMesa == item.data().num_mesa){
+          if(item.data().estado != 'FINALIZADO' && this.numeroMesa == item.data().num_mesa){
             this.pedido = item.data();
           }
         })

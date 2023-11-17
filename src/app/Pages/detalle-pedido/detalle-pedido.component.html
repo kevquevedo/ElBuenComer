@@ -10,28 +10,32 @@
   <div *ngIf="esEmpleado">
     <ion-list class="ion-padding-horizontal ion-padding-vertical">
       <div class="card-body" *ngFor="let prod of pedido.productos">
-        <ion-label>Producto: {{prod.nombre}} </ion-label> <br>
-        <!-- <div *ngIf="'prod.sector' === sectorUserActual"> -->
-          <ion-item *ngIf="pedido.estado!='finalizado'">
-            <ion-label>
-              Mesa {{pedido.num_mesa}}
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Producto: {{prod.nombre}} </ion-label> <br>
-          </ion-item>
-          <ion-item>
-            <ion-label>Cantidad pedida: {{prod.cantidad}} </ion-label> <br>
-          </ion-item>
-          <ion-item>
-            <ion-label>Estado: {{pedido.estado}} </ion-label><br>
-            <ion-button size="small" color="warning"
-              *ngIf="(pedido.estado=='confirmado' || pedido.estado=='en_elaboracion') && pedido.estado =='pendiente'"
-              (click)="cambiarEstado(pedido, 'EN_ELABORACION')">Iniciar preparacion</ion-button>
-            <ion-button size="small" color="success" *ngIf="pedido.estado =='en elaboración'"
-              (click)="cambiarEstado(pedido,'TERMINADO' )">Finalizar preparacion</ion-button>
-          </ion-item>
-        <!-- </div> -->
+        <div *ngIf="pedido.estado!='FINALIZADO'">
+          <div *ngIf="prod.producto.sector == sectorUserActual">
+            <ion-item>
+              <ion-label>
+                Mesa {{pedido.num_mesa}}
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Producto: {{prod.producto.nombre}} </ion-label> <br>
+            </ion-item>
+            <ion-item>
+              <ion-label>Cantidad pedida: {{prod.producto.cantidad}} </ion-label> <br>
+            </ion-item>
+            <ion-item>
+              <ion-label>Estado: {{prod.producto.estado}} </ion-label><br>
+            </ion-item>
+            <ion-item>
+              <ion-button size="small" color="warning"
+                *ngIf="(pedido.estado=='CONFIRMADO' || pedido.estado=='EN_ELABORACION') && prod.producto.estado =='PENDIENTE' && prod.producto.estado =='PENDIENTE'"
+                (click)="cambiarEstado(prod.producto, 'EN_ELABORACION')">Iniciar preparacion</ion-button>
+              <ion-button size="small" color="success" *ngIf="prod.producto.estado =='EN_ELABORACION'"
+                (click)="cambiarEstado(prod.producto,'TERMINADO' )">Finalizar preparacion</ion-button>
+            </ion-item>
+            
+          </div>
+        </div>
       </div>
 
     </ion-list>
@@ -74,9 +78,9 @@
           <ion-label>Estado: {{pedido.estado }}</ion-label><br>
           <ion-label>Total💵 ${{pedido.total}} </ion-label> <br>
           <ion-label>Tiempo estimado 🕗{{pedido.tiempo_elaboracion}} </ion-label> <br>
-          <ion-button *ngIf="pedido.estado=='ENTREGADO'" color='success' (click)="confirmarRecepcion(pedido.doc_id)">
+          <ion-button *ngIf="pedido.estado=='ENTREGADO'" color='success' (click)="confirmarRecepcion(pedido.id)">
             Confirmar recepcion</ion-button>
-          <ion-button *ngIf="pedido.estado=='RECIBIDO'" color='success' (click)="pedirCuenta(pedido.doc_id)">Pedir
+          <ion-button *ngIf="pedido.estado=='RECIBIDO'" color='success' (click)="pedirCuenta(pedido.id)">Pedir
             cuenta</ion-button>
         </ion-card-content>
       </ion-card>
@@ -102,7 +106,7 @@
       <ion-list>
         <ion-item *ngFor="let item of pedido.productos; let index=index">
           <ion-avatar>
-            <img [src]="item.img_src">
+            <img [src]="item.img_src[0]">
           </ion-avatar>
           <ion-label>
             <h1>{{item.nombre}}</h1>
@@ -161,39 +165,35 @@
   <div *ngIf="esMetre">
 
     <ion-card>
-      <ion-card-header>
-        <ion-card-title>Detalle del pedido</ion-card-title>
-      </ion-card-header>
-
       <ion-card-content>
         <ion-label>Estado: {{pedido.estado }}</ion-label><br>
         <ion-label *ngIf="pedido.estado=='FINALIZADO'" style="text-align: right;">Descuentos ${{pedido.descuento}}
         </ion-label> <br>
         <ion-label *ngIf="pedido.estado=='FINALIZADO'" style="text-align: right;">Propina: ${{pedido.propina}}
         </ion-label> <br>
-        <ion-label style="text-align: right;">Total💵: ${{pedido.total}}</ion-label><br>
+        <ion-label style="text-align: right;">Total💵: ${{pedido.valorTotal}}</ion-label><br>
 
-        <ion-label>Tiempo estimado 🕗{{pedido.tiempo_elaboracion}} </ion-label> <br>
+        <ion-label>Tiempo estimado 🕗{{pedido.tiempo_estimado}} </ion-label> <br>
 
       </ion-card-content>
     </ion-card>
 
 
-    <h1 style="color: #fd0000">Productos</h1>
+    <ion-card-header>
+      <ion-card-title>Productos</ion-card-title>
+    </ion-card-header>
+
     <div *ngFor="let item of pedido.productos">
-      <ion-card style=" 
-      text-align:center; 
-      padding:8px;
-    ">
+      <ion-card style="text-align:center; padding:8px;">
 
         <ion-card-header>
-          <ion-card-title> {{item.nombre}}</ion-card-title>
+          <ion-card-title> {{item.producto.nombre}}</ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
-          <ion-label>{{item.nombre}}</ion-label><br>
-          <ion-label>Cantidad pedida: {{item.cantidad}} </ion-label> <br>
-          <ion-label>Estado: {{item.estadoProductoPedido}} </ion-label> <br>
+          <ion-label>{{item.producto.nombre}}</ion-label><br>
+          <ion-label>Cantidad pedida: {{item.producto.cantidad}} </ion-label> <br>
+          <ion-label>Estado: {{item.producto.estado}} </ion-label> <br>
         </ion-card-content>
 
       </ion-card>
@@ -217,7 +217,7 @@
     PAGAR
   </ion-button>
 </ion-footer>
-<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PENDIENTE' )">
+<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PENDIENTE')">
   <ion-button expand="full" shape="round" color="success" (click)="confirmarPedido(pedido, 'CONFIRMADO')">Confirmar
     pedido</ion-button>
 

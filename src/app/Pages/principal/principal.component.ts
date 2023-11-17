@@ -79,6 +79,7 @@ export class PrincipalComponent  implements OnInit {
             this.isCliente = true;
             this.enListaEspera = usuario.data().enListaDeEspera;
             if(usuario.data().mesa != ""){
+
               this.tieneMesa = true;
               this.mesaService.obtenerTodosLosMesas().then((data: any) => {
                 data.forEach((mesa: any) => {
@@ -131,15 +132,9 @@ export class PrincipalComponent  implements OnInit {
       });
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
-          console.log("LLEGA4")
-          if(item.data().estado == 'pendiente'){
+          if(item.data().num_mesa == this.usuario.mesa.numero){
 
-            console.log(item.data().num_mesa);
-            console.log(this.usuario.mesa.numero);
-            if(item.data().num_mesa == this.usuario.mesa.numero){
-              this.pedidoRealizado = true;
-            }
-
+            this.pedidoRealizado = true;
           }
         })
       });

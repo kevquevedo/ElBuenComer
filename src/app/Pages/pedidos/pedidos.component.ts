@@ -19,6 +19,8 @@ export class PedidosComponent  implements OnInit {
   esEmpleado=false;
   usuario:any;
   spin = true;
+  pedidosConfirmados:any[]=[];
+
   
   constructor(private router:Router,
     private pedidosSrv:PedidosService ,
@@ -32,6 +34,7 @@ export class PedidosComponent  implements OnInit {
   ngOnInit() {
     this.pedidosSrv.obtenerTodosLosPedidos().then((res)=>{
       this.pedidos= res;
+      this.pedidosConfirmados = this.pedidos.filter(pedido => pedido.estado !== 'PENDIENTE');
       console.log(this.pedidos);
     });
 
@@ -70,7 +73,7 @@ export class PedidosComponent  implements OnInit {
   cambiarEstado(pedido_sel:any,proxEstado:string) { 
     this.pedidos.forEach(pedido => {
      if(pedido.doc_id==pedido_sel.doc_id ){
-      pedido.estado= (proxEstado=='confirmado' )? 'confirmado' : 'entregado';
+      pedido.estado= (proxEstado=='CONFIRMADO' )? 'CONFIRMADO' : 'ENTREGADO';
     
       this.pedidosSrv.updateEstadoPedido(pedido)
      }

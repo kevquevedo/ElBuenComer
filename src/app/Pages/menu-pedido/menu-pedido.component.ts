@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { eEstadoPedido, eEstadoProductoPedido } from 'src/app/clases/pedido';
 import { Producto } from 'src/app/clases/producto';
 import { MesaService } from 'src/app/services/mesa.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
@@ -157,13 +158,33 @@ export class MenuPedidoComponent  implements OnInit {
   }
 
   realizarPedido(){
+
+// Mapear productosElegidos a productoPedido
+  let productoPedidoList: any[] = this.productosElegidos.map((producto:any) => {
+    return {
+      cantidad: producto.cantidad,
+      descripcion: producto.descripcion,
+      id: producto.id,
+      estado: eEstadoProductoPedido.PENDIENTE,
+      img_src: producto.img_src[0],
+      precio: producto.precio,
+      nombre: producto.nombre,
+      sector: producto.sector,
+      tiempo_elaboracion: producto.tiempo_elaboracion
+    };
+  });
+
     let pedido = {
-      productos: this.productosElegidos,
+      productos: productoPedidoList,
       usuario: this.usuarioLogueado,
       valorTotal: this.valorTotal,
-      estado: 'pendiente',
+      estado: eEstadoPedido.PENDIENTE,
       num_mesa: this.mesaUsuario,
-      tiempo_estimado: this.tiempoEstimado
+      tiempo_estimado: this.tiempoEstimado,
+      decuento: 0,
+      satisfaccion: 0,
+      propina: 0,
+      jugado: false
     }
     this.pedidosServ.crearPedido(pedido);
     this.presentarToast('bottom', `Se realizó el pedido con éxito.`, 'success');
@@ -240,3 +261,4 @@ export class MenuPedidoComponent  implements OnInit {
 
 
 }
+

@@ -6,3 +6,4 @@ export class Producto{
     img_src!: string[];
     sector!: string; 
 }
+

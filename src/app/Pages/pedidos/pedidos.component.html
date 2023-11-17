@@ -6,7 +6,6 @@
 </ion-header>
 <ion-content>
 <div *ngIf="!spin">
-
     <div *ngIf="pedidos.length ==0">
       <strong style="color:red">No hay pedidos pendientes</strong>
     </div>
@@ -14,7 +13,7 @@
       <ion-list class="ion-padding-horizontal ion-padding-vertical">
 
         <div class="card-body" *ngFor="let pedido of pedidos">
-          <ion-item *ngIf="pedido.estado!='finalizado'">
+          <ion-item *ngIf="pedido.estado!='FINALIZADO'">
             <ion-label>
               Mesa {{pedido.num_mesa}} 
             </ion-label>
@@ -27,7 +26,7 @@
     
       </ion-list>
       <!-- <div *ngFor="let pedido of pedidos">
-        <ion-card *ngIf="pedido.estado!='finalizado'" style="   text-align:center;   padding:8px;  ">
+        <ion-card *ngIf="pedido.estado!='FINALIZADO'" style="   text-align:center;   padding:8px;  ">
           <ion-card-header>
             <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title>
           </ion-card-header>
@@ -42,8 +41,8 @@
       </div> -->
     </div>
     <div *ngIf="esEmpleado">
-      <div class="card-body" *ngFor="let pedido of pedidos">
-        <ion-item *ngIf="pedido.estado!='finalizado'">
+      <div class="card-body" *ngFor="let pedido of pedidosConfirmados">
+        <ion-item *ngIf="pedido.estado!='FINALIZADO'">
           <ion-label>
             Mesa {{pedido.num_mesa}} 
           </ion-label>
@@ -54,7 +53,7 @@
         </ion-item>
       </div>
       <!-- <div *ngFor="let pedido of pedidos">
-        <ion-card *ngIf="pedido.estado!='finalizado'" style="text-align:center;padding:8px;">
+        <ion-card *ngIf="pedido.estado!='FINALIZADO'" style="text-align:center;padding:8px;">
           <ion-card-header>
             <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title>
           </ion-card-header>
