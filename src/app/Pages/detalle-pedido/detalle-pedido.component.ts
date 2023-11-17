@@ -6,6 +6,8 @@ import { MesaService } from 'src/app/services/mesa.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { eEstadoPedido, eEstadoProductoPedido } from 'src/app/clases/pedido';
+import { PushNotificationService } from 'src/app/services/push-notification.service';
 
 @Component({
   selector: 'app-detalle-pedido',
@@ -30,16 +32,19 @@ export class DetallePedidoComponent implements OnInit {
   scan_visibility = 'hidden';
   satisfaccionPorcent!: string;
   usuarios: any;
+  empleados:any;
   spin = true;
   currentScan: any;
-
+  total: any;
   constructor(
     private route: ActivatedRoute,
     private pedidoSrv: PedidosService,
     private auth: Auth,
     private userSrv: UsuariosService,
     private qrScanner: QrscannerService,
-    private mesaSvc: MesaService
+    private mesaSvc: MesaService,
+    private pushServ: PushNotificationService
+    
     // private msjSrv: MensajeService,
     //private utilidadesSrv: UtilidadesService,
     //private spinnerSrv: NgxSpinnerService,
@@ -65,11 +70,13 @@ export class DetallePedidoComponent implements OnInit {
             this.esEmpleado = false;
           } else if (this.usuario.tipo == 'empleado') {
             if (this.usuario.tipoEmpleado == 'bartender') {
+              this.empleados.push(item.data());
               this.esEmpleado = true;
               this.esCliente = false;
               this.esMetre = false;
               this.sectorUserActual = 'bebida';
             } else if (this.usuario.tipoEmpleado == 'cocinero') {
+              this.empleados.push(item.data());
               this.esEmpleado = true;
               this.esCliente = false;
               this.esMetre = false;
@@ -99,7 +106,6 @@ export class DetallePedidoComponent implements OnInit {
           } else {
             this.pedidoSrv.obtenerPedidoPorId(this.pedido_id).then((res) => {
               this.pedido = res;
-              console.log('PEDIDO SELECCIONADO: ' + this.pedido);
             });
       
           }
@@ -119,11 +125,30 @@ export class DetallePedidoComponent implements OnInit {
 
   confirmarPedido(pedido_sel: any, proxEstado: string) {
 
-    this.pedido.estado = 'confirmado' ? 'confirmado' : 'entregado';
-    if (this.pedido.estado == 'confirmado') {
-      this.notificar(pedido_sel)
-    }
+    this.pedido.estado = (proxEstado == eEstadoPedido.CONFIRMADO) ? eEstadoPedido.CONFIRMADO : eEstadoPedido.ENTREGADO;
+    if (this.pedido.estado == 'CONFIRMADO') {
 
+      this.empleados.forEach( (empleado:any) => {
+        if(empleado.token != ''){
+          console.log(empleado)
+          
+        this.pushServ.enviarPushNotification({
+          registration_ids: [ empleado.token, ],
+          notification: {
+            title: 'Pedido - Nuevo ' + this.pedido.num_mesa,
+            body: 'Hay un nuevo pedido realizado.',
+          },
+          data: {
+            ruta: 'pedidos',
+          },
+        }).subscribe( resp =>{
+          console.log(resp)
+        })
+  
+        }
+  
+      })
+    }
 
     this.pedidoSrv.updateEstadoPedido(this.pedido)
 
@@ -133,26 +158,26 @@ export class DetallePedidoComponent implements OnInit {
     let cantProdPedido = this.pedido.productos.length;
 
     let productosTerminados = 0;
-    if (this.pedido.estado == 'confirmado') {
-      this.pedido.estado = 'en elaboración';
+    if (this.pedido.estado == 'CONFIRMADO') {
+      this.pedido.estado = eEstadoPedido.EN_ELABORACION;
     }
 
-    item.estadoProductoPedido = (proxEstado == 'en elaboración') ? 'en elaboración' : 'terminado';
+    item.estado = (proxEstado == eEstadoPedido.EN_ELABORACION) ? eEstadoPedido.EN_ELABORACION : eEstadoPedido.TERMINADO;
     this.pedido.productos.forEach((prod:any) => {
-      if (prod.doc_id == item.doc_id) {
-        prod = item
+      if (prod.producto.id == item.id) {
+        prod.producto = item
       }
     });
 
     this.pedido.productos.forEach((producto: any) => {
-      if (producto.estadoProductoPedido == 'terminado') {
+      if (producto.producto.estado == 'TERMINADO') {
         productosTerminados++;
 
       }
     });
 
     if (productosTerminados == cantProdPedido) {
-      this.pedido.estado = 'terminado';
+      this.pedido.estado = 'TERMINADO';
       console.log('PRODUCTO TERMINADO');
 
       this.notificarPedidoTerminado(this.pedido)
@@ -168,19 +193,19 @@ export class DetallePedidoComponent implements OnInit {
   }
 
   pedirCuenta(pedidoID: string) {
-    this.pedido.estado = 'cuenta';
+    this.pedido.estado = 'CUENTA';
     this.pedidoSrv.updateEstadoPedido(this.pedido);
   }
 
   pagarPedido(pedidoID: string) {
     let descuentoCalcu = (this.pedido.total * this.pedido.descuento) / 100;
-    this.pedido.estado = 'pagado';
+    this.pedido.estado = 'PAGADO';
     this.pedido.total = this.pedido.total + this.pedido.propina - descuentoCalcu;
     this.pedidoSrv.updateEstadoPedido(this.pedido);
   }
 
   confirmarPago(pedidoID: string) {
-    this.pedido.estado = 'cobrado';
+    this.pedido.estado = 'COBRADO';
     this.pedidoSrv.updateEstadoPedido(this.pedido)//.then(() => {
       this.liberarMesa( this.pedido.id)
     //});
@@ -190,7 +215,7 @@ export class DetallePedidoComponent implements OnInit {
 
   liberarMesa(pedidoID: string) {
     this.spin = true;
-    this.pedido.estado = 'finalizado';
+    this.pedido.estado = 'FINALIZADO';
     //finalizar pedido
     this.pedidoSrv.updateEstadoPedido(this.pedido);
     //Borrar mensajes

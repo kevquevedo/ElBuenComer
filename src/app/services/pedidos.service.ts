@@ -45,9 +45,7 @@ export class PedidosService {
 
   updateEstadoPedido(pedido: any) {
     const pedidosRef = doc(this.firestore, 'pedidos', pedido.id);
-    updateDoc(pedidosRef, {
-      estado: pedido.estado
-    });
+    updateDoc(pedidosRef, pedido);
   
   }
 

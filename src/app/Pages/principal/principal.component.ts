@@ -78,6 +78,7 @@ export class PrincipalComponent  implements OnInit {
             this.isCliente = true;
             this.enListaEspera = usuario.data().enListaDeEspera;
             if(usuario.data().mesa != ""){
+             
               this.tieneMesa = true;
               this.mesaService.obtenerTodosLosMesas().then((data: any) => {
                 data.forEach((mesa: any) => {
@@ -129,6 +130,7 @@ export class PrincipalComponent  implements OnInit {
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
           if(item.data().num_mesa == this.usuario.mesa.numero){
+       
             this.pedidoRealizado = true;
           }
         })
