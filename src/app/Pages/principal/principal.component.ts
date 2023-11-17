@@ -52,13 +52,13 @@ export class PrincipalComponent  implements OnInit {
     this.spinner = false;
     this.enListaEspera = false;
     this.pedidoRealizado = false;
+    this.checkearUsuario();
 
+  }
+  async ngOnInit(){
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.checkearUsuario();
     })
-  }
-  async ngOnInit(){
-
     this.enListaEspera = false;
     this.tieneMesa = false;
     this.checkearUsuario();
@@ -66,10 +66,11 @@ export class PrincipalComponent  implements OnInit {
   }
 
   checkearUsuario(){
+    console.log("LLEGA")
     this.afAuth.currentUser.then(user=>{
-      console.log(user);
-      console.log(user?.email);
+
       this.usuarioService.getListadoUsuarios().then(resp => {
+        console.log("LLEGA2")
         resp.forEach((usuario: any) => {
         if (usuario.data().email == user?.email) {
           if (usuario.data().tipo == "admin") {
@@ -81,7 +82,9 @@ export class PrincipalComponent  implements OnInit {
               this.tieneMesa = true;
               this.mesaService.obtenerTodosLosMesas().then((data: any) => {
                 data.forEach((mesa: any) => {
+
                   if(mesa.numero == usuario.data().mesa.numero){
+
                     this.mesa = mesa;
                     if(mesa.ocupada == false){
                       this.mesaAsignada = false;
@@ -128,8 +131,15 @@ export class PrincipalComponent  implements OnInit {
       });
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
-          if(item.data().num_mesa == this.usuario.mesa.numero){
-            this.pedidoRealizado = true;
+          console.log("LLEGA4")
+          if(item.data().estado == 'pendiente'){
+
+            console.log(item.data().num_mesa);
+            console.log(this.usuario.mesa.numero);
+            if(item.data().num_mesa == this.usuario.mesa.numero){
+              this.pedidoRealizado = true;
+            }
+
           }
         })
       });
@@ -176,8 +186,10 @@ export class PrincipalComponent  implements OnInit {
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
         console.log(this.currentScan);
+        console.log(this.mesa.numero);
         if(this.currentScan == this.mesa.numero){
 
+          console.log(this.pedidoRealizado)
           if(this.pedidoRealizado){
             setTimeout(() => { this.router.navigateByUrl('estado-pedido'); }, 1000);
           }else{

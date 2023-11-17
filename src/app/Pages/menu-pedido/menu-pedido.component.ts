@@ -224,6 +224,7 @@ export class MenuPedidoComponent  implements OnInit {
   }
 
   modalChat(abierto: boolean){
+    this.actualizarChat(this.mesaUsuario);
     this.modalChatAbierto = abierto;
   }
 
