@@ -159,20 +159,20 @@ export class MenuPedidoComponent  implements OnInit {
 
   realizarPedido(){
 
-// Mapear productosElegidos a productoPedido
-  let productoPedidoList: any[] = this.productosElegidos.map((producto:any) => {
-    return {
-      cantidad: producto.cantidad,
-      descripcion: producto.descripcion,
-      id: producto.id,
-      estado: eEstadoProductoPedido.PENDIENTE,
-      img_src: producto.img_src[0],
-      precio: producto.precio,
-      nombre: producto.nombre,
-      sector: producto.sector,
-      tiempo_elaboracion: producto.tiempo_elaboracion
-    };
-  });
+    // Mapear productosElegidos a productoPedido
+    let productoPedidoList: any[] = this.productosElegidos.map((producto:any) => {
+      return {
+        cantidad: producto.cantidad,
+        descripcion: producto.producto.descripcion,
+        id: producto.producto.id,
+        estado: eEstadoProductoPedido.PENDIENTE,
+        img_src: producto.producto.img_src[0],
+        precio: producto.producto.precio,
+        nombre: producto.producto.nombre,
+        sector: producto.producto.sector,
+        tiempo_elaboracion: producto.producto.tiempo_elaboracion
+      };
+    });
 
     let pedido = {
       productos: productoPedidoList,

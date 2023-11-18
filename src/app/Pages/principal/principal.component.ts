@@ -66,11 +66,11 @@ export class PrincipalComponent  implements OnInit {
   }
 
   checkearUsuario(){
-    console.log("LLEGA")
+
     this.afAuth.currentUser.then(user=>{
 
       this.usuarioService.getListadoUsuarios().then(resp => {
-        console.log("LLEGA2")
+
         resp.forEach((usuario: any) => {
         if (usuario.data().email == user?.email) {
           if (usuario.data().tipo == "admin") {
@@ -133,7 +133,6 @@ export class PrincipalComponent  implements OnInit {
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
           if(item.data().num_mesa == this.usuario.mesa.numero){
-
             this.pedidoRealizado = true;
           }
         })
@@ -180,8 +179,7 @@ export class PrincipalComponent  implements OnInit {
       this.scanActive = true;
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
-        console.log(this.currentScan);
-        console.log(this.mesa.numero);
+
         if(this.currentScan == this.mesa.numero){
 
           console.log(this.pedidoRealizado)
