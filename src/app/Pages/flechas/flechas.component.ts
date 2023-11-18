@@ -7,6 +7,7 @@ import { Auth } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { Puntos } from 'src/app/clases/puntos';
 import { PedidosService } from 'src/app/services/pedidos.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-flechas',
@@ -57,12 +58,13 @@ export class FlechasComponent  implements OnInit {
   usuarioActual:any;
   spin = false;
   utilidades: any;
-  toastr: any;
+
 
   constructor(public router: Router, 
     public authService: AuthService, 
     private usuarioSvc: UsuariosService,
     private pedidoSvc: PedidosService, 
+    private toastr: ToastController,
    // private spinner:NgxSpinnerService,
    // private utilidades:UtilidadesService,
     //private firestoreSvc:FirestoreService
@@ -201,7 +203,7 @@ export class FlechasComponent  implements OnInit {
         this.presentToast('middle', 'No ha logrado el descuento, mejor suerte la proxima!', "error", 2000);
       }
       setTimeout(()=>{
-        this.router.navigate(['principal']);
+        this.router.navigate(['home/principal']);
         this.spin = false;
         console.log("Pedido actualizado, jugado en true, descuento y juegoJugado en flechas");
       },4000);
