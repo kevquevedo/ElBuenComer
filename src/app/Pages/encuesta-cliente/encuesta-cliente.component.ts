@@ -102,14 +102,14 @@ export class EncuestaClienteComponent implements OnInit {
       //document.getElementById('enviar').setAttribute('disabled', 'disabled');
 
       setTimeout(() => {
-        this.presentToast('middle', 'Se registró la encuesta correctamente.', "success", 1500);
+        this.presentToast('bottom', 'Se registró la encuesta correctamente.', "success", 1500);
         //this.encuestasSvc.encuesta = true;
         this.spin = false;
         this.router.navigate(['/home-cliente']);
       }, 2000);
 
     }).catch((error: any) => {
-      this.presentToast('middle', 'Ocurrió un error al registrar la encuesta.', "error", 1500);
+      this.presentToast('bottom', 'Ocurrió un error al registrar la encuesta.', "error", 1500);
       this.spin = false;
     });
   }

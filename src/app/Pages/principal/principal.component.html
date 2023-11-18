@@ -25,7 +25,11 @@
   <div *ngIf="isCliente && !enListaEspera && tieneMesa">
     <div class="centrado">
       <button class="escanear" expand="block" type="button" (click)="startScannerMesa()" *ngIf="!scanActive">
-        <h6>ESCANEAR CÓDIGO QR DE LA MESA</h6>
+        <h6 class="fw-bold">ESCANEAR CÓDIGO QR DE LA MESA</h6>
+      </button>
+      <br>
+      <button class="escanear" expand="block" type="button" (click)="verEncuestas(true)" *ngIf="!scanActive">
+        <h6 class="fw-bold">VER ENCUESTAS</h6>
       </button>
     </div>
     <ion-row class="scan-button" *ngIf="scanActive">
@@ -40,3 +44,71 @@
 <div *ngIf="spin" class="div-spin-logo">
   <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
 </div>
+
+<ion-modal #modal trigger="open-modal2" [isOpen]="encuestasAbierto" class="modalcarrito">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Encuestas</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="verEncuestas(false)" size="small">Volver</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+
+    <ion-content>
+
+      <div *ngIf="listadoEncuestas.length > 0" class="contenedor">
+        <div *ngFor="let item of listadoEncuestas ; index as i">
+
+          <ion-item lines="full">
+
+            <div class="descripcion">
+              <ion-text><h2 class="ion-text-center fw-bold">Puntaje: {{item.puntaje}}</h2></ion-text>
+              <ion-text class="opacity-75"><p class="ion-text-center m-0 fw-bolder">Comentario:</p></ion-text>
+              <ion-text class="opacity-75"><p class="ion-text-center m-0 mb-3">{{item.comentario}}</p></ion-text>
+              <ion-text class="opacity-75"><p class="ion-text-center m-0 fw-bolder">Inconvenientes:</p></ion-text>
+              <ion-text class="opacity-75"><p class="ion-text-center m-0 mb-3">{{item.inconvenientes | titlecase}}</p></ion-text>
+            </div>
+
+            <div>
+              <div id="collapseExample{{i}}" class="carousel fotosProducto ion-margin-vertical">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="{{item.foto1}}" alt="..." width="140px" height="140px" class="img-menu">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="{{item.foto2}}" alt="..." width="140px" height="140px" class="img-menu">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="{{item.foto3}}" alt="..." width="140px" height="140px" class="img-menu">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#collapseExample'+i" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#collapseExample'+i" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+
+          </ion-item>
+        </div>
+
+      </div>
+      <div *ngIf="listadoEncuestas.length === 0">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">No hay existen encuestas realizadas</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </div>
+    </ion-content>
+
+
+  </ng-template>
+</ion-modal>

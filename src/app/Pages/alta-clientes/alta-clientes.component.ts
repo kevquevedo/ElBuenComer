@@ -13,6 +13,7 @@ import { first } from 'rxjs/operators';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { PushNotificationService } from 'src/app/services/push-notification.service';
 
 
 
@@ -46,6 +47,8 @@ export class AltaClientesComponent  implements OnInit {
   listadoClientes = new Array<any>();
   spin: boolean = false;
   currentScan: any;
+  listadoMetre!: any;
+  imgSeleccionada! : any;
 
   constructor(
     //private spinner: NgxSpinnerService,
@@ -56,25 +59,28 @@ export class AltaClientesComponent  implements OnInit {
     private usuariosSvc: UsuariosService,
     //private authSvc: AuthService,
     //private mail:MailService,
-    private pushNotiSrv:NotificationService,
+    //private pushNotiSrv:NotificationService,
+    private pushService: PushNotificationService,
     private toastr: ToastController,
     private afAuth: AngularFireAuth,
     private qrScanner: QrscannerService,
     private auth: Auth,
   ) {
-
+    this.imgSeleccionada = '../../../assets/Imagen_no_disponible.png';
     this.usuario = new Usuario();
     this.spin = true;
+    this.listadoMetre = [];
     this.usuariosSvc.getListadoUsuarios().then(res => {
       if(res.size > 0){
         this.listadoClientes = [];
         res.forEach((usuario: any) => {
-          console.log(usuario.data());
           if (usuario.data().tipoEmpleado == 'dueño') {
             this.listadoClientes.push(usuario.data())
           }
+          if(usuario.data().tipoEmpleado == 'metre'){
+            this.listadoMetre.push(usuario.data())
+          }
         });
-        console.log(this.listadoClientes);
       }
     })
 
@@ -89,21 +95,15 @@ export class AltaClientesComponent  implements OnInit {
       dni: ['', Validators.compose([Validators.required, Validators.min(10000000), Validators.max(99999999)])],
       email: ["", [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       clave: ["", Validators.required],
-      //clave2: ["", [Validators.required, this.comparePassValidator(this.altaForm.value.clave1, this.altaForm.value.clave2)]]
-      //clave2: ["", Validators.compose([Validators.required])],
-
     });
 
     this.altaFormAnonimo = this.fromBuilder.group({
       'nombre': ['', Validators.required]
     });
 
-    setTimeout( ()=>{ this.spin = false; }, 2000)
-
-
-    // this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.dueño).subscribe((res)=>{
-    //   this.usuarios= res;
-    // })
+    setTimeout( ()=>{
+      this.spin = false;
+    }, 2000)
   }
 
   comparePassValidator(clave1: AbstractControl, clave2: AbstractControl) {
@@ -113,8 +113,7 @@ export class AltaClientesComponent  implements OnInit {
     return null;
   };
 
-}
-
+  }
 
   aceptar() {
     this.spin = true;
@@ -133,16 +132,13 @@ export class AltaClientesComponent  implements OnInit {
       this.usuario.enListaDeEspera = false;
       createUserWithEmailAndPassword(this.auth, this.usuario.email, this.altaForm.value.clave).then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
-        //alert(JSON.stringify(this.usuario));
         this.usuariosSvc.crearUsuario(this.usuario);
-        //this.pushNotiSrv.initializePushNotifications(this.usuario.uid);
-        this.notificar();
+        this.notificarAMetres();
         this.presentToast('bottom', 'Se creó el usuario correctamente.', 'success', 1500 );
         setTimeout( ()=>{ this.router.navigateByUrl('home'); this.spin = false;}, 2000)
       })
       .catch( error => {
         this.spin = false;
-        // this.Errores(error);
         alert(error);
         this.presentToast('bottom', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
@@ -157,23 +153,40 @@ export class AltaClientesComponent  implements OnInit {
       createUserWithEmailAndPassword(this.auth,this.usuario.email , "123456").then( () => {
         this.usuario.uid = this.auth.currentUser?.uid;
         this.usuariosSvc.crearUsuario(this.usuario);
-        //this.notificar();
+        this.notificarAMetres();
         this.presentToast('bottom', 'Se creó el usuario correctamente.', 'success', 2000 );
         this.afAuth.signInWithEmailAndPassword(this.usuario.email, "123456");
-        debugger;
         setTimeout( ()=>{ this.router.navigateByUrl('home/principal');
-         this.spin = false;}, 2000)
+          this.spin = false;}, 2000)
       })
       .catch( error => {
         this.spin = false;
-        // this.Errores(error);
         this.presentToast('bottom', 'Error al crear el usuario: ' + error, 'danger', 1500 );
       })
     }
 
   }
 
+  notificarAMetres(){
+    this.listadoMetre.forEach( (metre:any) => {
 
+      if(metre.token != ''){
+        this.pushService.enviarPushNotification({
+          registration_ids: [ metre.token, ],
+          notification: {
+            title: 'Cliente - En Espera',
+            body: 'Un cliente se registró en la lista de espera.',
+          },
+          data: {
+            ruta: 'listaEspera',
+          },
+        }).subscribe( (resp: any) =>{
+          console.log(resp)
+        })
+      }
+
+    })
+  }
 
   navigateTo(url: string) {
     setTimeout(() => {
@@ -184,6 +197,7 @@ export class AltaClientesComponent  implements OnInit {
   tomarFoto() {
     this.imagesSrv.agregarFoto()
     .then((url:any) => {
+      this.imgSeleccionada = url;
       this.usuario.foto = url;
       this.fotoHabilitar = true;
       this.presentToast('bottom', 'Se procesó con éxito la imagen', "success", 1500);
@@ -194,15 +208,12 @@ export class AltaClientesComponent  implements OnInit {
     // this.sacarFoto();
   }
 
-
-
   getFilePath() {
     return new Date().getTime() + '-test';
   }
 
-
-   // FUNCIONES DE ESCANER
-   async checkPermission() {
+  // FUNCIONES DE ESCANER
+  async checkPermission() {
     return new Promise(async (resolve, reject) => {
       const status = await BarcodeScanner.checkPermission({ force: true });
       if (status.granted) {
@@ -245,7 +256,6 @@ export class AltaClientesComponent  implements OnInit {
     }, 2000);
   } // end of stopScan
 
-
   async presentToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color:string, duration: number) {
     const toast = await this.toastr.create({
       message: mensaje,
@@ -255,26 +265,6 @@ export class AltaClientesComponent  implements OnInit {
     });
     await toast.present();
   }
-
-  notificar(){
-    let tokens: any[] = [];
-
-    alert(JSON.stringify(this.listadoClientes));
-    this.listadoClientes.forEach((user:any) => {
-      if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
-        tokens.push(user.token)
-      }
-     });
-     tokens.forEach(token => {
-      this.pushNotiSrv
-      .sendPushNotification(token, 'registros-pendientes', 'Nuevo Cliente', 'Se registro un nuevo cliente');
-     });
-
-
-  }
-
-
-
 
 }
 

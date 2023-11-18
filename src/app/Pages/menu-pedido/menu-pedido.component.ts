@@ -132,12 +132,12 @@ export class MenuPedidoComponent  implements OnInit {
   calcularTiempoEstimado(){
     this.tiempoEstimado = 0;
     this.listadoCocina.forEach( (item:any) => {
-      if(item.producto.tiempo_elaboracion > this.tiempoEstimado){
+      if(item.producto.tiempo_elaboracion > this.tiempoEstimado && item.cantidad > 0){
         this.tiempoEstimado = item.producto.tiempo_elaboracion;
       }
     });
     this.listadoBebida.forEach( (item:any) => {
-      if(item.producto.tiempo_elaboracion > this.tiempoEstimado){
+      if(item.producto.tiempo_elaboracion > this.tiempoEstimado && item.cantidad > 0){
         this.tiempoEstimado = item.producto.tiempo_elaboracion;
       }
     });

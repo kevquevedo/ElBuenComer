@@ -124,17 +124,42 @@ ion-content {
   width: 100vw;
   height: 100px;
   background-color: #e28d3a;
-  }
+}
 
-  .spin-logo{
-    width: 80px;
-    border-radius: 50%;
-  }
+.spin-logo{
+  width: 80px;
+  border-radius: 50%;
+}
 
-  .div-spin-logo{
-    background-color: #002366;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+.div-spin-logo{
+  background-color: #002366;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.img-menu{
+  border-radius: 10px;
+  border: 1px solid black;
+  margin-right: 0;
+}
+
+.descripcion{
+  width: 70%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.contenedor{
+  padding: 20px;
+  --border-radius: 20px;
+}
+
+ion-item{
+  --border-radius: 20px;
+  --inner-padding-bottom: 30px;
+  --inner-padding-top: 30px;
+}

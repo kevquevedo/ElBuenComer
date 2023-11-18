@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EncuestaService {
-  allEncuestaClientes: CollectionReference<DocumentData> = collection(this.firestore, 'encuesta-clientes');
+  allEncuestaClientes: CollectionReference<DocumentData> = collection(this.firestore, 'encuestas-clientes');
   encuestaClientes!: Observable<any[]>;
 
   constructor(
     private firestore: Firestore,
-  ) { 
+  ) {
       this.encuestaClientes = collectionData(this.allEncuestaClientes);
   }
 
@@ -35,14 +35,14 @@ export class EncuestaService {
 
 
   async obtenerEncuestasClientes() {
-    const encuestasRef = collection(this.firestore, 'encuesta-clientes');
+    const encuestasRef = collection(this.firestore, 'encuestas-clientes');
     const querySnapshot = await getDocs(encuestasRef);
-  
+
     const encuestas:any = [];
     querySnapshot.forEach((doc) => {
       encuestas.push({ id: doc.id, ...doc.data() });
     });
-  
+
     return encuestas;
   }
 

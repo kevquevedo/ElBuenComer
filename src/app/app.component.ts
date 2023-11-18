@@ -14,7 +14,8 @@ export class AppComponent {
   }
 
   inicializarApp(){
-    this.router.navigateByUrl('splash');
+    //this.router.navigateByUrl('alta-clientes');
+    this.router.navigateByUrl('home/principal');
   }
 
 

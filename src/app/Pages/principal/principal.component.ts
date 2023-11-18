@@ -10,6 +10,8 @@ import { PedidosService } from 'src/app/services/pedidos.service';
 import { PushNotificationService } from 'src/app/services/push-notification.service';
 import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { EncuestaClienteComponent } from '../encuesta-cliente/encuesta-cliente.component';
+import { EncuestaService } from 'src/app/services/encuesta.service';
 
 @Component({
   selector: 'app-principal',
@@ -36,6 +38,8 @@ export class PrincipalComponent  implements OnInit {
   mesaAsignada:boolean=true;
   usuarioAnonimo:any;
   pedidoRealizado!: boolean;
+  encuestasAbierto! : boolean;
+  listadoEncuestas! :any;
 
   constructor(
     private qrScanner: QrscannerService,
@@ -47,21 +51,21 @@ export class PrincipalComponent  implements OnInit {
     private pedidosService: PedidosService,
     private push: PushNotificationService,
     private activatedRoute: ActivatedRoute,
+    private encuestasService: EncuestaService
   ){
     this.spin = true;
     this.spinner = false;
     this.enListaEspera = false;
     this.pedidoRealizado = false;
-    this.checkearUsuario();
-
+    this.encuestasAbierto = false;
+    this.listadoEncuestas = [];
+    this.tieneMesa = false;
   }
+
   async ngOnInit(){
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.checkearUsuario();
     })
-    this.enListaEspera = false;
-    this.tieneMesa = false;
-    this.checkearUsuario();
     setTimeout( ()=>{ this.spin = false; }, 2500)
   }
 
@@ -97,39 +101,21 @@ export class PrincipalComponent  implements OnInit {
             }
           }else{
             this.tipoEmpleado = usuario.data().tipoEmpleado;
-              if(this.tipoEmpleado == "bartender"){
-                this.isBartender = true;
-              }else if(this.tipoEmpleado == "cocinero"){
-                this.isCocinero = true;
-              }else if(this.tipoEmpleado == "metre"){
-                this.isMetre = true;
-              }
-              else{
-                this.isMozo = true;
-              }
+            if(this.tipoEmpleado == "bartender"){
+              this.isBartender = true;
+            }else if(this.tipoEmpleado == "cocinero"){
+              this.isCocinero = true;
+            }else if(this.tipoEmpleado == "metre"){
+              this.isMetre = true;
+            }
+            else{
+              this.isMozo = true;
+            }
           }
-
           this.usuario = usuario.data();
         }
-        // else if(usuario.data().tipoEmpleado == "anonimo"){
-        //   this.usuario = usuario.data();
-        //   this.isCliente = true;
-        //   if(usuario.data().mesa != ""){
-        //     this.tieneMesa = true;
-        //     this.mesaService.obtenerTodosLosMesas().then((data: any) => {
-        //       data.forEach((mesa: any) => {
-        //         if(mesa.numero == usuario.data().mesa.numero){
-        //           this.mesa = mesa;
-        //           if(mesa.ocupada == false){
-        //             this.mesaAsignada = false;
-        //             this.presentarToast('middle', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
-        //           }
-        //         }
-        //       });
-        //     });
-        //   }
-        // }
       });
+
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
           if(item.data().num_mesa == this.usuario.mesa.numero){
@@ -137,6 +123,13 @@ export class PrincipalComponent  implements OnInit {
           }
         })
       });
+
+      this.encuestasService.obtenerEncuestasClientes().then( resp => {
+        resp.forEach( (item:any) =>{
+          this.listadoEncuestas.push(item);
+        })
+      })
+
     });
 
 
@@ -212,6 +205,9 @@ export class PrincipalComponent  implements OnInit {
   } // end of stopScan
 
 
+  verEncuestas(abierto: boolean){
+    this.encuestasAbierto = abierto;
+  }
 
 
   async presentarToast(position: 'top' | 'middle' | 'bottom', mensaje:string, color: string) {

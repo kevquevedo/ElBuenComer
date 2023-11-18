@@ -11,10 +11,12 @@
       <div class="ion-text-center preciofinal">
         <ion-text>
           <h1>Total: ${{valorTotal}}</h1>
+          <h1>Tiempo elaboración: {{tiempoEstimado}} min</h1>
         </ion-text>
       </div>
     </ion-title>
   </ion-toolbar>
+
   <ion-toolbar>
     <ion-fab horizontal="start" vertical="center" >
       <ion-chip (click)="modalCarrito(true)">
@@ -78,6 +80,7 @@
                     <span class="visually-hidden">Next</span>
                   </button>
                 </div>
+                <ion-text><h6 class="ion-text-center fw-bold demora">Demora: {{itemCocina.producto.tiempo_elaboracion}} min</h6></ion-text>
                 <ion-text><h3 class="ion-text-center fw-bold precio">${{itemCocina.producto.precio}}</h3></ion-text>
               </div>
 
@@ -126,6 +129,7 @@
               </div>
 
               <div>
+
                 <div id="collapseExample2{{i}}" class="carousel fotosProducto">
                   <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -147,7 +151,7 @@
                     <span class="visually-hidden">Next</span>
                   </button>
                 </div>
-
+                <ion-text><h6 class="ion-text-center fw-bold demora">Demora: {{itemBebida.producto.tiempo_elaboracion}} min</h6></ion-text>
                 <ion-text><h3 class="ion-text-center fw-bold precio">${{itemBebida.producto.precio}}</h3></ion-text>
               </div>
 
@@ -206,17 +210,14 @@
       <div *ngIf="productosElegidos.length > 0">
         <ion-toolbar>
           <div class="realizarPedido">
-            <ion-fab horizontal="start" vertical="center">
-              <ion-button fill="outline" color="light" (click)="realizarPedido()">Realizar Pedido</ion-button>
-            </ion-fab>
-            <ion-fab horizontal="end" vertical="center">
-              <h3>Total: ${{valorTotal}}</h3>
+            <ion-fab horizontal="center" vertical="center">
+              <h1 class="valortotal">Total: $ {{valorTotal}}</h1>
             </ion-fab>
           </div>
         </ion-toolbar>
         <ion-toolbar>
           <ion-fab horizontal="center" vertical="center">
-            <h6>Tiempo estimado de elaboración: {{tiempoEstimado}} min</h6>
+            <h1>Tiempo elaboración: {{tiempoEstimado}} min</h1>
           </ion-fab>
         </ion-toolbar>
         <ion-list *ngFor="let item of productosElegidos ; index as i">
@@ -233,6 +234,12 @@
             </ion-label>
           </ion-item>
         </ion-list>
+
+        <ion-fab horizontal="center" class="realizarPed">
+          <ion-button (click)="realizarPedido()" size="large" class="botonrealizar">Realizar Pedido</ion-button>
+        </ion-fab>
+
+
       </div>
       <div *ngIf="productosElegidos.length === 0">
         <ion-card>

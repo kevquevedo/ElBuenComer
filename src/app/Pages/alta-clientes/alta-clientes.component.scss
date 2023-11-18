@@ -41,7 +41,7 @@ ion-content{
     display: flex;
     justify-content: center;
   }
-  
+
 
 .form {
     background-color: #002366;
@@ -88,4 +88,17 @@ ion-label {
 .fondo-transparente {
     height: 100vh;
     background-color: transparent;
+}
+
+.imgLogo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.img2{
+  border: 2px solid black;
+  background-color: #fff;
+  border-radius: 20px;
 }

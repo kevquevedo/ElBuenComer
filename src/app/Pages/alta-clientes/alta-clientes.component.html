@@ -134,15 +134,15 @@
             <ion-icon name="qr-code-outline"></ion-icon>
           </ion-fab-button>
         </ion-fab>
-    
+
       </div>
     </form>
   </div>
 
 
   <form [formGroup]="altaFormAnonimo" [hidden]="scanActive" *ngIf="anonimo" id="anonimo" style="padding-top: 80px;height: 100%;">
-    <ion-card-header>
-      <img src="../../assets/splash.png">
+    <ion-card-header class="imgLogo">
+      <img src="../../assets/splash.png" width="200px">
     </ion-card-header>
     <ion-item>
       <ion-label position="fixed">Nombre</ion-label>
@@ -172,20 +172,23 @@
         <ion-icon name="image-outline" size="large" class="icon-img"></ion-icon>
       </ion-button>
     </div>
-
-
+    <br>
+    <div class="imgLogo">
+      <img src="{{imgSeleccionada}}" width="150px" class="img2">
+    </div>
+    <br>
     <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid || !fotoHabilitar " type="submit"
       (click)='aceptar()'>
       <ion-icon name="arrow-forward-circle-outline"></ion-icon>
       Aceptar
     </ion-button>
     <div *ngIf="!spin">
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab vertical="top" horizontal="end" slot="fixed">
         <ion-fab-button color="warning" size="large" (click)="startScan()">
           <ion-icon name="qr-code-outline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
-  
+
     </div>
   </form>
 
