@@ -22,7 +22,18 @@
       </ion-col>
     </ion-row>
   </div>
-  <div *ngIf="isCliente && !enListaEspera && tieneMesa">
+  <div *ngIf="isCliente && pedidoEntregado">
+    <div class="centrado">
+      <ion-button expand="block" (click)="irAJuego()">Juego</ion-button>
+      <ion-button expand="block" (click)="irAEncuesta()">Encuesta</ion-button>
+    </div>
+  </div>
+  <div *ngIf="isCliente && pedidoRealizado">
+    <div class="centrado">
+      <ion-button expand="block" (click)="irADetalle()">Detalle Pedido</ion-button>
+    </div>
+  </div>
+  <div *ngIf="isCliente && !enListaEspera && tieneMesa && !pedidoEntregado">
     <div class="centrado">
       <button class="escanear" expand="block" type="button" (click)="startScannerMesa()" *ngIf="!scanActive">
         <h6>ESCANEAR CÓDIGO QR DE LA MESA</h6>

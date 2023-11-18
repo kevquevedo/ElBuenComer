@@ -92,7 +92,8 @@ export class MesaService {
   }
 
   updateMesaOcupada(mesa: any, estado:boolean){
-    const mesasRef = doc(this.firestore, 'mesas', mesa.id);
+    console.log(mesa, estado);
+    const mesasRef = doc(this.firestore, 'mesas', mesa);
     updateDoc(mesasRef, {
       ocupada: estado
     });

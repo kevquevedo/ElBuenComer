@@ -36,6 +36,8 @@ export class PrincipalComponent  implements OnInit {
   mesaAsignada:boolean=true;
   usuarioAnonimo:any;
   pedidoRealizado!: boolean;
+  pedido: any;
+  pedidoEntregado!: boolean;
 
   constructor(
     private qrScanner: QrscannerService,
@@ -134,6 +136,7 @@ export class PrincipalComponent  implements OnInit {
         resp.forEach( (item:any) =>{
           if(item.data().num_mesa == this.usuario.mesa.numero){
             this.pedidoRealizado = true;
+            this.pedido = item.data();
           }
         })
       });
@@ -184,7 +187,15 @@ export class PrincipalComponent  implements OnInit {
 
           console.log(this.pedidoRealizado)
           if(this.pedidoRealizado){
-            setTimeout(() => { this.router.navigateByUrl('estado-pedido'); }, 1000);
+            if(this.pedido.estado === 'ENTREGADO'){
+              //this.router.navigateByUrl('estado-pedido');
+              this.pedidoEntregado = true;
+              alert(this.pedidoEntregado);
+            }
+            // else{
+            //   setTimeout(() => { this.router.navigateByUrl('estado-pedido'); }, 1000);
+            // }
+            
           }else{
             //
             this.mesaService.updateMesaOcupada(this.mesa, true);
@@ -224,4 +235,14 @@ export class PrincipalComponent  implements OnInit {
     await toast.present();
   }
 
+  irAJuego(){
+    this.router.navigate(['flechas']);
+  }
+
+  irAEncuesta(){
+    this.router.navigate(['encuesta-clientes']);
+  }
+  irADetalle(){
+    this.router.navigate(['detalle-pedido']);
+  }
 }
