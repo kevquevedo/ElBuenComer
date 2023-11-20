@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Auth } from '@angular/fire/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { Puntos } from 'src/app/clases/puntos';
+import { PedidosService } from 'src/app/services/pedidos.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-flechas',
@@ -56,12 +58,13 @@ export class FlechasComponent  implements OnInit {
   usuarioActual:any;
   spin = false;
   utilidades: any;
-  toastr: any;
+
 
   constructor(public router: Router, 
     public authService: AuthService, 
     private usuarioSvc: UsuariosService,
-   // private pedidoSvc: PedidosService, 
+    private pedidoSvc: PedidosService, 
+    private toastr: ToastController,
    // private spinner:NgxSpinnerService,
    // private utilidades:UtilidadesService,
     //private firestoreSvc:FirestoreService
@@ -79,8 +82,12 @@ export class FlechasComponent  implements OnInit {
      this.usuarioSvc.getListadoUsuarios().then((resp: any) => {
       if (resp.size > 0) {
         resp.forEach((usuario: any) => {
-          if (usuario.data().uid == this.auth.currentUser?.uid) {
+          if (usuario.data().email == this.auth.currentUser?.email) {
+            this.usuarioActual = usuario.data();
             //OBTENER PEDIDO DE USUARIO Y REVISAR QUE NO ESTE FINALIZADO PARA PERMITIR AHCER ENCUESTA
+            this.pedidoSvc.obtenerPedidoPorIdUsuario(this.usuarioActual.id).then(res => {
+              this.pedido = res;
+            });
 
           }
         });
@@ -167,12 +174,12 @@ export class FlechasComponent  implements OnInit {
         this.empezado = false;
         console.log(this.puntaje);
         this.pedido.jugado = true;
-        this.pedido.descuento = this.puntaje < 800 ? 0 : 20;
+        this.pedido.descuento = this.puntaje < 500 ? 0 : 20;
         this.updatePedidoPuntaje();
         
         if (this.tiempoTerminado) {
           this.pauseTimer();
-          this.router.navigate(['home-cliente']);
+          //this.router.navigate(['principal']);
         }
 
       }
@@ -185,7 +192,9 @@ export class FlechasComponent  implements OnInit {
 
   updatePedidoPuntaje() {
     this.spin = true;
-    this.pedidos.actualizarPedido({jugado:true, descuento:this.pedido.descuento, nombreJuego:'flechas'}, this.pedido.doc_id).then((ok:any)=>{
+    this.pedido.jugado = true;
+    
+    this.pedidoSvc.updateEstadoPedido(this.pedido);
       if(this.pedido.descuento == 0)
       {
         this.presentToast('middle', 'Felicitaciones, ha logrado un 20% de descuento!', "success", 2000);
@@ -194,16 +203,11 @@ export class FlechasComponent  implements OnInit {
         this.presentToast('middle', 'No ha logrado el descuento, mejor suerte la proxima!', "error", 2000);
       }
       setTimeout(()=>{
-        this.router.navigate(['home-cliente']);
+        this.router.navigate(['home/principal']);
         this.spin = false;
         console.log("Pedido actualizado, jugado en true, descuento y juegoJugado en flechas");
       },4000);
-    }).catch((err:any)=>{
-      setTimeout(()=>{
-        this.router.navigate(['home-cliente']);
-        this.spin = false;
-      },4000)
-    });
+
   }
 
 

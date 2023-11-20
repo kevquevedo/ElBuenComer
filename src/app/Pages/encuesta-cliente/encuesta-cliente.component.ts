@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { EncuestaService } from 'src/app/services/encuesta.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { PedidosService } from 'src/app/services/pedidos.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-encuesta-cliente',
@@ -20,6 +22,8 @@ export class EncuestaClienteComponent implements OnInit {
   i_NroImagen: any;
   toastr: any;
   spin: boolean = false;
+  usuarioUID! : any;
+  idPedido! :any;
 
   constructor(private router: Router,
     //public firestore: FirestoreService,
@@ -30,8 +34,12 @@ export class EncuestaClienteComponent implements OnInit {
     private encuestasSvc: EncuestaService,
     private usuarioSvc: UsuariosService,
     private auth: Auth,
+    private pedidosService: PedidosService,
+    private toastController: ToastController
     //private firestoreSvc:FirestoreService,
   ) {
+
+    this.usuarioUID = '';
     this.form = this.fb.group({
       'puntaje': ['', Validators.required],
       'inconvenientes': ['', Validators.required],
@@ -45,17 +53,33 @@ export class EncuestaClienteComponent implements OnInit {
       'uid_pedido': ['']
     });
 
+    this.pedidosService.obtenerTodosLosPedidos().then( (resp) => {
+      let flag = false;
+      resp.forEach((item:any) => {
+        if(item.usuario.email == this.auth.currentUser?.email && item.estado != 'FINALIZADO' ){
+          if(!(item as Object).hasOwnProperty('encuesta')){
+            this.idPedido = item.id;
+          }
+        }
+      })
 
-    // this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+      if(flag){
+        setTimeout(() => { this.spin = false; }, 2000);
+      }else{
+        this.presentToast('bottom', 'El cliente ya realizó la encuesta.', "danger", 4000);
+        this.router.navigate(['/opciones-cliente']);
+        this.spin = false;
+      }
+    })
+
     this.usuarioSvc.getListadoUsuarios().then((resp: any) => {
       if (resp.size > 0) {
         resp.forEach((usuario: any) => {
           if (usuario.data().uid == this.auth.currentUser?.uid) {
-            //OBTENER PEDIDO DE USUARIO Y REVISAR QUE NO ESTE FINALIZADO PARA PERMITIR AHCER ENCUESTA
-
+            this.usuarioUID = usuario.data().uid;
+            console.log(this.usuarioUID)
           }
         });
-        this.spin = false;
       }
     });
 
@@ -88,24 +112,38 @@ export class EncuestaClienteComponent implements OnInit {
 
   EnviarEncuesta() {
     this.spin = true;
-    //this.usuarioActual.uid
-    //this.pedido.doc_id
+
     this.form.controls['uid_cliente'].setValue(
-      this.usuarioActual.uid
+      this.usuarioUID
     );
 
     this.form.controls['uid_pedido'].setValue(
-      this.pedido.doc_id
+      ' '
     );
 
-    this.encuestasSvc.crearEncuesta(this.form).then(() => {
-      //document.getElementById('enviar').setAttribute('disabled', 'disabled');
+    let objeto = {
+      comentario: this.form.get('comentario')?.value,
+      foto1: this.fotos.get('foto1'),
+      foto2: this.fotos.get('foto2'),
+      foto3: this.fotos.get('foto3'),
+      orden: true,
+      inconvenientes: this.form.get('inconvenientes')?.value,
+      puntaje: this.form.get('puntaje')?.value,
+      quejas: this.form.get('quejas')?.value,
+      uid_cliente: this.form.get('uid_cliente')?.value,
+      uid_pedido: ''
+    }
 
+    console.log(objeto)
+
+    this.encuestasSvc.crearEncuesta(objeto).then(() => {
+      //document.getElementById('enviar').setAttribute('disabled', 'disabled');
+      this.pedidosService.actualizarEstadoEncuesta(this.idPedido, true)
       setTimeout(() => {
         this.presentToast('bottom', 'Se registró la encuesta correctamente.', "success", 1500);
         //this.encuestasSvc.encuesta = true;
         this.spin = false;
-        this.router.navigate(['/home-cliente']);
+        this.router.navigate(['/home/principal']);
       }, 2000);
 
     }).catch((error: any) => {
@@ -115,7 +153,7 @@ export class EncuestaClienteComponent implements OnInit {
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', mensaje: string, color: string, duration: number) {
-    const toast = await this.toastr.create({
+    const toast = await this.toastController.create({
       message: mensaje,
       duration: duration,
       position: position,

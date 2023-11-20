@@ -28,6 +28,8 @@ import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { PedidosComponent } from './Pages/pedidos/pedidos.component';
 import { DetallePedidoComponent } from './Pages/detalle-pedido/detalle-pedido.component';
 import { Pedido } from './clases/pedido';
+import { NgChartsModule } from 'ng2-charts';
+
 fire.initializeApp(environment.firebase);
 
 @NgModule({
@@ -59,7 +61,8 @@ fire.initializeApp(environment.firebase);
     provideFirestore(() => getFirestore()),
     HttpClientModule,
     provideFunctions(() => getFunctions()),
-    provideMessaging(() => getMessaging())
+    provideMessaging(() => getMessaging()),
+    NgChartsModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

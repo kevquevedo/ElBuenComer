@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="ion-text-center">
     <ion-back-button defaultHref="home/principal" slot="start"></ion-back-button>
     <ion-title slot="start">FLECHAS</ion-title>
     <!-- <ion-button (click)="cerrarSesion()"  slot="end">
@@ -12,8 +12,9 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div id="empezar" *ngIf="!empezado">
-          <button class="btn btn-success btn-block" (click)="empezar()">Empezar</button>
+        <div id="empezar" *ngIf="!empezado" class="ion-text-center" style="padding-top: 50px;">
+          <button class="btn btn-success btn-block" (click)="empezar()">Empezar</button><br>
+          <img src="../../../assets/flechas/abajo.jpg" style="height: 400px; width: 400px;">
         </div>
         <div class="row" *ngIf="tiempoTerminado">
           <div class="col-4">
@@ -44,39 +45,57 @@
           <!-- <img  src="../../../assets/flechas/arriba.png"> -->
           <img id="img" [src]="getImage()" alt="">
 
-          <div style="margin-left: 70px;">
-            <ion-button class="btn btn-lg" (click)="onArriba()" style="margin-left: 70px;">
-              <ion-icon name="arrow-up-circle-outline"></ion-icon>
-            </ion-button>
-            <!-- <a class="btn btn-info btn-lg justify-content-center" (click)="onArriba()">
-          <span class="glyphicon glyphicon-arrow-up"></span>
-        </a> -->
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="12" class="ion-text-center">
+                <!-- Flecha Arriba -->
+                <ion-button class="btn btn-lg" (click)="onArriba()">
+                  <ion-icon name="arrow-up-circle-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          
+            <ion-row>
+              <ion-col size="6" class="ion-text-end">
+                <!-- Flecha Izquierda -->
+                <ion-button class="btn btn-lg" (click)="onIzquierda()">
+                  <ion-icon name="arrow-back-circle-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+          
+              <ion-col size="6" class="ion-text-start">
+                <!-- Flecha Derecha -->
+                <ion-button class="btn btn-lg" (click)="onDerecha()">
+                  <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          
+            <ion-row class="ion-align-items-center">
+              <ion-col size="12" class="ion-text-center">
+                <!-- Flecha Abajo -->
+                <ion-button class="btn btn-lg" (click)="onAbajo()">
+                  <ion-icon name="arrow-down-circle-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+          <!-- <ion-button class="btn btn-lg" (click)="onArriba()">
+            <ion-icon name="arrow-up-circle-outline"></ion-icon>
+          </ion-button>
 
-            <br>
+          <ion-button class="btn btn-lg" (click)="onIzquierda()">
+            <ion-icon name="arrow-back-circle-outline"></ion-icon>
+          </ion-button>
 
-            <ion-button class="btn btn-lg" (click)="onIzquierda()">
-              <ion-icon name="arrow-back-circle-outline"></ion-icon>
-            </ion-button>
-            <!-- <a class="btn btn-info btn-lg" (click)="onIzquierda()">
-            <span class="glyphicon glyphicon-arrow-left"></span>
-          </a> -->
+          <ion-button class="btn btn-lg" (click)="onAbajo()">
+            <ion-icon name="arrow-down-circle-outline"></ion-icon>
+          </ion-button>
 
-
-            <!-- <a class="btn btn-info btn-lg" (click)="onAbajo()">
-            <span class="glyphicon glyphicon-arrow-down"></span>
-          </a> -->
-            <ion-button class="btn btn-lg" (click)="onAbajo()">
-              <ion-icon name="arrow-down-circle-outline"></ion-icon>
-            </ion-button>
-
-            <ion-button class="btn btn-lg" (click)="onDerecha()">
-              <ion-icon name="arrow-forward-circle-outline"></ion-icon>
-            </ion-button>
-            <!-- <a class="btn btn-info btn-lg" (click)="onDerecha()">
-            <span class="glyphicon glyphicon-arrow-right"></span>
-          </a> -->
-
-          </div>
+          <ion-button class="btn btn-lg" (click)="onDerecha()">
+            <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+          </ion-button> -->
 
         </div>
       </div>

@@ -1,0 +1,36 @@
+.div-spin-logo{
+  background-color: #002366;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.fondo{
+  background-color: #002366;
+  height: 100vh;
+}
+
+.menuprincipal{
+  margin-right: 20px;
+}
+
+.imgLogo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding-top: 30px;
+}
+
+.botones{
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.boton{
+  background-color: #e28d3a;
+  color: #002366;
+}

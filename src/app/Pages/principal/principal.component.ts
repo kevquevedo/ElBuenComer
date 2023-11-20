@@ -40,6 +40,8 @@ export class PrincipalComponent  implements OnInit {
   pedidoRealizado!: boolean;
   encuestasAbierto! : boolean;
   listadoEncuestas! :any;
+  pedido: any;
+  pedidoEntregado!: boolean;
 
   constructor(
     private qrScanner: QrscannerService,
@@ -60,6 +62,7 @@ export class PrincipalComponent  implements OnInit {
     this.encuestasAbierto = false;
     this.listadoEncuestas = [];
     this.tieneMesa = false;
+    this.pedidoEntregado = false;
   }
 
   async ngOnInit(){
@@ -120,6 +123,7 @@ export class PrincipalComponent  implements OnInit {
         resp.forEach( (item:any) =>{
           if(item.data().num_mesa == this.usuario.mesa.numero){
             this.pedidoRealizado = true;
+            this.pedido = item.data();
           }
         })
       });
@@ -177,7 +181,18 @@ export class PrincipalComponent  implements OnInit {
 
           console.log(this.pedidoRealizado)
           if(this.pedidoRealizado){
-            setTimeout(() => { this.router.navigateByUrl('estado-pedido'); }, 1000);
+            this.router.navigateByUrl('opciones-cliente');
+            // console.log(this.pedidoEntregado)
+            // if(this.pedido.estado === 'ENTREGADO'){
+            //   console.log(this.pedidoEntregado)
+              //this.router.navigateByUrl('estado-pedido');
+              // this.pedidoEntregado = true;
+              //alert(this.pedidoEntregado);
+            //}
+            // else{
+            //   setTimeout(() => { this.router.navigateByUrl('estado-pedido'); }, 1000);
+            // }
+
           }else{
             //
             this.mesaService.updateMesaOcupada(this.mesa, true);
@@ -220,4 +235,19 @@ export class PrincipalComponent  implements OnInit {
     await toast.present();
   }
 
+  irAJuego(){
+    this.router.navigate(['flechas']);
+  }
+
+  irAEncuesta(){
+    this.router.navigate(['encuesta-clientes']);
+  }
+  irADetalle(){
+    this.router.navigate(['detalle-pedido']);
+  }
+  verEstadisticas(){
+    this.verEncuestas(false);
+    this.spin = true;
+    setTimeout(() => { this.router.navigateByUrl('graficos-encuestas'); this.spin = false;}, 1000);
+  }
 }

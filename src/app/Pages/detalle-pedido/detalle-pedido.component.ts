@@ -32,10 +32,12 @@ export class DetallePedidoComponent implements OnInit {
   scan_visibility = 'hidden';
   satisfaccionPorcent!: string;
   usuarios: any;
-  empleados:any;
+  empleados:any[] = [];
   spin = true;
   currentScan: any;
   total: any;
+  idChat: any;
+
   constructor(
     private route: ActivatedRoute,
     private pedidoSrv: PedidosService,
@@ -43,8 +45,8 @@ export class DetallePedidoComponent implements OnInit {
     private userSrv: UsuariosService,
     private qrScanner: QrscannerService,
     private mesaSvc: MesaService,
-    private pushServ: PushNotificationService
-    
+    private pushServ: PushNotificationService,
+    private router: Router
     // private msjSrv: MensajeService,
     //private utilidadesSrv: UtilidadesService,
     //private spinnerSrv: NgxSpinnerService,
@@ -53,6 +55,7 @@ export class DetallePedidoComponent implements OnInit {
     // this.route.snapshot.paramMap.get('doc_id')
     this.pedido_id = this.route.snapshot.paramMap.get('pedido_id');
     console.log(this.pedido_id);
+    this.idChat = '';
   }
 
   ngOnInit() {
@@ -86,39 +89,35 @@ export class DetallePedidoComponent implements OnInit {
               this.esCliente = false;
               this.esEmpleado = false;
             }
-            console.log(this.sectorUserActual);
           }
           if (this.esCliente) {
 
-            this.pedidoSrv.obtenerPedidoPorIdUsuario(this.usuario.id).then((res) => {
+            // this.pedidoSrv.obtenerPedidoPorIdUsuario(this.usuario.id).then((res) => {
+            //   this.pedido = res;
+            //   console.log('PEDIDO SELECCIONADO: ' + JSON.stringify(this.pedido));
+            // });
+
+            this.pedidoSrv.obtenerPedidoPorIdUsuarioTiempoReal(this.usuario.id).subscribe((res) => {
               this.pedido = res;
-              console.log('PEDIDO SELECCIONADO: ' + JSON.stringify(this.pedido));
             });
-            /* this.pedidoLS= localStorage.getItem('pedido');
-              if(this.pedidoLS != null  ){
-                this.pedidoLS= JSON.parse(this.pedidoLS); 
-                this.pedido =this.pedidoLS;
-                this.pedidoSrv.TraerPedido(this.pedido.pedidoID).subscribe((res) => {
-                  this.pedido = res;
-                  console.log('PEDIDO SELECCIONADO: ' + this.pedido)
-                });
-                } */
+
           } else {
             this.pedidoSrv.obtenerPedidoPorId(this.pedido_id).then((res) => {
               this.pedido = res;
             });
-      
+
           }
           this.spin = false;
         }
       })
-    })
+    });
+
 
     //this.usuario = this.authSrv.getCurrentUserLS();
 
-   
 
-   
+
+
 
 
   }
@@ -131,27 +130,25 @@ export class DetallePedidoComponent implements OnInit {
       this.empleados.forEach( (empleado:any) => {
         if(empleado.token != ''){
           console.log(empleado)
-          
-        this.pushServ.enviarPushNotification({
-          registration_ids: [ empleado.token, ],
-          notification: {
-            title: 'Pedido - Nuevo ' + this.pedido.num_mesa,
-            body: 'Hay un nuevo pedido realizado.',
-          },
-          data: {
-            ruta: 'pedidos',
-          },
-        }).subscribe( resp =>{
-          console.log(resp)
-        })
-  
+
+          this.pushServ.enviarPushNotification({
+            registration_ids: [ empleado.token, ],
+            notification: {
+              title: 'Pedido - Nuevo ' + this.pedido.num_mesa,
+              body: 'Hay un nuevo pedido realizado.',
+            },
+            data: {
+              ruta: 'pedidos',
+            },
+          }).subscribe( resp =>{
+            console.log(resp)
+          })
+
         }
-  
+
       })
     }
-
     this.pedidoSrv.updateEstadoPedido(this.pedido)
-
   }
 
   cambiarEstado(item: any, proxEstado: string) {
@@ -164,13 +161,13 @@ export class DetallePedidoComponent implements OnInit {
 
     item.estado = (proxEstado == eEstadoPedido.EN_ELABORACION) ? eEstadoPedido.EN_ELABORACION : eEstadoPedido.TERMINADO;
     this.pedido.productos.forEach((prod:any) => {
-      if (prod.producto.id == item.id) {
-        prod.producto = item
+      if (prod.id == item.id) {
+        prod = item
       }
     });
 
     this.pedido.productos.forEach((producto: any) => {
-      if (producto.producto.estado == 'TERMINADO') {
+      if (producto.estado == 'TERMINADO') {
         productosTerminados++;
 
       }
@@ -188,7 +185,7 @@ export class DetallePedidoComponent implements OnInit {
 
   confirmarRecepcion(pedidoID: string) {
     console.log('Pedido recibido: ' + pedidoID)
-    this.pedido.estado = 'recibido';
+    this.pedido.estado = 'RECIBIDO';
     this.pedidoSrv.updateEstadoPedido(this.pedido);
   }
 
@@ -198,79 +195,82 @@ export class DetallePedidoComponent implements OnInit {
   }
 
   pagarPedido(pedidoID: string) {
-    let descuentoCalcu = (this.pedido.total * this.pedido.descuento) / 100;
+    //let descuentoCalcu = (this.pedido.valorTotal * this.pedido.decuento) / 100;
     this.pedido.estado = 'PAGADO';
-    this.pedido.total = this.pedido.total + this.pedido.propina - descuentoCalcu;
+    //this.pedido.valorTotal = this.pedido.valorTotal + this.pedido.propina - descuentoCalcu;
     this.pedidoSrv.updateEstadoPedido(this.pedido);
   }
 
-  confirmarPago(pedidoID: string) {
+  confirmarPago() {
     this.pedido.estado = 'COBRADO';
-    this.pedidoSrv.updateEstadoPedido(this.pedido)//.then(() => {
-      this.liberarMesa( this.pedido.id)
+    this.pedidoSrv.updateEstadoPedido(this.pedido);//.then(() => {
+    this.liberarMesa();
     //});
-
-
   }
 
-  liberarMesa(pedidoID: string) {
+  liberarMesa() {
     this.spin = true;
     this.pedido.estado = 'FINALIZADO';
+
+    //Borrar mensajes
+    this.actualizarChatMesa(this.pedido.num_mesa)
     //finalizar pedido
     this.pedidoSrv.updateEstadoPedido(this.pedido);
-    //Borrar mensajes
-    //this.msjSrv.borrarMensajesByMesa(this.pedido.numero_mesa);
-    //Liberar mesa
-    this.mesaSvc.updateMesaOcupada(this.pedido.uid_mesa, false);
-    //liberar usuario
-
+    //actualizar estado de mesa
+    this.mesaSvc.updateMesaOcupadaById(this.pedido.usuario.mesa.id, false);
+    //actualizar estado de mesa del usuario
     this.userSrv.UpdateMesaCliente(this.pedido.usuario.id, '');
 
     setTimeout(() => {
+      this.router.navigateByUrl('home/principal')
       this.spin = false;
-    }, 5000);
+    }, 3000);
   }
 
   manejarPropina() {
-    if (this.satisfaccionPorcent == '0%') {
+    if (this.satisfaccionPorcent == '0') {
       //sin propina
-      this.pedido.nivelSatisfaccion = '0%';
+      this.pedido.nivelSatisfaccion = '0';
       this.pedido.propina = 0;
-    } else if (this.satisfaccionPorcent == '5%') {
-      this.pedido.nivelSatisfaccion = '5%';
-      this.pedido.propina = this.pedido.total * 0.05;
-    } else if (this.satisfaccionPorcent == '10%') {
-      this.pedido.nivelSatisfaccion = '10%';
-      this.pedido.propina = this.pedido.total * 0.10;
-    } else if (this.satisfaccionPorcent == '15%') {
-      this.pedido.nivelSatisfaccion = '15%';
-      this.pedido.propina = this.pedido.total * 0.15;
-    } else if (this.satisfaccionPorcent == '20%') {
-      this.pedido.nivelSatisfaccion = '20%';
-      this.pedido.propina = this.pedido.total * 0.20;
-
-    } else {
-     // this.utilidadesSrv.errorToast('Escanee un qr de propina', 6000)
+    } else if (this.satisfaccionPorcent == '5') {
+      this.pedido.nivelSatisfaccion = '5';
+      this.pedido.propina = this.pedido.valorTotal * 0.05;
+    } else if (this.satisfaccionPorcent == '10') {
+      this.pedido.nivelSatisfaccion = '10';
+      this.pedido.propina = this.pedido.valorTotal * 0.10;
+    } else if (this.satisfaccionPorcent == '15') {
+      this.pedido.nivelSatisfaccion = '15';
+      this.pedido.propina = this.pedido.valorTotal * 0.15;
+    } else if (this.satisfaccionPorcent == '20') {
+      this.pedido.nivelSatisfaccion = '20';
+      this.pedido.propina = this.pedido.valorTotal * 0.20;
     }
+  }
 
-
+  actualizarChatMesa(numeroMesa:any){
+    this.mesaSvc.obtenerChatsMesas().then( (resp: any) => {
+      resp.forEach( (chat:any) => {
+        if(chat.data().numero == numeroMesa){
+          this.mesaSvc.updateChatsMesas([], chat.data().id)
+        }
+      })
+    })
   }
 
 
 
-
-    // FUNCIONES DE ESCANER
-    async checkPermission() {
-      return new Promise(async (resolve, reject) => {
-        const status = await BarcodeScanner.checkPermission({ force: true });
-        if (status.granted) {
-          resolve(true);
-        } else if (status.denied) {
-          BarcodeScanner.openAppSettings();
-          resolve(false);
-        }
-      });
-    }
+  // FUNCIONES DE ESCANER
+  async checkPermission() {
+    return new Promise(async (resolve, reject) => {
+      const status = await BarcodeScanner.checkPermission({ force: true });
+      if (status.granted) {
+        resolve(true);
+      } else if (status.denied) {
+        BarcodeScanner.openAppSettings();
+        resolve(false);
+      }
+    });
+  }
 
   startScan() {
     setTimeout(() => {
@@ -278,15 +278,13 @@ export class DetallePedidoComponent implements OnInit {
       this.qrScanner.startScan().then((result) => {
         this.currentScan = result?.trim();
         if (this.currentScan) {
-          this.satisfaccionPorcent = this.currentScan;
+          this.satisfaccionPorcent = (this.currentScan as string).substring(0,2);
           this.manejarPropina();
         }
         this.scanActive = false;
-        
       });
     }, 2000);
   } // end of startScan
-
 
   stopScan() {
     setTimeout(() => {
@@ -295,32 +293,23 @@ export class DetallePedidoComponent implements OnInit {
     }, 2000);
   } // end of stopScan
 
-
-  notificarPedidoTerminado(pedido: any) {
+  notificarPedidoTerminado(ssssssss: any) {
     this.usuarios.forEach((user:any) => {
 
-      if (user.token != '' && user.tipo == 'empleado' && (user.tipoEmpleado == 'metre' || user.tipoEmpleado == 'mozo')) {
+      if (user.token != '' && user.tipo == 'empleado' && user.tipoEmpleado == 'mozo') {
 
-        // this.pushSrv
-        //   .sendPushNotification({
-        //     // eslint-disable-next-line @typescript-eslint/naming-convention
-        //     registration_ids: [
-        //       // eslint-disable-next-line max-len
-        //       user.token
-        //     ],
-        //     notification: {
-        //       title: 'Pedido terminado',
-        //       body: 'Pedido listo para entregar Mesa: ' + pedido.numero_mesa,
-        //     },
-        //     data: {
-        //       ruta: 'detalle-pedido',
-        //       pedido_id: pedido.doc_id
-        //     },
-        //   })
-        //   .subscribe((data:any) => {
-        //     console.log(data);
-        //   });
-
+        this.pushServ.enviarPushNotification({
+          registration_ids: [ user.token, ],
+          notification: {
+            title: 'Pedido - Terminado ' + this.pedido.num_mesa,
+            body: 'El pedido esta terminado.',
+          },
+          data: {
+            ruta: 'pedidos',
+          },
+        }).subscribe( resp =>{
+          console.log(resp)
+        })
       }
     });
 
@@ -351,8 +340,8 @@ export class DetallePedidoComponent implements OnInit {
     //         console.log(data);
     //       });
 
-     }
-     });
+      }
+    });
 
   }
 
@@ -374,13 +363,13 @@ export class DetallePedidoComponent implements OnInit {
 
   pedidosDeSuSector(userTipo: string, pedido: any): boolean {
     let sectorUsuario = '';
-    
+
     if (userTipo == 'cocinero') {
       sectorUsuario = 'COCINA';
     } else if (userTipo == 'bartender') {
       sectorUsuario = 'BEBIDA';
     }
-  
+
     // Utilizamos el método `some` en lugar de `forEach`
     return pedido.productos.some((element: any) => {
       return element.sector === sectorUsuario;

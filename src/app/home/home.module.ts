@@ -15,7 +15,9 @@ import { MenuPedidoComponent } from '../Pages/menu-pedido/menu-pedido.component'
 import { EstadoPedidoComponent } from '../Pages/estado-pedido/estado-pedido.component';
 import { ChatMozoComponent } from '../Pages/chat-mozo/chat-mozo.component';
 import { FlechasComponent } from '../Pages/flechas/flechas.component';
-
+import { OpcionesClienteComponent } from '../Pages/opciones-cliente/opciones-cliente.component';
+import { GraficosEncuestasComponent } from '../Pages/graficos-encuestas/graficos-encuestas.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
@@ -25,7 +27,7 @@ import { FlechasComponent } from '../Pages/flechas/flechas.component';
     HomePageRoutingModule,
     ReactiveFormsModule,
     RouterModule,
-
+    NgChartsModule
   ],
   declarations: [
     HomePage,
@@ -36,7 +38,9 @@ import { FlechasComponent } from '../Pages/flechas/flechas.component';
     MenuPedidoComponent,
     EstadoPedidoComponent,
     ChatMozoComponent,
-    FlechasComponent
+    FlechasComponent,
+    OpcionesClienteComponent,
+    GraficosEncuestasComponent
   ]
 })
 export class HomePageModule {}

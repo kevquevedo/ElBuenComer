@@ -5,238 +5,251 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!spin">
-  <!--EMPLEADO DE LA COCINA / BARRA-->
-  <div *ngIf="esEmpleado">
-    <ion-list class="ion-padding-horizontal ion-padding-vertical">
-      <div class="card-body" *ngFor="let prod of pedido.productos">
-        <div *ngIf="pedido.estado!='FINALIZADO'">
-          <div *ngIf="prod.producto.sector == sectorUserActual">
-            <ion-item>
-              <ion-label>
-                Mesa {{pedido.num_mesa}}
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>Producto: {{prod.producto.nombre}} </ion-label> <br>
-            </ion-item>
-            <ion-item>
-              <ion-label>Cantidad pedida: {{prod.producto.cantidad}} </ion-label> <br>
-            </ion-item>
-            <ion-item>
-              <ion-label>Estado: {{prod.producto.estado}} </ion-label><br>
-            </ion-item>
-            <ion-item>
-              <ion-button size="small" color="warning"
-                *ngIf="(pedido.estado=='CONFIRMADO' || pedido.estado=='EN_ELABORACION') && prod.producto.estado =='PENDIENTE' && prod.producto.estado =='PENDIENTE'"
-                (click)="cambiarEstado(prod.producto, 'EN_ELABORACION')">Iniciar preparacion</ion-button>
-              <ion-button size="small" color="success" *ngIf="prod.producto.estado =='EN_ELABORACION'"
-                (click)="cambiarEstado(prod.producto,'TERMINADO' )">Finalizar preparacion</ion-button>
-            </ion-item>
-            
+<ion-content *ngIf="!spin" >
+  <div class="fondo">
+
+    <!--EMPLEADO DE LA COCINA / BARRA-->
+    <div *ngIf="esEmpleado" class="ion-padding-horizontal ion-padding-vertical">
+      <ion-list class="ion-padding-horizontal ion-padding-vertical">
+        <div class="card-body" *ngFor="let prod of pedido.productos">
+          <div *ngIf="pedido.estado !== 'FINALIZADO'">
+            <div *ngIf="prod.sector === sectorUserActual">
+              <ion-item>
+                <ion-label>
+                  <h2 class="fw-bold">Mesa {{pedido.num_mesa}}</h2>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Producto: {{prod.nombre}} </ion-label> <br>
+              </ion-item>
+              <ion-item>
+                <ion-label>Cantidad pedida: {{prod.cantidad}} </ion-label> <br>
+              </ion-item>
+              <ion-item>
+                <ion-label>Estado: {{prod.estado}} </ion-label><br>
+              </ion-item>
+              <ion-item >
+                <ion-button size="small" color="warning"
+                  *ngIf="(pedido.estado === 'CONFIRMADO' || pedido.estado === 'EN_ELABORACION') && prod.estado === 'PENDIENTE' && prod.estado === 'PENDIENTE'"
+                  (click)="cambiarEstado(prod, 'EN_ELABORACION')">
+                  Iniciar preparacion
+                </ion-button>
+                <ion-button size="small" color="success" *ngIf="prod.estado === 'EN_ELABORACION'"
+                  (click)="cambiarEstado(prod,'TERMINADO' )">Finalizar preparacion</ion-button>
+              </ion-item>
+            </div>
           </div>
+        </div>
+
+      </ion-list>
+
+    </div>
+
+    <!---Detalle para el usuario-->
+    <div *ngIf="esCliente" [hidden]="scanActive" class="ion-padding-horizontal ion-padding-vertical">
+      <h1 style="color: #fd0000; padding-left: 10px;">Pedido</h1>
+      <div *ngIf="pedido.estado !== 'CUENTA' && pedido.estado !== 'PAGADO'  && pedido.estado !== 'FINALIZADO'">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="fw-bolder">Detalle de su pedido</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label><h2 class="item fw-bolder">ESTADO: {{pedido.estado}}</h2></ion-label><br>
+            <ion-label><h2 class="item fw-bolder">TOTAL: 💵 ${{pedido.valorTotal}}</h2></ion-label><br>
+            <ion-label><h2 class="item fw-bolder">TIEMPO ESTIMADO: 🕗 {{pedido.tiempo_estimado}}min</h2></ion-label><br>
+            <ion-button *ngIf="pedido.estado === 'ENTREGADO'" color='success' (click)="confirmarRecepcion(pedido.id)">
+              Confirmar recepcion</ion-button>
+            <ion-button *ngIf="pedido.estado === 'RECIBIDO'" color='success' (click)="pedirCuenta(pedido.id)">Pedir
+              cuenta</ion-button>
+          </ion-card-content>
+        </ion-card>
+        <h1 style="color: #fd0000;">Productos</h1>
+        <div *ngFor="let item of pedido.productos">
+          <ion-card >
+            <ion-card-header>
+              <ion-card-title> {{item.nombre}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-label>{{item.descripcion}}</ion-label><br>
+              <ion-label>Cantidad pedida: {{item.cantidad}} </ion-label> <br>
+            </ion-card-content>
+          </ion-card>
         </div>
       </div>
 
-    </ion-list>
-    <!-- <div *ngFor="let item of pedido.productos">
-      
-      <ion-card *ngIf="item.sector == sectorUserActual" style=" 
-      text-align:center; 
-      padding:8px;
-    ">
+      <!--DETALLE DE LA CUENTA-->
+      <div *ngIf="pedido.estado === 'CUENTA' ||   pedido.estado === 'PAGADO'  || pedido.estado === 'FINALIZADO'">
+        <ion-list>
+          <ion-item *ngFor="let item of pedido.productos; let index=index">
+            <ion-avatar>
+              <img [src]="item.img_src">
+            </ion-avatar>
+            <ion-label>
+              <h2 style="margin-left:1em" class="fw-bold">{{item.nombre}}</h2>
+              <ion-row>
+                <h2 style="margin-left:1em">$ {{item.precio}} X {{item.cantidad}}</h2>
+              </ion-row>
+            </ion-label>
+            <strong>$ {{item.precio * item.cantidad}} </strong>
 
-        <ion-card-header>
-          <ion-card-title> {{item.nombre}}</ion-card-title>
-        </ion-card-header>
+          </ion-item>
+          <br>
+          <ion-label class="d-flex justify-content-end me-3">
+            <h2 class="fw-bold">Sub total ${{pedido.valorTotal}}</h2>
+          </ion-label>
+        </ion-list>
 
-        <ion-card-content>
-          <ion-label>Cantidad pedida: {{item.cantidad}} </ion-label> <br>
-          <ion-label>Estado: {{item.estadoProductoPedido}} </ion-label>
+        <!--SOLO SI JUGO-->
+        <div *ngIf="pedido.jugado">
+          <h1>Descuento por juegos</h1>
+          <ion-item *ngIf="pedido.descuento === 0">
+            <h1> {{pedido.nombreJuego}} </h1>
+            <ion-row>
+              <h2 style="margin-left:1em">Al menos lo intentaste, mas suerte la proxima 😁</h2>
+            </ion-row>
+          </ion-item>
+          <ion-item *ngIf="pedido.descuento !== 0">
 
-          <ion-button size="small" color="warning"
-            *ngIf="(pedido.estado=='CONFIRMADO' || pedido.estado=='EN_ELABORACION') && item.estadoProductoPedido =='PENDIENTE'"
-            (click)="cambiarEstado(item, 'EN_ELABORACION')">Iniciar preparacion</ion-button>
-          <ion-button size="small" color="success" *ngIf="item.estadoProductoPedido =='EN_ELABORACION'"
-            (click)="cambiarEstado(item,'TERMINADO' )">Finalizar preparacion</ion-button>
+            <ion-label>
+              <h1> {{pedido.nombreJuego}}</h1>
+              <ion-row>
+                <h2 style="margin-left:1em">Resultado: ¡Ganó un {{pedido.descuento}}% de descuento!</h2>
+              </ion-row>
+            </ion-label>
+          </ion-item>
+        </div>
 
-        </ion-card-content>
+        <!--ESCANER-->
+        <div *ngIf="pedido.estado === 'CUENTA'">
+          <h1 style="color: #fd0000;">Propina</h1>
+          <div class="ion-text-center">
+            <ion-button (click)="startScan()" color="warning">
+              <ion-icon name="qr-code-outline"></ion-icon>
+              Escanear QR de propina
+            </ion-button>
+          </div>
 
-      </ion-card>
-    </div> -->
-  </div>
+          <ion-row class="scanner-buttons" [hidden]="!scanActive">
+            <ion-col>
+              <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
+            </ion-col>
+          </ion-row>
 
+          <div class="scan-box" [hidden]="!scanActive">
+          </div>
+        </div>
 
-  <!---Detalle para el usuario-->
-  <div *ngIf="esCliente" [hidden]="scanActive">
-    <div *ngIf="pedido.estado != 'CUENTA' && pedido.estado != 'PAGADO'  && pedido.estado != 'FINALIZADO'">
+        <div *ngIf="pedido.estado !== 'CUENTA'" class="fondo2">
+        </div>
+
+      </div>
+    </div>
+
+    <!--DETALLE PARA EL MOZO-->
+    <div *ngIf="esMetre">
+
+      <!--PEDIDO-->
+      <h1 style="color: #fd0000; padding-left: 10px;">Pedido</h1>
       <ion-card>
-        <ion-card-header>
-          <ion-card-title>Detalle de su pedido</ion-card-title>
-        </ion-card-header>
         <ion-card-content>
-          <ion-label>Estado: {{pedido.estado }}</ion-label><br>
-          <ion-label>Total💵 ${{pedido.total}} </ion-label> <br>
-          <ion-label>Tiempo estimado 🕗{{pedido.tiempo_elaboracion}} </ion-label> <br>
-          <ion-button *ngIf="pedido.estado=='ENTREGADO'" color='success' (click)="confirmarRecepcion(pedido.id)">
-            Confirmar recepcion</ion-button>
-          <ion-button *ngIf="pedido.estado=='RECIBIDO'" color='success' (click)="pedirCuenta(pedido.id)">Pedir
-            cuenta</ion-button>
+          <ion-label><h2 class="item fw-bolder">ESTADO: {{pedido.estado}}</h2></ion-label><br>
+          <ion-label><h2 class="item fw-bolder">TOTAL: 💵 ${{pedido.valorTotal}}</h2></ion-label><br>
+          <ion-label><h2 class="item fw-bolder">TIEMPO ESTIMADO: 🕗 {{pedido.tiempo_estimado}}min</h2></ion-label><br>
+          <!-- <ion-label *ngIf="pedido.estado === 'FINALIZADO'">Descuentos ${{pedido.descuento}}</ion-label><br>
+          <ion-label *ngIf="pedido.estado === 'FINALIZADO'">Propina: ${{pedido.propina}}</ion-label><br> -->
         </ion-card-content>
       </ion-card>
-      <h1 style="color: #fd0000">Productos</h1>
+
+      <!--PRODUCTOS-->
+      <h1 style="color: #fd0000; padding-left: 10px;">Productos</h1>
       <div *ngFor="let item of pedido.productos">
-        <ion-card style=" 
-      text-align:center; 
-      padding:8px;
-      ">
+        <ion-card>
           <ion-card-header>
             <ion-card-title> {{item.nombre}}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-label>{{item.nombre}}</ion-label><br>
+            <ion-label>{{item.descripcion}}</ion-label><br>
             <ion-label>Cantidad pedida: {{item.cantidad}} </ion-label> <br>
+            <ion-label><h5 class="item fw-bolder">ESTADO: {{item.estado}}</h5></ion-label> <br>
           </ion-card-content>
         </ion-card>
       </div>
     </div>
 
-    <!--DETALLE DE LA CUENTA-->
-    <div *ngIf="pedido.estado == 'CUENTA' ||   pedido.estado == 'PAGADO'  || pedido.estado == 'FINALIZADO'">
-      <ion-list>
-        <ion-item *ngFor="let item of pedido.productos; let index=index">
-          <ion-avatar>
-            <img [src]="item.img_src[0]">
-          </ion-avatar>
-          <ion-label>
-            <h1>{{item.nombre}}</h1>
-            <ion-row>
-
-              <h2 style="margin-left:1em">$ {{item.precio}} X {{item.cantidad}}</h2>
-            </ion-row>
-          </ion-label>
-          <strong>$ {{item.precio * item.cantidad}} </strong>
-
-        </ion-item>
-        <ion-label>Sub total ${{pedido.total}}</ion-label>
-      </ion-list>
-      <!--SOLO SI JUGO-->
-      <div *ngIf="pedido.jugado">
-        <h1>Descuento por juegos</h1>
-        <ion-item *ngIf="pedido.descuento==0">
-          <h1> {{pedido.nombreJuego}} </h1>
-          <ion-row>
-            <h2 style="margin-left:1em">Al menos lo intentaste, mas suerte la proxima 😁</h2>
-          </ion-row>
-        </ion-item>
-        <ion-item *ngIf="pedido.descuento!=0">
-
-          <ion-label>
-            <h1> {{pedido.nombreJuego}}</h1>
-            <ion-row>
-              <h2 style="margin-left:1em">Resultado: ¡Ganó un {{pedido.descuento}}% de descuento!</h2>
-            </ion-row>
-          </ion-label>
-        </ion-item>
-      </div>
-
-      <div *ngIf="pedido.estado == 'CUENTA' ">
-        <h1>Propina</h1>
-        <ion-button (click)="startScan()">
-          <ion-icon name="qr-code-outline"></ion-icon>
-          Escanear QR de propina
-        </ion-button>
-
-
-        <ion-row class="scanner-buttons" [hidden]="!scanActive">
-          <ion-col>
-            <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
-          </ion-col>
-        </ion-row>
-
-        <div class="scan-box" [hidden]="!scanActive">
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!--DETALLE PARA EL MOZO-->
-  <div *ngIf="esMetre">
-
-    <ion-card>
-      <ion-card-content>
-        <ion-label>Estado: {{pedido.estado }}</ion-label><br>
-        <ion-label *ngIf="pedido.estado=='FINALIZADO'" style="text-align: right;">Descuentos ${{pedido.descuento}}
-        </ion-label> <br>
-        <ion-label *ngIf="pedido.estado=='FINALIZADO'" style="text-align: right;">Propina: ${{pedido.propina}}
-        </ion-label> <br>
-        <ion-label style="text-align: right;">Total💵: ${{pedido.valorTotal}}</ion-label><br>
-
-        <ion-label>Tiempo estimado 🕗{{pedido.tiempo_estimado}} </ion-label> <br>
-
-      </ion-card-content>
-    </ion-card>
-
-
-    <ion-card-header>
-      <ion-card-title>Productos</ion-card-title>
-    </ion-card-header>
-
-    <div *ngFor="let item of pedido.productos">
-      <ion-card style="text-align:center; padding:8px;">
-
-        <ion-card-header>
-          <ion-card-title> {{item.producto.nombre}}</ion-card-title>
-        </ion-card-header>
-
-        <ion-card-content>
-          <ion-label>{{item.producto.nombre}}</ion-label><br>
-          <ion-label>Cantidad pedida: {{item.producto.cantidad}} </ion-label> <br>
-          <ion-label>Estado: {{item.producto.estado}} </ion-label> <br>
-        </ion-card-content>
-
-      </ion-card>
-    </div>
   </div>
 </ion-content>
 
+<!--FOOTERs PARA EL CLIENTE-->
+<ion-footer collapse="fade" [hidden]="scanActive" class="footer"
+  *ngIf="(pedido.estado === 'CUENTA' ||  pedido.estado === 'PAGADO'  || pedido.estado === 'FINALIZADO') && esCliente" >
 
-<ion-footer collapse="fade" [hidden]="scanActive"
-  *ngIf="(pedido.estado == 'CUENTA' ||  pedido.estado == 'PAGADO'  || pedido.estado == 'FINALIZADO') && esCliente">
+  <ion-label style="text-align: center;">
+    <h1 class="text-light">Propina: ${{pedido.propina}} </h1>
+  </ion-label> <br>
 
-  <ion-label style="text-align: right;">Descuentos ${{(pedido.total * pedido.descuento)/100}} </ion-label> <br>
-  <ion-label style="text-align: right;">Propina: ${{pedido.propina}} </ion-label> <br>
-  <ion-label style="text-align: right;" *ngIf="pedido.estado=='CUENTA'">Total💵: ${{pedido.total + pedido.propina -
-    ((pedido.total * pedido.descuento)/100)}}</ion-label>
-  <ion-label style="text-align: right;"
-    *ngIf="pedido.estado == 'FINALIZADO'|| pedido.estado == 'PAGADO'|| pedido.estado == 'COBRADO'">Total💵:
-    ${{pedido.total}}</ion-label>
-  <ion-button *ngIf="pedido.estado=='CUENTA'" [disabled]="pedido.estado!='CUENTA'" color='success'
-    (click)="pagarPedido(pedido.doc_id )" expand="full" shape="round" color="success">
+  <div *ngIf="pedido.descuento > 0; else sinDescuento">
+    <ion-label style="text-align: right;" >
+      <h2 class="text-light">
+        Descuentos ${{(pedido.valorTotal * pedido.descuento)/100}}
+      </h2>
+    </ion-label><br>
+    <ion-label style="text-align: right;" *ngIf="pedido.estado === 'CUENTA'">
+      <h2 class="text-light">
+        Total💵: ${{pedido.valorTotal + pedido.propina - ((pedido.valorTotal * pedido.descuento)/100)}}
+      </h2>
+    </ion-label>
+  </div>
+  <ng-template #sinDescuento class="ion-margin-vertical">
+    <ion-label style="text-align: center;" class="ion-margin-vertical">
+      <h1 class="text-light m-0">
+        Descuentos $0
+      </h1>
+    </ion-label><br>
+    <ion-label style="text-align: center;" *ngIf="pedido.estado === 'CUENTA'" class="ion-margin-vertical">
+      <h1 class="text-light total">
+        Total: ${{pedido.valorTotal + pedido.propina}}
+      </h1>
+    </ion-label>
+  </ng-template>
+
+  <ion-label style="text-align: center;" class="ion-margin-vertical"
+    *ngIf="pedido.estado === 'FINALIZADO'|| pedido.estado === 'PAGADO'|| pedido.estado === 'COBRADO'">
+    <h1 class="text-light total">
+      Total: ${{pedido.valorTotal + pedido.propina}}
+    </h1>
+  </ion-label>
+
+  <ion-button *ngIf="pedido.estado === 'CUENTA'" [disabled]="pedido.estado !== 'CUENTA'" color='success'
+    (click)="pagarPedido(pedido.doc_id )" expand="full" shape="round" color="success" class="ion-margin-horizontal ion-margin-vertical">
     PAGAR
   </ion-button>
 </ion-footer>
-<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PENDIENTE')">
-  <ion-button expand="full" shape="round" color="success" (click)="confirmarPedido(pedido, 'CONFIRMADO')">Confirmar
-    pedido</ion-button>
 
+<!--FOOTERs PARA EL MOZO-->
+<ion-footer collapse="fade" *ngIf="esMetre && (pedido.estado === 'PENDIENTE')" class="footer">
+  <ion-button expand="full" shape="round" color="success" (click)="confirmarPedido(pedido, 'CONFIRMADO')">Confirmar pedido</ion-button>
 </ion-footer>
-<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'TERMINADO' )">
-  <ion-button expand="full" shape="round" color="success" (click)="confirmarPedido(pedido, 'ENTREGADO')">Entregar pedido
-  </ion-button>
+
+<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado === 'TERMINADO' )" class="footer">
+  <ion-button expand="full" shape="round" color="success" (click)="confirmarPedido(pedido, 'ENTREGADO')">Entregar pedido</ion-button>
 </ion-footer>
-<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PAGADO' || pedido.estado == 'COBRADO') ">
 
-  <ion-label style="text-align: right;">Descuentos aplicados: {{pedido.descuento}}%</ion-label> <br>
-  <ion-label style="text-align: right;">Propina: ${{pedido.propina}}</ion-label> <br>
-  <ion-label style="text-align: right;">Total💵: ${{pedido.total}}</ion-label>
-
-  <ion-button *ngIf="pedido.estado=='PAGADO'" color='success' (click)="confirmarPago(pedido.doc_id)" expand="full"
-    shape="round" color="success">
+<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado === 'PAGADO' || pedido.estado === 'COBRADO') " class="footer">
+  <ion-label style="text-align: center;">
+    <h2 class="text-light datosup">Descuentos aplicados: {{pedido.decuento}}%</h2>
+  </ion-label> <br>
+  <ion-label style="text-align: center;">
+    <h2 class="text-light">Propina: ${{pedido.propina}}</h2>
+  </ion-label> <br>
+  <ion-label style="text-align: center;">
+    <h2 class="text-light datoinf total">Total: ${{pedido.valorTotal + pedido.propina}}</h2>
+  </ion-label>
+  <ion-button *ngIf="pedido.estado === 'PAGADO'" color='success' (click)="confirmarPago()" expand="full" shape="round" color="success"
+    class="ion-margin-horizontal">
     Confirmar pago y liberar mesa
   </ion-button>
 </ion-footer>
+
 <!-- SPINNER -->
 <div *ngIf="spin" class="div-spin-logo">
   <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">

@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="" slot="start"></ion-back-button>
+    <ion-title>Estadísticas Encuestas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!spin">
+  <div class="fondo">
+
+    <ion-card class="ion-margin-horizontal ion-margin-vertical distancia">
+      <ion-card-header>
+        <h2 class="fw-bold">Puntajes</h2>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico">
+          <canvas baseChart width="300" height="300"
+            [type]="'line'"
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [legend]="lineChartLegend">
+          </canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-card class="ion-margin-horizontal ion-margin-vertical distancia">
+      <ion-card-header>
+        <h2 class="fw-bold">Atención</h2>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico">
+          <canvas baseChart width="200" height="200"
+          [type]="'pie'"
+          [datasets]="pieChartDatasets"
+          [labels]="pieChartLabels"
+          [options]="pieChartOptions"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend">
+        </canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-card class="ion-margin-horizontal ion-margin-vertical distancia">
+      <ion-card-header>
+        <h2 class="fw-bold">Quejas</h2>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico">
+          <canvas baseChart
+            [datasets]="radarChartDatasets"
+            [options]="radarChartOptions"
+            [labels]="radarChartLabels"
+            [type]="'radar'">
+          </canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>

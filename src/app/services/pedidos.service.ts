@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, collection, collectionData, doc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { CollectionReference, DocumentData, Firestore, collection, collectionData, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +46,7 @@ export class PedidosService {
   updateEstadoPedido(pedido: any) {
     const pedidosRef = doc(this.firestore, 'pedidos', pedido.id);
     updateDoc(pedidosRef, pedido);
-  
+
   }
 
   async obtenerPedidoPorIdUsuario(idUsuario: any) {
@@ -85,6 +85,39 @@ export class PedidosService {
   obtenerPedidos(){
     const pedidos = collection(this.firestore, 'pedidos');
     return getDocs(pedidos);
+  }
+
+  obtenerPedidosEnTiempoReal(): Observable<any> {
+    const pedidos = collection(this.firestore, 'pedidos');
+    return from(getDocs(pedidos));
+  }
+
+  obtenerPedidoPorIdUsuarioTiempoReal(idUsuario: any): Observable<DocumentData | null> {
+    const pedidosRef = collection(this.firestore, 'pedidos');
+    const querySnapshot = query(pedidosRef, where('usuario.id', '==', idUsuario));
+
+    // Obtener la primera respuesta y crear un observable
+    return new Observable(observer => {
+      const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
+        if (!snapshot.empty) {
+          const primerPedido = snapshot.docs[0];
+          const datosPedido = primerPedido.data();
+          observer.next(datosPedido);
+        } else {
+          observer.next(null);
+        }
+      });
+
+      // Devolver una función de limpieza para cancelar la suscripción
+      return () => unsubscribe();
+    });
+  }
+
+  async actualizarEstadoEncuesta(idPedido:any, encuesta: boolean): Promise<void> {
+    const aux = doc(this.firestore, `pedidos/${idPedido}`);
+    await updateDoc(aux, {
+      encuesta: encuesta
+    })
   }
 
 }

@@ -19,9 +19,9 @@ export class EncuestaService {
 
   crearEncuesta(encuesta: any) :Promise<void>{
     return new Promise((resolve, reject) => {
-      const productos = doc(this.allEncuestaClientes);
-      setDoc(productos, {
-        id: productos.id,
+      const encuestas = doc(this.allEncuestaClientes);
+      setDoc(encuestas, {
+        id: encuestas.id,
       ...encuesta // Spread operator para agregar las propiedadesrepartidor al objeto
       })
         .then(() => {

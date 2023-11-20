@@ -1,7 +1,7 @@
 ion-content{
     height: 100%;
     width: 100%;
-    background-color: #002366;                                                                                  
+    background-color: #002366;
 }
 
 
@@ -42,11 +42,10 @@ ion-content{
 }
 
 .container-datos {
-  width: 90%;
-  padding: 10px;
+  width: 100%;
+  padding: 20px;
   background: #002366;
-  border-radius: 5px;
-  margin: auto; 
+  margin: auto;
 }
 
 ion-card{
@@ -91,7 +90,7 @@ ion-range{
 }
 
 .enviar{
-  height: 40px; 
+  height: 40px;
   width: 130px;
   margin-top: 20px;
   display: inline-flex;
@@ -105,7 +104,7 @@ ion-range{
 }
 
 .listado{
-  height: 40px; 
+  height: 40px;
   width: 120px;
   margin-top: 20px;
   margin-left: 48px;
@@ -113,9 +112,9 @@ ion-range{
 
 .foto{
   width: 110px;
-  height: 96px; 
-  display: inline-flex; 
-  margin-left: 50%; 
+  height: 96px;
+  display: inline-flex;
+  margin-left: 50%;
   margin-top: -25%;
 }
 
@@ -151,10 +150,10 @@ ion-select-option{
 }
 
 .inputdiv{
-  display: inline-table; 
+  display: inline-table;
   width: 100%;
   text-align: center;
-  background-color: #ffffffa2;
+  background-color: white;
   border-radius: 10px;
   margin-bottom: 25px;
   padding-top: 17px;
@@ -163,4 +162,9 @@ ion-select-option{
 .rotate-center {
 	-webkit-animation: rotate-center 1s ease-in-out infinite both;
 	        animation: rotate-center 1s ease-in-out infinite both;
+}
+
+.imgs{
+  display: flex;
+  flex-direction: column;
 }

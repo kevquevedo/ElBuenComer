@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home/principal" slot="start"></ion-back-button>
+    <ion-title>
+      <div class="ion-text-center menuprincipal">
+        <ion-text>
+          <h1>Menú Principal</h1>
+        </ion-text>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!spin">
+  <div class="fondo">
+    <div class="imgLogo">
+      <img src="../../../assets/icon.png" alt="" width="200px">
+    </div>
+    <div class="botones">
+
+      <ion-button expand="block" (click)="irADetalle()" class="ion-margin-vertical ion-margin-horizontal boton fw-bold" color="boton">Detalle Pedido</ion-button>
+      <ion-button expand="block" (click)="irAEncuesta()" class="ion-margin-vertical ion-margin-horizontal boton fw-bold" color="boton">Encuesta</ion-button>
+      <ion-button expand="block" (click)="irAEstadisticas()" class="ion-margin-vertical ion-margin-horizontal boton fw-bold" color="boton">Estadisticas de encuestas</ion-button>
+      <ion-button expand="block" (click)="irAJuego()" class="ion-margin-vertical ion-margin-horizontal boton fw-bold" color="boton">Juego</ion-button>
+      <!-- *ngIf="pedido.estado !== 'RECIBIDO' && pedido.estado !== 'PAGADO' && pedido.estado !== 'COBRADO'" -->
+      <!-- <ion-button expand="block" (click)="irADetalle()" class="ion-margin-vertical ion-margin-horizontal boton fw-bold" color="boton"
+      *ngIf="pedido.estado === 'RECIBIDO'"
+      >Detalle Pedido</ion-button> -->
+    </div>
+  </div>
+</ion-content>
+
+
+<!-- SPINNER -->
+<div *ngIf="spin" class="div-spin-logo">
+  <img src="../../../assets/spinner/spinner.gif" alt="" class="spin-logo">
+</div>
+

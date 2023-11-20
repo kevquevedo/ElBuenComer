@@ -13,6 +13,8 @@ import { PedidosComponent } from './Pages/pedidos/pedidos.component';
 import { DetallePedidoComponent } from './Pages/detalle-pedido/detalle-pedido.component';
 import { EstadoPedidoComponent } from './Pages/estado-pedido/estado-pedido.component';
 import { ChatMozoComponent } from './Pages/chat-mozo/chat-mozo.component';
+import { OpcionesClienteComponent } from './Pages/opciones-cliente/opciones-cliente.component';
+import { GraficosEncuestasComponent } from './Pages/graficos-encuestas/graficos-encuestas.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -32,6 +34,8 @@ const routes: Routes = [
   { path: 'menu-pedido', component: MenuPedidoComponent },
   { path: 'estado-pedido', component: EstadoPedidoComponent },
   { path: 'chat-mozo', component: ChatMozoComponent },
+  { path: 'opciones-cliente', component: OpcionesClienteComponent },
+  { path: 'graficos-encuestas', component: GraficosEncuestasComponent },
 ];
 
 @NgModule({

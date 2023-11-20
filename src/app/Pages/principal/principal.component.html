@@ -13,7 +13,11 @@
   <div *ngIf="isCliente && !enListaEspera && !tieneMesa">
     <div class="centrado">
       <button class="escanear" expand="block" type="button" (click)="startScanner()" *ngIf="!scanActive">
-        <h6>INGRESAR A LISTA DE ESPERA</h6>
+        <h6 class="fw-bold">INGRESAR A LISTA DE ESPERA</h6>
+      </button>
+      <br>
+      <button class="escanear" expand="block" type="button" (click)="verEncuestas(true)" *ngIf="!scanActive">
+        <h6 class="fw-bold">VER ENCUESTAS ANTERIORES</h6>
       </button>
     </div>
     <ion-row class="scan-button" *ngIf="scanActive">
@@ -22,15 +26,19 @@
       </ion-col>
     </ion-row>
   </div>
-  <div *ngIf="isCliente && !enListaEspera && tieneMesa">
+  <div *ngIf="isCliente && pedidoEntregado">
+    <div class="centrado">
+      <!-- <ion-button expand="block" (click)="irAJuego()">Juego</ion-button>
+      <ion-button expand="block" (click)="irAEncuesta()">Encuesta</ion-button>
+      <ion-button expand="block" (click)="irADetalle()">Detalle Pedido</ion-button> -->
+    </div>
+  </div>
+  <div *ngIf="isCliente && !enListaEspera && tieneMesa && !pedidoEntregado">
     <div class="centrado">
       <button class="escanear" expand="block" type="button" (click)="startScannerMesa()" *ngIf="!scanActive">
         <h6 class="fw-bold">ESCANEAR CÓDIGO QR DE LA MESA</h6>
       </button>
-      <br>
-      <button class="escanear" expand="block" type="button" (click)="verEncuestas(true)" *ngIf="!scanActive">
-        <h6 class="fw-bold">VER ENCUESTAS</h6>
-      </button>
+
     </div>
     <ion-row class="scan-button" *ngIf="scanActive">
       <ion-col class="ion-no-padding">
@@ -60,9 +68,12 @@
     <ion-content>
 
       <div *ngIf="listadoEncuestas.length > 0" class="contenedor">
+
+        <ion-button expand="block" (click)="verEstadisticas()" class="ion-margin-vertical ion-margin-horizontal boton fw-bold" color="boton">Estadisticas de encuestas</ion-button>
+
         <div *ngFor="let item of listadoEncuestas ; index as i">
 
-          <ion-item lines="full">
+          <ion-item lines="full" class="item-enc">
 
             <div class="descripcion">
               <ion-text><h2 class="ion-text-center fw-bold">Puntaje: {{item.puntaje}}</h2></ion-text>
@@ -72,7 +83,7 @@
               <ion-text class="opacity-75"><p class="ion-text-center m-0 mb-3">{{item.inconvenientes | titlecase}}</p></ion-text>
             </div>
 
-            <div>
+            <!-- <div>
               <div id="collapseExample{{i}}" class="carousel fotosProducto ion-margin-vertical">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -94,7 +105,7 @@
                   <span class="visually-hidden">Next</span>
                 </button>
               </div>
-            </div>
+            </div> -->
 
           </ion-item>
         </div>

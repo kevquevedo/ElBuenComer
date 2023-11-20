@@ -98,4 +98,11 @@ export class MesaService {
     });
   }
 
+  updateMesaOcupadaById(mesaID: any, estado:boolean){
+    const mesasRef = doc(this.firestore, 'mesas', mesaID);
+    updateDoc(mesasRef, {
+      ocupada: estado
+    });
+  }
+
 }

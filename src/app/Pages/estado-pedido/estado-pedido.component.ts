@@ -31,17 +31,20 @@ export class EstadoPedidoComponent  implements OnInit {
           this.numeroMesa = item.data().mesa.numero;
           this.usuario = item.data();
         }
-      })
+      });
 
-      this.pedidosService.obtenerPedidos().then( resp =>{
-        resp.forEach( (item:any) =>{
-          if(item.data().estado != 'FINALIZADO' && this.numeroMesa == item.data().num_mesa){
-            this.pedido = item.data();
+      this.pedidosService.obtenerPedidosEnTiempoReal().subscribe((pedidos: any) => {
+        pedidos.forEach((item: any) => {
+          if (this.numeroMesa == item.payload.doc.data().num_mesa) {
+            this.pedido = item.payload.doc.data();
           }
-        })
-        setTimeout( ()=>{ this.spin = false; }, 1000)
-      })
-    })
+        });
+
+        setTimeout(() => { this.spin = false; }, 1000);
+      });
+    });
+
+    
 
   }
 
