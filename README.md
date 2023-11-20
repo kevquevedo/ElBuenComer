@@ -92,12 +92,15 @@
 </div>
 
 
-# QRs - Aplicación
+# QR - Lista de Espera
 <br><br>
 **QR - Lista de Espera**  
 
 <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/68977ada-b198-40d1-8147-37fcffdc6088" width=200>
 <br><br><br><br>
+
+# QRs - Mesas
+<br><br>
 
 **QR - Mesa 1**  
 
@@ -118,6 +121,24 @@
 
 <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/4fab070c-5f8a-46f0-8da4-f7eb0befa9fc" width=200>
 <br><br><br><br>
+
+# QRs - Propinas
+<br><br>
+**QR - Propina 10%**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/f543d2e9-26a8-4e72-8fbf-48c254de9430" width=200>
+<br><br><br><br>
+
+**QR - Propina 15%**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/c87ed29c-0297-4020-8b50-9fdde3d8b12a" width=200>
+<br><br><br><br>
+
+**QR - Propina 20%**  
+
+<img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/a827daf2-2cb2-498e-96c9-f6d23ce992fe" width=200>
+<br><br><br><br>
+
 
 
 
