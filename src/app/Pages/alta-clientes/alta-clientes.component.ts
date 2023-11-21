@@ -168,24 +168,24 @@ export class AltaClientesComponent  implements OnInit {
   }
 
   notificarAMetres(){
-    this.listadoMetre.forEach( (metre:any) => {
+    // this.listadoMetre.forEach( (metre:any) => {
 
-      if(metre.token != ''){
-        this.pushService.enviarPushNotification({
-          registration_ids: [ metre.token, ],
-          notification: {
-            title: 'Cliente - En Espera',
-            body: 'Un cliente se registró en la lista de espera.',
-          },
-          data: {
-            ruta: 'listaEspera',
-          },
-        }).subscribe( (resp: any) =>{
-          console.log(resp)
-        })
-      }
+    //   if(metre.token != ''){
+    //     this.pushService.enviarPushNotification({
+    //       registration_ids: [ metre.token, ],
+    //       notification: {
+    //         title: 'Cliente - En Espera',
+    //         body: 'Un cliente se registró en la lista de espera.',
+    //       },
+    //       data: {
+    //         ruta: 'listaEspera',
+    //       },
+    //     }).subscribe( (resp: any) =>{
+    //       console.log(resp)
+    //     })
+    //   }
 
-    })
+    // })
   }
 
   navigateTo(url: string) {

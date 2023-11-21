@@ -12,6 +12,7 @@ import { QrscannerService } from 'src/app/services/qrscanner.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { EncuestaClienteComponent } from '../encuesta-cliente/encuesta-cliente.component';
 import { EncuestaService } from 'src/app/services/encuesta.service';
+import { AnyMxRecord } from 'dns';
 
 @Component({
   selector: 'app-principal',
@@ -42,6 +43,7 @@ export class PrincipalComponent  implements OnInit {
   listadoEncuestas! :any;
   pedido: any;
   pedidoEntregado!: boolean;
+  usuarioMetre! : any;
 
   constructor(
     private qrScanner: QrscannerService,
@@ -159,9 +161,28 @@ export class PrincipalComponent  implements OnInit {
         this.currentScan = result?.trim();
         console.log(this.currentScan);
         if(this.currentScan == 'home/listaEspera'){
-        this.usuarioService.UpdateListadoEspera(this.usuario.id);
-        this.presentarToast('bottom', 'Te encontrás en lista de espera, en unos minutos el metre te asignará una mesa.', 'success');
-        this.enListaEspera = true;
+
+          this.usuarioService.UpdateListadoEspera(this.usuario.id);
+          this.presentarToast('bottom', 'Te encontrás en lista de espera, en unos minutos el metre te asignará una mesa.', 'success');
+          this.usuarioService.getListadoUsuarios().then(resp => {
+            resp.forEach((usuario: any) => {
+              if(usuario.data().tipoEmpleado == 'metre'){
+                this.push.enviarPushNotification({
+                  registration_ids: [ usuario.data().token, ],
+                  notification: {
+                    title: 'Nuevo cliente en espera',
+                    body: 'Un cliente se anotó en la lista de espera.',
+                  },
+                  data: {
+                    ruta: 'home/listaEspera',
+                  },
+                }).subscribe( resp =>{
+                  console.log(resp)
+                })
+              }
+            })
+          })
+          this.enListaEspera = true;
       }
       else{
         this.presentarToast('bottom', 'El código QR no es válido.', 'danger');
