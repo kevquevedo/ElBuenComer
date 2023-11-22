@@ -37,6 +37,7 @@ export class DetallePedidoComponent implements OnInit {
   currentScan: any;
   total: any;
   idChat: any;
+  mozos: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -117,7 +118,16 @@ export class DetallePedidoComponent implements OnInit {
 
 
 
-
+    this.userSrv.getListadoUsuarios().then((resp: any) => {
+      resp.forEach((item: any) => {
+        if(item.data().tipoEmpleado == 'bartender' || item.data().tipoEmpleado == 'cocinero'){
+          this.empleados.push(item.data());
+          console.log('empleados '+this.empleados);
+        }else if(item.data().tipoEmpleado == 'mozo'){
+          this.mozos.push(item.data());
+        }
+      });
+    });
 
 
   }
@@ -125,8 +135,9 @@ export class DetallePedidoComponent implements OnInit {
   confirmarPedido(pedido_sel: any, proxEstado: string) {
 
     this.pedido.estado = (proxEstado == eEstadoPedido.CONFIRMADO) ? eEstadoPedido.CONFIRMADO : eEstadoPedido.ENTREGADO;
+    debugger;
     if (this.pedido.estado == 'CONFIRMADO') {
-
+      console.log(this.empleados);
       this.empleados.forEach( (empleado:any) => {
         if(empleado.token != ''){
           console.log(empleado)
@@ -134,7 +145,7 @@ export class DetallePedidoComponent implements OnInit {
           this.pushServ.enviarPushNotification({
             registration_ids: [ empleado.token, ],
             notification: {
-              title: 'Pedido - Nuevo ' + this.pedido.num_mesa,
+              title: 'Nuevo pedido - Mesa ' + this.pedido.num_mesa,
               body: 'Hay un nuevo pedido realizado.',
             },
             data: {
@@ -152,6 +163,7 @@ export class DetallePedidoComponent implements OnInit {
   }
 
   cambiarEstado(item: any, proxEstado: string) {
+    debugger;
     let cantProdPedido = this.pedido.productos.length;
 
     let productosTerminados = 0;
@@ -172,7 +184,7 @@ export class DetallePedidoComponent implements OnInit {
 
       }
     });
-
+    debugger;
     if (productosTerminados == cantProdPedido) {
       this.pedido.estado = 'TERMINADO';
       console.log('PRODUCTO TERMINADO');
@@ -293,15 +305,15 @@ export class DetallePedidoComponent implements OnInit {
     }, 2000);
   } // end of stopScan
 
-  notificarPedidoTerminado(ssssssss: any) {
-    this.usuarios.forEach((user:any) => {
-
-      if (user.token != '' && user.tipo == 'empleado' && user.tipoEmpleado == 'mozo') {
-
+  notificarPedidoTerminado(pedido: any) {
+    console.log('mozos '+this.mozos)
+    this.mozos.forEach((user:any) => {
+    debugger;
+      if (user.token != '') {
         this.pushServ.enviarPushNotification({
           registration_ids: [ user.token, ],
           notification: {
-            title: 'Pedido - Terminado ' + this.pedido.num_mesa,
+            title: 'Pedido terminado - Mesa ' + pedido.num_mesa,
             body: 'El pedido esta terminado.',
           },
           data: {
