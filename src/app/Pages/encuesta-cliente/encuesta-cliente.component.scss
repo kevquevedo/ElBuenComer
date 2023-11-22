@@ -167,4 +167,10 @@ ion-select-option{
 .imgs{
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.imgsub{
+  border: 1px solid black;
+  border-radius: 20px;
 }

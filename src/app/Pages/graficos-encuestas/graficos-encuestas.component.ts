@@ -110,7 +110,7 @@ export class GraficosEncuestasComponent  implements OnInit {
           this.radarChartDatasets[0].data[0] = this.radarChartDatasets[0].data[0] as number + 1;
           break;
         case "1":
-          this.pieChartDatasets[0].data[1] = this.radarChartDatasets[0].data[1] as number + 1;
+          this.radarChartDatasets[0].data[1] = this.radarChartDatasets[0].data[1] as number + 1;
           break;
         case "2":
           this.radarChartDatasets[0].data[2] = this.radarChartDatasets[0].data[2] as number + 1;

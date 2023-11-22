@@ -31,6 +31,24 @@ export class ImagenesService {
     })
   }
 
+  public async agregarFotoEncuesta(): Promise<any>{
+    return new Promise(async (exito)=>{
+      const capturedPhoto = await Camera.getPhoto({
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+        quality: 50
+      });
+      var nombreArchivo = this.getRandomArbitrary(0,9999999);
+      const file: any = this.base64ToImage(capturedPhoto.dataUrl!);
+      let imgRef = ref(this.storage, `encuestas/${nombreArchivo}`);
+      uploadBytes(imgRef, file).then( ()=> {
+        getDownloadURL(imgRef).then( url => {
+          exito(url)
+        })
+      })
+    })
+  }
+
   getRandomArbitrary(min: number, max: number) {
     return Math.random() * (max - min) + min;
   }

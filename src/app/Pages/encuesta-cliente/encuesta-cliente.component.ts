@@ -6,6 +6,7 @@ import { EncuestaService } from 'src/app/services/encuesta.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { ToastController } from '@ionic/angular';
+import { ImagenesService } from 'src/app/services/imagenes.service';
 
 @Component({
   selector: 'app-encuesta-cliente',
@@ -24,6 +25,9 @@ export class EncuestaClienteComponent implements OnInit {
   spin: boolean = false;
   usuarioUID! : any;
   idPedido! :any;
+  img1! : any;
+  img2! : any;
+  img3! : any;
 
   constructor(private router: Router,
     //public firestore: FirestoreService,
@@ -35,11 +39,15 @@ export class EncuestaClienteComponent implements OnInit {
     private usuarioSvc: UsuariosService,
     private auth: Auth,
     private pedidosService: PedidosService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private imagenesService: ImagenesService
     //private firestoreSvc:FirestoreService,
   ) {
 
     this.usuarioUID = '';
+    this.img1 = '';
+    this.img2 = '';
+    this.img3 = '';
     this.form = this.fb.group({
       'puntaje': ['', Validators.required],
       'inconvenientes': ['', Validators.required],
@@ -58,6 +66,7 @@ export class EncuestaClienteComponent implements OnInit {
       resp.forEach((item:any) => {
         if(item.usuario.email == this.auth.currentUser?.email && item.estado != 'FINALIZADO' ){
           if(!(item as Object).hasOwnProperty('encuesta')){
+            flag = true;
             this.idPedido = item.id;
           }
         }
@@ -100,8 +109,44 @@ export class EncuestaClienteComponent implements OnInit {
   //   // this.sacarFoto();
   // }
 
+  boton1(e: any){
+    this.imagenesService.agregarFotoEncuesta().then( url =>{
+      this.img1 = url;
+      this.fotos.append('foto1', url);
+    })
+  }
+
+  boton2(e: any){
+    this.imagenesService.agregarFotoEncuesta().then( url =>{
+      this.img2 = url;
+      this.fotos.append('foto2', url);
+    })
+  }
+
+  boton3(e: any){
+    this.imagenesService.agregarFotoEncuesta().then( url =>{
+      this.img3 = url;
+      this.fotos.append('foto3', url);
+    })
+  }
+
+  eliminar1(){
+    this.img1 = '';
+    this.fotos.append('foto1', '');
+  }
+
+  eliminar2(){
+    this.img2 = '';
+    this.fotos.append('foto2', '');
+  }
+
+  eliminar3(){
+    this.img3 = '';
+    this.fotos.append('foto3', '');
+  }
+
   SubirFoto1(e: any) {
-    this.fotos.append('foto1', e.target.files[0]);
+    this.fotos.append('foto1', e.target.files[0]['name']);
   }
   SubirFoto2(e: any) {
     this.fotos.append('foto2', e.target.files[0]);
@@ -134,20 +179,18 @@ export class EncuestaClienteComponent implements OnInit {
       uid_pedido: ''
     }
 
-    console.log(objeto)
-
     this.encuestasSvc.crearEncuesta(objeto).then(() => {
       //document.getElementById('enviar').setAttribute('disabled', 'disabled');
       this.pedidosService.actualizarEstadoEncuesta(this.idPedido, true)
       setTimeout(() => {
-        this.presentToast('bottom', 'Se registró la encuesta correctamente.', "success", 1500);
+        this.presentToast('bottom', 'Se registró la encuesta correctamente.', "success", 3000);
         //this.encuestasSvc.encuesta = true;
         this.spin = false;
-        this.router.navigate(['/home/principal']);
+        this.router.navigate(['/opciones-cliente']);
       }, 2000);
 
     }).catch((error: any) => {
-      this.presentToast('bottom', 'Ocurrió un error al registrar la encuesta.', "error", 1500);
+      this.presentToast('bottom', 'Ocurrió un error al registrar la encuesta.', "error", 3000);
       this.spin = false;
     });
   }

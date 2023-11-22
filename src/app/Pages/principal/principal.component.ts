@@ -13,6 +13,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { EncuestaClienteComponent } from '../encuesta-cliente/encuesta-cliente.component';
 import { EncuestaService } from 'src/app/services/encuesta.service';
 import { AnyMxRecord } from 'dns';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-principal',
@@ -55,7 +56,8 @@ export class PrincipalComponent  implements OnInit {
     private pedidosService: PedidosService,
     private push: PushNotificationService,
     private activatedRoute: ActivatedRoute,
-    private encuestasService: EncuestaService
+    private encuestasService: EncuestaService,
+    private auth: Auth
   ){
     this.spin = true;
     this.spinner = false;
@@ -92,16 +94,17 @@ export class PrincipalComponent  implements OnInit {
               this.tieneMesa = true;
               this.mesaService.obtenerTodosLosMesas().then((data: any) => {
                 data.forEach((mesa: any) => {
-
+                  //VEEER DE PONER OBSERVABLE
                   if(mesa.numero == usuario.data().mesa.numero){
-
                     this.mesa = mesa;
                     if(mesa.ocupada == false){
                       this.mesaAsignada = false;
                       this.presentarToast('bottom', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
                     }
                   }
+
                 });
+
               });
             }
           }else{
@@ -123,7 +126,10 @@ export class PrincipalComponent  implements OnInit {
 
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
-          if(item.data().num_mesa == this.usuario.mesa.numero){
+          if(item.data().num_mesa == this.usuario.mesa.numero &&
+            item.data().estado != 'FINALIZADO' &&
+            item.data().usuario.email == this.auth.currentUser?.email
+            ){
             this.pedidoRealizado = true;
             this.pedido = item.data();
           }
