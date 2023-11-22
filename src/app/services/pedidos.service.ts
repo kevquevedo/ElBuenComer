@@ -81,15 +81,41 @@ export class PedidosService {
     return null;
   }
 
+  obtenerPedidoPorIdTiempoReal(id: any): Observable<any> {
+    const pedidoRef = doc(this.firestore, 'pedidos', id);
+  
+    return new Observable<any>(observer => {
+      const unsubscribe = onSnapshot(pedidoRef, docSnapshot => {
+        if (docSnapshot.exists()) {
+          const datosPedido = docSnapshot.data();
+          observer.next(datosPedido);
+        } else {
+          observer.next(null);
+        }
+      });
+  
+      // Esto asegura que nos desuscribamos cuando el observable es destruido
+      return () => unsubscribe();
+    });
+  }
 
   obtenerPedidos(){
     const pedidos = collection(this.firestore, 'pedidos');
     return getDocs(pedidos);
   }
 
-  obtenerPedidosEnTiempoReal(): Observable<any> {
+  obtenerPedidosEnTiempoReal(): Observable<any[]> {
     const pedidos = collection(this.firestore, 'pedidos');
-    return from(getDocs(pedidos));
+  
+    return new Observable<any[]>(observer => {
+      const unsubscribe = onSnapshot(pedidos, snapshot => {
+        const pedidosData = snapshot.docs.map(doc => doc.data());
+        observer.next(pedidosData);
+      });
+  
+      // Esto asegura que nos desuscribamos cuando el observable es destruido
+      return () => unsubscribe();
+    });
   }
 
   obtenerPedidoPorIdUsuarioTiempoReal(idUsuario: any): Observable<DocumentData | null> {

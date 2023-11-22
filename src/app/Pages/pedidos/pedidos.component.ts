@@ -32,11 +32,11 @@ export class PedidosComponent  implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.pedidosSrv.obtenerTodosLosPedidos().then((res)=>{
-      this.pedidos= res;
-      this.pedidosConfirmados = this.pedidos.filter(pedido => pedido.estado !== 'PENDIENTE' && pedido.estado !== 'TERMINADO');
-      console.log(this.pedidos);
+    this.pedidosSrv.obtenerPedidosEnTiempoReal().subscribe((pedidos) => {
+      this.pedidos = pedidos;
+      this.pedidosConfirmados = pedidos.filter(pedido => pedido.estado !== 'PENDIENTE' && pedido.estado !== 'TERMINADO');
     });
+
 
 
     this.userServ.getListadoUsuarios().then( resp =>{

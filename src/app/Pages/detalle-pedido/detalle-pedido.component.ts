@@ -103,8 +103,10 @@ export class DetallePedidoComponent implements OnInit {
             });
 
           } else {
-            this.pedidoSrv.obtenerPedidoPorId(this.pedido_id).then((res) => {
-              this.pedido = res;
+            this.pedidoSrv.obtenerPedidoPorIdTiempoReal(this.pedido_id).subscribe((pedido) => {
+              if(pedido){
+                this.pedido = pedido;
+              }
             });
 
           }
