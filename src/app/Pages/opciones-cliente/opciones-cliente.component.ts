@@ -31,9 +31,14 @@ export class OpcionesClienteComponent  implements OnInit {
         if (item.data().email == this.auth.currentUser?.email) {
           this.usuario = item.data();
           this.pedidosService.obtenerPedidoPorIdUsuarioTiempoReal(this.usuario.id).subscribe((res) => {
+
             if(this.pedido != 'FINALIZADO'){
               this.pedido = res;
               console.log(this.pedido )
+            }
+            if(this.pedido == 'FINALIZADO'){
+              this.pedido = res;
+              this.router.navigate(['/home/principal']);
             }
           });
           setTimeout( ()=>{ this.spin = false; }, 2000)

@@ -77,7 +77,8 @@ export class PrincipalComponent  implements OnInit {
   }
 
   checkearUsuario(){
-
+    this.tieneMesa = false;
+    this.pedidoEntregado = false;
     this.afAuth.currentUser.then(user=>{
 
       this.usuarioService.getListadoUsuarios().then(resp => {
