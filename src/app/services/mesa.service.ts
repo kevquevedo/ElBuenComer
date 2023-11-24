@@ -38,7 +38,6 @@ export class MesaService {
       let numeroMasAlto = await this.obtenerNumeroMesaMasAlto();
       let numeroMesa = (parseInt(numeroMasAlto, 10) + 1).toString();
       mesa.numero = numeroMesa.toString();
-      alert(mesa.numero);
 
 
       const mesas = doc(this.allMesas);
