@@ -23,7 +23,7 @@ ion-item {
     display: flex;
     justify-content: center;
   }
-  
+
 
 .image-item {
     --background: transparent
@@ -39,6 +39,10 @@ ion-item {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+
+}
+.imgsub{
+  border: 1px solid white;
 }
 
 .spin-logo {
@@ -57,4 +61,8 @@ ion-item {
 .fondo-transparente {
     height: 100vh;
     background-color: transparent;
+}
+
+.btnGuardar{
+  margin-top: 50px;
 }

@@ -20,6 +20,7 @@ export class MenuPedidoComponent  implements OnInit {
   spin!: boolean;
   listadoCocina! :any;
   listadoBebida! :any;
+  listadoPostres! :any;
   productosElegidos! :any;
   mensaje!: string;
   listadoMensajes! : any;
@@ -73,6 +74,7 @@ export class MenuPedidoComponent  implements OnInit {
         }
 
       })
+
     })
 
     this.mesaServ.obtenerChatsMesas().then( resp =>{
@@ -83,14 +85,34 @@ export class MenuPedidoComponent  implements OnInit {
       })
     })
 
+    this.mesaServ.obtenerChatsMesasTiempoReal().subscribe( (chats: any) => {
+      chats.forEach((item: any) => {
+        if (this.mesaUsuario == item.numero) {
+          this.listadoMensajes = item.mensajes;
+        }
+      })
+    })
+
+    // console.log(this.mesaUsuario)
+    // this.mesaServ.obtenerChatsMesasTiempoReal(this.mesaUsuario).subscribe( respuesta => {
+    //   this.listadoMensajes = respuesta;
+    //   console.log(this.listadoMensajes)
+    // })
+
     this.prodServ.obtenerTodosLosProductos().then( resp => {
       this.listadoCocina = [];
       this.listadoBebida = [];
+      this.listadoPostres = [];
 
       resp.forEach( (item:any) => {
         if(item.sector == 'cocina'){
           let objeto = { producto: item, cantidad: 0 };
-          this.listadoCocina.push(objeto)
+          if(item.tipo == 'comida'){
+            this.listadoCocina.push(objeto)
+          }else{
+            this.listadoPostres.push(objeto)
+          }
+
         }
         if(item.sector == 'bebida'){
           let objeto = { producto: item, cantidad: 0 };
@@ -127,6 +149,11 @@ export class MenuPedidoComponent  implements OnInit {
         this.valorTotal += (item.producto.precio * item.cantidad);
       }
     });
+    this.listadoPostres.forEach( (item:any) => {
+      if(item.cantidad > 0){
+        this.valorTotal += (item.producto.precio * item.cantidad);
+      }
+    });
   }
 
   calcularTiempoEstimado(){
@@ -141,6 +168,11 @@ export class MenuPedidoComponent  implements OnInit {
         this.tiempoEstimado = item.producto.tiempo_elaboracion;
       }
     });
+    this.listadoPostres.forEach( (item:any) => {
+      if(item.producto.tiempo_elaboracion > this.tiempoEstimado && item.cantidad > 0){
+        this.tiempoEstimado = item.producto.tiempo_elaboracion;
+      }
+    });
   }
 
   armarPedido(){
@@ -151,6 +183,11 @@ export class MenuPedidoComponent  implements OnInit {
       }
     });
     this.listadoBebida.forEach( (item:any) => {
+      if(item.cantidad > 0){
+        this.productosElegidos.push(item);
+      }
+    });
+    this.listadoPostres.forEach( (item:any) => {
       if(item.cantidad > 0){
         this.productosElegidos.push(item);
       }
@@ -225,7 +262,9 @@ export class MenuPedidoComponent  implements OnInit {
 
       this.mensaje = "";
     }
-    setTimeout( ()=>{ this.actualizarChat(this.mesaUsuario); }, 1000)
+    setTimeout( ()=>{
+      this.actualizarChat(this.mesaUsuario);
+    }, 1000)
 
   }
 
@@ -234,6 +273,8 @@ export class MenuPedidoComponent  implements OnInit {
       resp.forEach( (mesaChat:any) => {
         if(mesaChat.data().numero == numerMesa){
           this.listadoMensajes = mesaChat.data().mensajes;
+          console.log("ACTUALIZAR CHAT")
+          console.log(this.listadoMensajes)
         }
       })
     })

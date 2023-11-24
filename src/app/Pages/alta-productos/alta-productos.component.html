@@ -5,7 +5,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-text-center">
-  
+
   <form [formGroup]="formProducto" class="form">
     <!-- Nombre -->
     <br>
@@ -58,6 +58,22 @@
       *ngIf="formProducto.controls['sector'].errors?.['required'] && formProducto.controls['sector'].touched"
       style="color: var(--ion-color-danger)">El sector es requerido.</small>
 
+
+    <div *ngIf="(formProducto.controls['sector'].value === 'cocina')">
+      <ion-item lines="full" class="input-wrapper" >
+        <ion-label position="fixed">Tipo</ion-label><br />
+        <ion-select placeholder="Seleccione" #sector formControlName="tipo">
+          <ion-select-option value="comida">Comida</ion-select-option>
+          <ion-select-option value="postre">Postre</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <small class="invalid"
+        *ngIf="formProducto.controls['tipo'].errors?.['required'] && formProducto.controls['tipo'].touched"
+        style="color: var(--ion-color-danger)">El tipo es requerido.</small>
+    </div>
+
+
+
     <!-- imagen -->
     <ion-item class="image-item input-wrapper" *ngIf="i_NroImagen<3">
       <div class="img" #imagen>
@@ -69,11 +85,11 @@
     </ion-item> <br>
     <ion-row class="uploaded-images">
       <ion-avatar *ngFor="let item of producto.img_src; let index=index">
-        <img [src]="item">
+        <img [src]="item" class="imgsub">
       </ion-avatar>
     </ion-row>
     <!-- SUBMIT -->
-    <ion-button type="submit" size="medium" expand="full" color="success" (click)="GuardarNuevoProducto()"
+    <ion-button type="submit" size="medium" expand="full" color="success" (click)="GuardarNuevoProducto()" class="btnGuardar"
       [disabled]="(!formProducto.valid || i_NroImagen<3)"><strong>Guardar</strong> </ion-button>
 
   </form>

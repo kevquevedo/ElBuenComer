@@ -26,9 +26,9 @@ export class AltaProductosComponent  implements OnInit {
   spin!: boolean;
 
   constructor(private fb: FormBuilder,
-    private route: Router, 
+    private router: Router,
     public prodSrv: ProductosService,
-    private loadingController: LoadingController, 
+    private loadingController: LoadingController,
     public navCtrl: NavController,
     private imagesSrv:ImagenesService,
     private toastr: ToastController,
@@ -51,61 +51,53 @@ export class AltaProductosComponent  implements OnInit {
       'tiempo': ['', [Validators.required]],
       'precio': ['', [Validators.required]],
       'sector': ['', [Validators.required]],
-    }); 
+      'tipo': ['', []],
+    });
     setTimeout( ()=>{ this.spin = false; }, 2500)
 
-    
+    console.log(this.formProducto.controls['sector'].value === 'cocina')
   }
 
   private validarCantidadFotos(): boolean {
     this.errorImagen = (this.i_NroImagen == 3) ? false : true;
     return this.errorImagen;
   }
- 
+
   GuardarNuevoProducto() {
     this.spin = true;
-    
+
     this.producto.nombre = this.formProducto.get('nombre')?.value;
     this.producto.descripcion = this.formProducto.get('descripcion')?.value;
     this.producto.tiempo_elaboracion = this.formProducto.get('tiempo')?.value;
-    this.producto.precio = this.formProducto.get('precio')?.value; 
-    this.producto.sector = this.formProducto.get('sector')?.value; 
-    alert(
-      "prod: " +
-      this.producto.nombre + " " +
-      this.producto.descripcion + " " +
-      this.producto.tiempo_elaboracion + " " +
-      this.producto.precio + " " +
-      this.producto.sector
-    );
+    this.producto.precio = this.formProducto.get('precio')?.value;
+    this.producto.sector = this.formProducto.get('sector')?.value;
+
     if (!this.validarCantidadFotos()) {
-      alert("validacion img");
+
       this.errorImagen = false;
       try{
-        this.prodSrv.crearProducto(this.producto);
-        alert("creacion exitosa");
-        this.presentToast('middle', 'La creación fue exitosa', "success", 1500);
+        this.prodSrv.crearProducto(this.producto, this.formProducto.get('tipo')?.value);
+
+        this.presentToast('bottom', 'La creación fue exitosa', "success", 3000);
         // La creación fue exitosa
         this.spin = false;
+        setTimeout( ()=>{ this.router.navigate(['/home/principal']); }, 2000)
+
       }
-      catch(error:any)
-      {
-        alert("creacion erronea");
+      catch(error:any){
         this.spin = false;
         // Hubo un error en la creación
-        this.presentToast('middle', 'Error en la creación. ' + error, "error", 1500);
+        this.presentToast('bottom', 'Error en la creación. ' + error, "error", 3000);
       }
-      
 
       console.log("Nuevo producto a guardar: " + this.producto.nombre + " " + this.producto.img_src);
     } else {
-      alert("FALTAN LAS FOTOS");
       //mostrar el error de las imagenes
       this.errorImagen = true;
       console.log("FALTAN LAS FOTOS");
-      this.presentToast('middle', 'Faltan agregar imagenes', "error", 1500);
+      this.presentToast('bottom', 'Faltan agregar imagenes', "error", 3000);
     }
-    
+
 
   }
 
@@ -114,10 +106,10 @@ export class AltaProductosComponent  implements OnInit {
     .then((url:any) => {
       this.i_NroImagen++;
       this.producto.img_src.push(url);
-      this.presentToast('middle', 'Se procesó con éxito la imagen', "success", 1500);
+      this.presentToast('bottom', 'Se procesó con éxito la imagen', "success", 1500);
     }
     ).catch((err:any) => {
-      this.presentToast('middle', 'Error al subir imagen: '  + err, "danger", 1500);
+      this.presentToast('bottom', 'Error al subir imagen: '  + err, "danger", 1500);
     })
     // this.sacarFoto();
   }
@@ -146,5 +138,5 @@ export class Productos{
   tiempo_elaboracion!: number;
   precio!: number;
   img_src!: string[];
-  sector!: string; 
+  sector!: string;
 }

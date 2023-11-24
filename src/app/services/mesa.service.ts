@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc, updateDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, onSnapshot, orderBy, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Mesa } from '../clases/mesa';
 
@@ -82,6 +82,20 @@ export class MesaService {
   obtenerChatsMesas(){
     const chatmesas = collection(this.firestore, 'chats-mesas');
     return getDocs(chatmesas);
+  }
+
+  obtenerChatsMesasTiempoReal(): Observable<any[]> {
+    const chatsRef = collection(this.firestore, 'chats-mesas');
+    console.log(chatsRef)
+    return new Observable<any[]>(observer => {
+      const unsubscribe = onSnapshot(chatsRef, snapshot => {
+        const chatsData = snapshot.docs.map(doc => doc.data());
+        observer.next(chatsData);
+      });
+
+      // Esto asegura que nos desuscribamos cuando el observable es destruido
+      return () => unsubscribe();
+    });
   }
 
   updateChatsMesas(mensajes:any, idMesa: any){

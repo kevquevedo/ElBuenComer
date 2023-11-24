@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -19,6 +20,7 @@ export class OpcionesClienteComponent  implements OnInit {
     private router: Router,
     private pedidosService: PedidosService,
     private usuarioService: UsuariosService,
+    private toastController: ToastController,
     private auth: Auth
   ) {
     this.spin = true;
@@ -48,6 +50,7 @@ export class OpcionesClienteComponent  implements OnInit {
     })
 
 
+
   }
 
   irAJuego(){
@@ -55,7 +58,11 @@ export class OpcionesClienteComponent  implements OnInit {
   }
 
   irAEncuesta(){
-    this.router.navigate(['encuesta-clientes']);
+    if(!(this.pedido as Object).hasOwnProperty('encuesta')){
+      this.router.navigate(['encuesta-clientes']);
+    }else{
+      this.presentToast('bottom', 'El cliente ya realizó la encuesta.', "danger", 4000);
+    }
   }
 
   irADetalle(){
@@ -64,5 +71,15 @@ export class OpcionesClienteComponent  implements OnInit {
 
   irAEstadisticas(){
     this.router.navigateByUrl('graficos-encuestas')
+  }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', mensaje: string, color: string, duration: number) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duration,
+      position: position,
+      color: color
+    });
+    await toast.present();
   }
 }

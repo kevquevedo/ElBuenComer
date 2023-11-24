@@ -33,11 +33,12 @@ export class ProductosService {
   //   }
   // }
 
-  crearProducto(producto: Producto) :Promise<void>{
+  crearProducto(producto: Producto, tipo:string) :Promise<void>{
     return new Promise((resolve, reject) => {
       const productos = doc(this.allProductos);
       setDoc(productos, {
         id: productos.id,
+        tipo: tipo,
       ...producto // Spread operator para agregar las propiedadesrepartidor al objeto
       })
         .then(() => {

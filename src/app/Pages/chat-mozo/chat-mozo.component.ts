@@ -49,10 +49,10 @@ export class ChatMozoComponent  implements OnInit {
 
   ngOnInit() {
 
-    this.mesaService.obtenerChatsMesas().then( resp => {
+    this.mesaService.obtenerChatsMesasTiempoReal().subscribe( (chats: any) => {
       this.chatMesas = [];
-      resp.forEach( (chat:any) => {
-        this.chatMesas.push(chat.data())
+      chats.forEach((item: any) => {
+        this.chatMesas.push(item)
       })
       this.chatMesas.sort(this.ordenarPorNumero)
       setTimeout( ()=>{ this.spin = false; }, 1500)
@@ -75,6 +75,33 @@ export class ChatMozoComponent  implements OnInit {
         }
       })
     })
+
+    // this.mesaService.obtenerChatsMesas().then( resp => {
+    //   this.chatMesas = [];
+    //   resp.forEach( (chat:any) => {
+    //     this.chatMesas.push(chat.data())
+    //   })
+    //   this.chatMesas.sort(this.ordenarPorNumero)
+    //   setTimeout( ()=>{ this.spin = false; }, 1500)
+    //   this.chatMesas.forEach( (item:any) => {
+    //     if(item.numero == 1){
+    //       this.mesa1ID = item.id;
+    //       this.listadoMensajes1 = item.mensajes;
+    //     }
+    //     if(item.numero == 2){
+    //       this.mesa2ID = item.id;
+    //       this.listadoMensajes2 = item.mensajes;
+    //     }
+    //     if(item.numero == 3){
+    //       this.mesa3ID = item.id;
+    //       this.listadoMensajes3 = item.mensajes;
+    //     }
+    //     if(item.numero == 4){
+    //       this.mesa4ID = item.id;
+    //       this.listadoMensajes4 = item.mensajes;
+    //     }
+    //   })
+    // })
 
   }
 

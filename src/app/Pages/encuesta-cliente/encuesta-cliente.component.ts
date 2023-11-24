@@ -75,8 +75,8 @@ export class EncuestaClienteComponent implements OnInit {
       if(flag){
         setTimeout(() => { this.spin = false; }, 2000);
       }else{
-        this.presentToast('bottom', 'El cliente ya realizó la encuesta.', "danger", 4000);
-        this.router.navigate(['/opciones-cliente']);
+        //this.presentToast('bottom', 'El cliente ya realizó la encuesta.', "danger", 4000);
+        //this.router.navigate(['/opciones-cliente']);
         this.spin = false;
       }
     })
