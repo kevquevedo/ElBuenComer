@@ -12,15 +12,15 @@
     </ion-card-header>
  <!-- cantidadComensales -->
     <ion-item lines="full" class="input-wrapper">
-      <ion-label position="fixed">Cantidad de Comensales</ion-label><br />
-      <ion-input type="text" #cantidadComensales  formControlName="cantidadComensales"> 
+      <ion-label position="fixed">Comensales</ion-label><br />
+      <ion-input type="text" formControlName="cantidadComensales"> 
       </ion-input>
     </ion-item>
     <small class="invalid" *ngIf="formMesa.controls['cantidadComensales'].errors?.['required'] && formMesa.controls['cantidadComensales'].touched" style="color: var(--ion-color-danger)">El cantidad es requerida.</small>
 <!-- Tipo Mesa -->
     <ion-item lines="full" class="input-wrapper">
       <ion-label position="fixed">Tipo mesa</ion-label><br /> 
-      <ion-select placeholder="Seleccione" #tipo formControlName="tipo">
+      <ion-select placeholder="Seleccione" formControlName="tipo">
         <ion-select-option value="estandar">Estandar</ion-select-option>
         <ion-select-option value="VIP">VIP</ion-select-option>
         <ion-select-option value="cumpleaños">Cumpleaños</ion-select-option>
@@ -39,7 +39,7 @@
  <br>
     <!-- SUBMIT --> 
       <ion-button  type="submit"  size="medium"  expand="full" color="success" (click)="GuardarNuevoMesa()"
-      [disabled]="(!formMesa.valid || fotoMesa)"><strong>Guardar</strong> </ion-button>
+      [disabled]="(!formMesa.valid || !fotoMesa)"><strong>Guardar</strong> </ion-button>
     
   </form>
 </ion-content>

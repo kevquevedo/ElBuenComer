@@ -29,7 +29,7 @@ export class AltaMesaComponent  implements OnInit {
     private route: Router, 
     public mesaSrv: MesaService,
     private loadingController: LoadingController, 
-   //public navCtrl: NavController,
+   public router: Router,
     private imagesSrv:ImagenesService,
     private toastr: ToastController,
    // private spinner: NgxSpinnerService
@@ -69,14 +69,11 @@ export class AltaMesaComponent  implements OnInit {
     //this.mesa.numero = this.formMesa.get('numero')?.value;
     this.mesa.cantidadComensales = this.formMesa.get('cantidadComensales')?.value;
     this.mesa.tipo = this.formMesa.get('tipo')?.value;
-
-    // if (!this.validarCantidadFotos()) {
-      alert("validacion img");
       this.errorImagen = false;
       try{
         this.mesaSrv.crearMesa(this.mesa);
-        alert("creacion exitosa");
         this.presentToast('middle', 'La creación fue exitosa', "success", 1500);
+        setTimeout( ()=>{ this.router.navigate(['/home/principal']); }, 1000)
         // La creación fue exitosa
         this.spin = false;
       }

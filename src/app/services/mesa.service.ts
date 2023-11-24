@@ -35,9 +35,10 @@ export class MesaService {
 
   async crearMesa(mesa: Mesa) : Promise<void> {
     try {
-      const numeroMasAlto = await this.obtenerNumeroMesaMasAlto();
-      alert(numeroMasAlto);
-      mesa.numero = numeroMasAlto + 1;
+      let numeroMasAlto = await this.obtenerNumeroMesaMasAlto();
+      let numeroMesa = (parseInt(numeroMasAlto, 10) + 1).toString();
+      mesa.numero = numeroMesa.toString();
+      alert(mesa.numero);
 
 
       const mesas = doc(this.allMesas);
@@ -66,10 +67,10 @@ export class MesaService {
     return mesas;
   }
 
-  async obtenerNumeroMesaMasAlto(): Promise<number> {
+  async obtenerNumeroMesaMasAlto(): Promise<string> {
     const mesasRef = collection(this.firestore, 'mesas');
     const querySnapshot = await getDocs(mesasRef);
-    let numeroMasAlto = 0;
+    let numeroMasAlto = "";
     querySnapshot.forEach((doc) => {
       const mesa = doc.data();
       if (mesa['numero'] > numeroMasAlto) {
