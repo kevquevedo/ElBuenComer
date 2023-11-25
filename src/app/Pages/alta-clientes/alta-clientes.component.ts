@@ -77,7 +77,7 @@ export class AltaClientesComponent  implements OnInit {
           if (usuario.data().tipoEmpleado == 'dueño') {
             this.listadoClientes.push(usuario.data())
           }
-          if(usuario.data().tipoEmpleado == 'metre'){
+          if(usuario.data().tipoEmpleado == 'dueño' || usuario.data().tipoEmpleado == 'supervisor'){
             this.listadoMetre.push(usuario.data())
           }
         });
@@ -168,24 +168,24 @@ export class AltaClientesComponent  implements OnInit {
   }
 
   notificarAMetres(){
-    // this.listadoMetre.forEach( (metre:any) => {
+    this.listadoMetre.forEach( (metre:any) => {
 
-    //   if(metre.token != ''){
-    //     this.pushService.enviarPushNotification({
-    //       registration_ids: [ metre.token, ],
-    //       notification: {
-    //         title: 'Cliente - En Espera',
-    //         body: 'Un cliente se registró en la lista de espera.',
-    //       },
-    //       data: {
-    //         ruta: 'listaEspera',
-    //       },
-    //     }).subscribe( (resp: any) =>{
-    //       console.log(resp)
-    //     })
-    //   }
+      if(metre.token != ''){
+        this.pushService.enviarPushNotification({
+          registration_ids: [ metre.token, ],
+          notification: {
+            title: 'Nuevo Cliente',
+            body: 'Un cliente se registró en la aplicación.',
+          },
+          data: {
+            ruta: 'registros-pendientes',
+          },
+        }).subscribe( (resp: any) =>{
+          console.log(resp)
+        })
+      }
 
-    // })
+    })
   }
 
   navigateTo(url: string) {

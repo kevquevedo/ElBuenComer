@@ -60,17 +60,17 @@ export class FlechasComponent  implements OnInit {
   utilidades: any;
 
 
-  constructor(public router: Router, 
-    public authService: AuthService, 
+  constructor(public router: Router,
+    public authService: AuthService,
     private usuarioSvc: UsuariosService,
-    private pedidoSvc: PedidosService, 
+    private pedidoSvc: PedidosService,
     private toastr: ToastController,
    // private spinner:NgxSpinnerService,
    // private utilidades:UtilidadesService,
     //private firestoreSvc:FirestoreService
     private auth: Auth
     ) {
-   
+
   }
 
   ngOnInit(): void {
@@ -78,7 +78,7 @@ export class FlechasComponent  implements OnInit {
   }
 
   ionViewDidEnter(){
-    
+
      this.usuarioSvc.getListadoUsuarios().then((resp: any) => {
       if (resp.size > 0) {
         resp.forEach((usuario: any) => {
@@ -95,7 +95,7 @@ export class FlechasComponent  implements OnInit {
       }
     });
 
- 
+
   }
   empezar() {
     this.currentImage = this.updateRandomImage();
@@ -176,7 +176,7 @@ export class FlechasComponent  implements OnInit {
         this.pedido.jugado = true;
         this.pedido.descuento = this.puntaje < 500 ? 0 : 20;
         this.updatePedidoPuntaje();
-        
+
         if (this.tiempoTerminado) {
           this.pauseTimer();
           //this.router.navigate(['principal']);
@@ -193,17 +193,17 @@ export class FlechasComponent  implements OnInit {
   updatePedidoPuntaje() {
     this.spin = true;
     this.pedido.jugado = true;
-    
+
     this.pedidoSvc.updateEstadoPedido(this.pedido);
       if(this.pedido.descuento == 0)
       {
-        this.presentToast('middle', 'Felicitaciones, ha logrado un 20% de descuento!', "success", 2000);
+        this.presentToast('bottom', 'Felicitaciones, ha logrado un 20% de descuento!', "success", 2000);
       }
       else{
-        this.presentToast('middle', 'No ha logrado el descuento, mejor suerte la proxima!', "error", 2000);
+        this.presentToast('bottom', 'No ha logrado el descuento, mejor suerte la proxima!', "error", 2000);
       }
       setTimeout(()=>{
-        this.router.navigate(['home/principal']);
+        //this.router.navigate(['home/principal']);
         this.spin = false;
         console.log("Pedido actualizado, jugado en true, descuento y juegoJugado en flechas");
       },4000);

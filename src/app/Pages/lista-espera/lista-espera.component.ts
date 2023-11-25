@@ -50,7 +50,17 @@ export class ListaEsperaComponent  implements OnInit {
           this.mesas.push(item);
         }
       }
+      this.mesas.sort(this.ordenarPorNumero)
     });
+  }
+
+  ordenarPorNumero(mesa1: any, mesa2: any){
+    if(mesa1.numero < mesa2.numero){
+      return -1;
+    }else if(mesa1.numero > mesa2.numero){
+      return 1;
+    }
+    return 0;
   }
 
   getMesaSeleccionada(numero:any){
@@ -67,7 +77,7 @@ export class ListaEsperaComponent  implements OnInit {
     debugger;
     this.getMesaSeleccionada(mesa.detail.value);
     this.usuarioService.UpdateMesaCliente(cliente.id, this.mesaSeleccionada);
-    this.presentarToast('middle', 'Mesa asignada con exito', 'success');
+    this.presentarToast('bottom', 'Mesa asignada con exito', 'success');
     this.traerListaEspera();
     this.getMesas();
   }

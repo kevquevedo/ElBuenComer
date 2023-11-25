@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, orderBy, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, Firestore, addDoc, collection, collectionData, doc, getDocs, onSnapshot, orderBy, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Usuario } from '../clases/usuario';
 import { Observable } from 'rxjs';
 
@@ -36,6 +36,20 @@ export class UsuariosService {
   getListadoUsuarios(){
     const usuarios = collection(this.firestore, 'usuarios');
     return getDocs(usuarios);
+  }
+
+  obtenerUsuariosTiempoReal(): Observable<any[]> {
+    const chatsRef = collection(this.firestore, 'usuarios');
+    console.log(chatsRef)
+    return new Observable<any[]>(observer => {
+      const unsubscribe = onSnapshot(chatsRef, snapshot => {
+        const chatsData = snapshot.docs.map(doc => doc.data());
+        observer.next(chatsData);
+      });
+
+      // Esto asegura que nos desuscribamos cuando el observable es destruido
+      return () => unsubscribe();
+    });
   }
 
   actualizarEstadoCliente(usuario: any, estado:string){

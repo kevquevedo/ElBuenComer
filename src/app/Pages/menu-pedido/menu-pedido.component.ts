@@ -240,6 +240,7 @@ export class MenuPedidoComponent  implements OnInit {
       let mensajeEnviado = {mensaje: this.mensaje, emisor: 'cliente', mesa: '1'};
       this.listadoMensajes.push(mensajeEnviado);
       this.mesaServ.updateChatsMesas(this.listadoMensajes, this.idMesa);
+      console.log()
       this.listadoMozos.forEach( (mozo:any) => {
         if(mozo.token != ''){
           console.log(mozo)

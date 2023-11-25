@@ -81,49 +81,93 @@ export class PrincipalComponent  implements OnInit {
     this.pedidoEntregado = false;
     this.afAuth.currentUser.then(user=>{
 
-      this.usuarioService.getListadoUsuarios().then(resp => {
-
+      this.usuarioService.obtenerUsuariosTiempoReal().subscribe(resp => {
         resp.forEach((usuario: any) => {
-        if (usuario.data().email == user?.email) {
-          if (usuario.data().tipo == "admin") {
-            this.isAdmin = true;
-          }else if(usuario.data().tipo == "cliente"){
-            this.isCliente = true;
-            this.enListaEspera = usuario.data().enListaDeEspera;
-            if(usuario.data().mesa != ""){
+          if (usuario.email == user?.email) {
+            if (usuario.tipo == "admin") {
+              this.isAdmin = true;
+            }else if(usuario.tipo == "cliente"){
+              this.isCliente = true;
+              this.enListaEspera = usuario.enListaDeEspera;
+              if(usuario.mesa != ""){
 
-              this.tieneMesa = true;
-              this.mesaService.obtenerTodosLosMesas().then((data: any) => {
-                data.forEach((mesa: any) => {
-                  //VEEER DE PONER OBSERVABLE
-                  if(mesa.numero == usuario.data().mesa.numero){
-                    this.mesa = mesa;
-                    if(mesa.ocupada == false){
-                      this.mesaAsignada = false;
-                      this.presentarToast('bottom', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
+                this.tieneMesa = true;
+                this.mesaService.obtenerTodosLosMesas().then((data: any) => {
+                  data.forEach((mesa: any) => {
+                    //VEEER DE PONER OBSERVABLE
+                    if(mesa.numero == usuario.mesa.numero){
+                      this.mesa = mesa;
+                      if(mesa.ocupada == false){
+                        this.mesaAsignada = false;
+                        this.presentarToast('bottom', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
+                      }
                     }
-                  }
+
+                  });
 
                 });
-
-              });
+              }
+            }else{
+              this.tipoEmpleado = usuario.tipoEmpleado;
+              if(this.tipoEmpleado == "bartender"){
+                this.isBartender = true;
+              }else if(this.tipoEmpleado == "cocinero"){
+                this.isCocinero = true;
+              }else if(this.tipoEmpleado == "metre"){
+                this.isMetre = true;
+              }
+              else{
+                this.isMozo = true;
+              }
             }
-          }else{
-            this.tipoEmpleado = usuario.data().tipoEmpleado;
-            if(this.tipoEmpleado == "bartender"){
-              this.isBartender = true;
-            }else if(this.tipoEmpleado == "cocinero"){
-              this.isCocinero = true;
-            }else if(this.tipoEmpleado == "metre"){
-              this.isMetre = true;
-            }
-            else{
-              this.isMozo = true;
-            }
+            this.usuario = usuario;
           }
-          this.usuario = usuario.data();
-        }
-      });
+      })
+
+
+      // this.usuarioService.getListadoUsuarios().then(resp => {
+
+      //   resp.forEach((usuario: any) => {
+      //   if (usuario.data().email == user?.email) {
+      //     if (usuario.data().tipo == "admin") {
+      //       this.isAdmin = true;
+      //     }else if(usuario.data().tipo == "cliente"){
+      //       this.isCliente = true;
+      //       this.enListaEspera = usuario.data().enListaDeEspera;
+      //       if(usuario.data().mesa != ""){
+
+      //         this.tieneMesa = true;
+      //         this.mesaService.obtenerTodosLosMesas().then((data: any) => {
+      //           data.forEach((mesa: any) => {
+      //             //VEEER DE PONER OBSERVABLE
+      //             if(mesa.numero == usuario.data().mesa.numero){
+      //               this.mesa = mesa;
+      //               if(mesa.ocupada == false){
+      //                 this.mesaAsignada = false;
+      //                 this.presentarToast('bottom', `Mesa asignada, ya podés ingresar a la mesa ${this.mesa.numero}`, 'success');
+      //               }
+      //             }
+
+      //           });
+
+      //         });
+      //       }
+      //     }else{
+      //       this.tipoEmpleado = usuario.data().tipoEmpleado;
+      //       if(this.tipoEmpleado == "bartender"){
+      //         this.isBartender = true;
+      //       }else if(this.tipoEmpleado == "cocinero"){
+      //         this.isCocinero = true;
+      //       }else if(this.tipoEmpleado == "metre"){
+      //         this.isMetre = true;
+      //       }
+      //       else{
+      //         this.isMozo = true;
+      //       }
+      //     }
+      //     this.usuario = usuario.data();
+      //   }
+      // });
 
       this.pedidosService.obtenerPedidos().then( resp=>{
         resp.forEach( (item:any) =>{
@@ -171,6 +215,7 @@ export class PrincipalComponent  implements OnInit {
 
           this.usuarioService.UpdateListadoEspera(this.usuario.id);
           this.presentarToast('bottom', 'Te encontrás en lista de espera, en unos minutos el metre te asignará una mesa.', 'success');
+          console.log()
           this.usuarioService.getListadoUsuarios().then(resp => {
             resp.forEach((usuario: any) => {
               if(usuario.data().tipoEmpleado == 'metre'){
