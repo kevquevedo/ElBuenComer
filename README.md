@@ -11,7 +11,7 @@
 
 ## Estado del Proyecto
 
-🚧 Proyecto en Construcción 🚧
+Proyecto Finalizado 
 <br><br>
 <b>Trello:</b> https://trello.com/b/5Ly9OaLK/el-buen-comer
 <br>
@@ -48,15 +48,20 @@
 *Pantalla de logueo de la aplicación y registración de un nuevo cliente. Además posee accesos rápidos para probar los distintos perfiles de usuarios.*
 
 <div align="center">
-  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/26e666e6-ba5d-4968-82c3-874721c0ea1c" width=200>
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/463330f3-58cf-4a29-a0b0-d2e58cd4ceea" width=200>
 </div>
+
 
 **Home**  
 
 *Menu/Sección principal de la app, desde la cual se pueden realizar diferentes acciones (dependiendo el perfil).*
 
 <div align="center">
-  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/f1aeb260-3bb9-42d2-a1d6-4a64dc4478d4" width=200>
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/e8d79799-fb22-4307-a606-d23e30c9f4bf" width=200>
+</div>
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/1c914066-7765-4a47-8050-9cfc9407e7d6" width=200>
 </div>
 
 **Alta de Empleado**  
@@ -91,6 +96,50 @@
   <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/ba9655fe-e972-43b1-9e4f-8d487cc5a7c7" width=200>
 </div>
 
+**Alta de Productos**  
+
+*Sección para dar de alta un producto nuevo, el cual se visualizará posteriormente en el menú del restaurante.*
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/64eeef15-cfde-4b26-a718-ec602d65913c" width=200>
+</div>
+
+**Menú del Pedido**  
+
+*Sección para visualizar el menú, enviar un mensaje al mozo y/o realizar un pedido.*
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/b7ab5272-6018-43e6-be93-c54ed30e75bc" width=200>
+</div> <br>
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/91b082ae-4ef5-4988-b2de-7e0f23e9ff8d" width=200>
+</div> <br>
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/3fc526fd-fa60-41d6-b3ec-b322850f974b" width=200>
+</div> <br>
+
+**Detalle de Pedidos**  
+
+*Sección para visualizar el detalle del pedido y su correspondiente estado.*
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/808382f1-cf15-44e5-af5b-bf9ed3b43ebe" width=200>
+</div><br>
+
+
+**Encuesta**  
+
+*Sección para realizar la encuesta de satisfacción como cliente, y tambien para visualizar los resultados de encuestas anteriores con gráficos.*
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/e9266c3a-5881-431b-9133-740839bc0a6b" width=200>
+</div><br>
+
+<div align="center">
+  <img src="https://github.com/kevquevedo/ElBuenComer/assets/60716668/76ee4c0e-0728-40e5-b92a-5d2db924bcd3" width=200>
+</div><br>
 
 # QR - Lista de Espera
 <br><br>
